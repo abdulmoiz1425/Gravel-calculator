@@ -9,6 +9,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://gravelyardcalculator.com',
+    'https://www.gravelyardcalculator.com',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
