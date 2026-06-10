@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="page-hero page-hero--light">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p class="page-hero-tagline">Have a question about our Gravel Calculator, website content, or gravel estimate results? We welcome feedback from homeowners, contractors, landscapers, and property managers across the United States.</p>
+    </div>
+</section>
+
+<!-- ===== HOW CAN WE HELP ===== -->
+<section class="contact-help-section">
+    <div class="container">
+        <div class="contact-help-header">
+            <div class="about-section-eyebrow" style="text-align:center;">Get in Touch</div>
+            <h2 class="section-title">How Can We Help?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">You can contact us for any of the following — we read every message and use your feedback to improve</p>
+        </div>
+
+        <div class="contact-reasons-grid">
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <h3>Calculator Questions</h3>
+                <p>Questions about using the gravel calculator, entering measurements, or understanding your results.</p>
+            </div>
+
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <h3>Estimate Errors</h3>
+                <p>Errors in gravel volume, weight, or cost estimates that don't match your expectations or supplier quotes.</p>
+            </div>
+
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h3>Suggestions &amp; Ideas</h3>
+                <p>Suggestions for new gravel calculators, guides, or features that would make project planning easier.</p>
+            </div>
+
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <h3>Content Issues</h3>
+                <p>Incorrect or outdated website information, broken links, or content that needs to be corrected or updated.</p>
+            </div>
+
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Privacy &amp; Legal</h3>
+                <p>Privacy, cookie, or copyright concerns. Please review our Privacy Policy first — it covers most common questions.</p>
+            </div>
+
+            <div class="contact-reason-card">
+                <div class="crc-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>Business Inquiries</h3>
+                <p>Advertising, partnership, or business inquiries. Include your company name and a brief description of your proposal.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT FORM ===== -->
+<section class="contact-form-section">
+    <div class="container">
+        <div class="contact-form-layout">
+
+            <!-- LEFT: Form -->
+            <div class="contact-form-col">
+                <div class="contact-form-card">
+                    <div class="cfc-header">
+                        <div class="cfc-header-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div>
+                            <h2>Send Us a Message</h2>
+                            <p>Complete the form below with clear details so we can review your message properly.</p>
+                        </div>
+                    </div>
+
+                    {% if messages %}
+                    <div class="form-messages">
+                        {% for message in messages %}
+                        <div class="form-message form-message--{{ message.tags }}">
+                            {% if message.tags == 'success' %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            {% else %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            {% endif %}
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form class="contact-form" method="POST" action="{% url 'contact' %}" id="contactForm" novalidate>
+                        {% csrf_token %}
+
+                        <div class="cf-row">
+                            <div class="cf-group">
+                                <label class="cf-label" for="full_name">
+                                    Full Name
+                                    <span class="cf-required">*</span>
+                                </label>
+                                <div class="cf-input-wrap">
+                                    <svg class="cf-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    <input type="text" id="full_name" name="full_name" class="cf-input" placeholder="Your full name" required autocomplete="name">
+                                </div>
+                                <span class="cf-error" id="err-full_name"></span>
+                            </div>
+
+                            <div class="cf-group">
+                                <label class="cf-label" for="email">
+                                    Email Address
+                                    <span class="cf-required">*</span>
+                                </label>
+                                <div class="cf-input-wrap">
+                                    <svg class="cf-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    <input type="email" id="email" name="email" class="cf-input" placeholder="you@example.com" required autocomplete="email">
+                                </div>
+                                <span class="cf-error" id="err-email"></span>
+                            </div>
+                        </div>
+
+                        <div class="cf-group">
+                            <label class="cf-label" for="subject">
+                                Subject
+                                <span class="cf-required">*</span>
+                            </label>
+                            <div class="cf-input-wrap">
+                                <svg class="cf-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <select id="subject" name="subject" class="cf-input cf-select" required>
+                                    <option value="" disabled selected>Select a subject…</option>
+                                    <option value="calculator-question">Question about the gravel calculator</option>
+                                    <option value="estimate-error">Error in volume, weight, or cost estimate</option>
+                                    <option value="suggestion">Suggestion for a new calculator or guide</option>
+                                    <option value="content-issue">Incorrect or outdated website content</option>
+                                    <option value="privacy-legal">Privacy, cookie, or copyright concern</option>
+                                    <option value="business">Advertising, partnership, or business inquiry</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <span class="cf-error" id="err-subject"></span>
+                        </div>
+
+                        <div class="cf-group">
+                            <label class="cf-label" for="message">
+                                Message
+                                <span class="cf-required">*</span>
+                            </label>
+                            <textarea id="message" name="message" class="cf-textarea" rows="6" placeholder="Describe your question or feedback in detail. If reporting a calculator issue, please include your project type, area measurements, gravel depth, and gravel type." required></textarea>
+                            <span class="cf-error" id="err-message"></span>
+                        </div>
+
+                        <div class="cf-privacy-note">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Please do not send sensitive personal information, payment details, passwords, or private account information through this form.
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--lg btn--block" id="submitBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT: Info Panel -->
+            <div class="contact-info-col">
+
+                <div class="contact-info-panel">
+                    <div class="cip-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Helpful Tips Before You Write
+                    </div>
+                    <div class="cip-body">
+                        <p>When contacting us about a calculator result, please include:</p>
+                        <ul class="cip-list">
+                            <li>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                Your <strong>project type</strong> (driveway, patio, path, etc.)
+                            </li>
+                            <li>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                The <strong>area measurements</strong> you entered
+                            </li>
+                            <li>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                Your selected <strong>gravel depth</strong>
+                            </li>
+                            <li>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                The <strong>gravel type</strong> selected
+                            </li>
+                            <li>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                The <strong>result shown</strong> on the website
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contact-response-card">
+                    <div class="crc-response-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="crc-response-text">
+                        <div class="crc-response-label">Expected Response Time</div>
+                        <div class="crc-response-value">Within 24 Hours</div>
+                        <p>We read every message and use your feedback to improve our calculator, guides, and website experience.</p>
+                    </div>
+                </div>
+
+                <div class="contact-links-card">
+                    <div class="clc-title">Before Contacting Us</div>
+                    <div class="clc-links">
+                        <a href="{% url 'home' %}#calculator" class="clc-link">
+                            <div class="clc-link-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            </div>
+                            <div>
+                                <span class="clc-link-label">Use the Calculator</span>
+                                <span class="clc-link-desc">Get instant gravel estimates for free</span>
+                            </div>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                        <a href="{% url 'about' %}" class="clc-link">
+                            <div class="clc-link-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            </div>
+                            <div>
+                                <span class="clc-link-label">About Our Tool</span>
+                                <span class="clc-link-desc">Learn how the calculator works</span>
+                            </div>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                        <a href="{% url 'privacy' %}" class="clc-link">
+                            <div class="clc-link-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div>
+                                <span class="clc-link-label">Privacy Policy</span>
+                                <span class="clc-link-desc">How we handle your information</span>
+                            </div>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== IMPORTANT NOTE ===== -->
+<section class="contact-disclaimer-section">
+    <div class="container">
+        <div class="contact-disclaimer-card">
+            <div class="cdc-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="cdc-content">
+                <h3>Important Note About Gravel Estimates</h3>
+                <p>Our gravel calculator provides estimates for planning purposes only. Actual gravel quantity, weight, coverage, and cost may vary because of material density, moisture, compaction, ground conditions, delivery charges, and local supplier pricing.</p>
+                <p>Before placing an order, confirm the final amount and price with a local gravel supplier, contractor, or qualified project professional.</p>
+            </div>
+            <a href="{% url 'home' %}#calculator" class="btn btn--outline cdc-btn">Use Calculator</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== THANK YOU STRIP ===== -->
+<section class="contact-thanks-section">
+    <div class="container">
+        <div class="contact-thanks-inner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Thank you for visiting Gravel Calculator. Your feedback helps us improve for everyone.
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+        var valid = true;
+
+        var fields = [
+            { id: 'full_name', err: 'err-full_name', msg: 'Please enter your full name.' },
+            { id: 'email',     err: 'err-email',     msg: 'Please enter a valid email address.' },
+            { id: 'subject',   err: 'err-subject',   msg: 'Please select a subject.' },
+            { id: 'message',   err: 'err-message',   msg: 'Please enter a message.' }
+        ];
+
+        fields.forEach(function (f) {
+            var el  = document.getElementById(f.id);
+            var err = document.getElementById(f.err);
+            var wrap = el ? el.closest('.cf-input-wrap, .cf-group') : null;
+            if (!el) return;
+            var val = el.value.trim();
+            var ok = val !== '';
+            if (f.id === 'email') ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+            if (!ok) {
+                valid = false;
+                if (err) err.textContent = f.msg;
+                el.classList.add('cf-input--error');
+            } else {
+                if (err) err.textContent = '';
+                el.classList.remove('cf-input--error');
+            }
+        });
+
+        if (!valid) e.preventDefault();
+    });
+
+    /* Clear errors on input */
+    ['full_name','email','subject','message'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function () {
+            var err = document.getElementById('err-' + id);
+            if (err) err.textContent = '';
+            el.classList.remove('cf-input--error');
+        });
+    });
+})();
+</script>
+{% endblock %}

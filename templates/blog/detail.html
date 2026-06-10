@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block og_image %}
+{% if post.featured_image %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}">
+{% endif %}
+{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.excerpt|escapejs }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author|escapejs }}"
+  },
+  "datePublished": "{{ post.publish_date|date:'c' }}",
+  "dateModified": "{{ post.updated_at|date:'c' }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Gravel Calculator Pro"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ request.scheme }}://{{ request.get_host }}/blog/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ post.title|escapejs }}", "item": "{{ request.build_absolute_uri }}"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'blog:list' %}">Blog</a></li>
+            <li aria-current="page">{{ post.title|truncatewords:8 }}</li>
+        </ol>
+    </div>
+</nav>
+
+<div class="blog-detail-layout">
+    <div class="container">
+        <div class="blog-detail-inner">
+
+            <!-- Article -->
+            <article class="blog-article">
+                <!-- Header -->
+                <header class="article-header">
+                    {% if post.category %}
+                    <span class="category-badge">{{ post.category.name }}</span>
+                    {% endif %}
+                    <h1 class="article-title">{{ post.title }}</h1>
+                    <div class="article-meta">
+                        <span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {{ post.author }}
+                        </span>
+                        <span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            {{ post.publish_date|date:"F j, Y" }}
+                        </span>
+                        <span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            {{ post.reading_time }} min read
+                        </span>
+                    </div>
+                </header>
+
+                <!-- Featured Image -->
+                {% if post.featured_image %}
+                <div class="article-featured-image">
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                </div>
+                {% endif %}
+
+                <!-- Table of Contents -->
+                <div class="toc-container" id="tocContainer">
+                    <h2 class="toc-title">Table of Contents</h2>
+                    <ol class="toc-list" id="tocList"></ol>
+                </div>
+
+                <!-- Content -->
+                <div class="article-content" id="articleContent">
+                    {{ post.content|safe }}
+                </div>
+
+                <!-- Tags -->
+                {% if post.tags.all %}
+                <div class="article-tags">
+                    <strong>Tags:</strong>
+                    {% for tag in post.tags.all %}
+                    <span class="tag">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Social Share -->
+                <div class="social-share">
+                    <span class="share-label">Share this article:</span>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--facebook" aria-label="Share on Facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri|urlencode }}&text={{ post.title|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--twitter" aria-label="Share on X">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        X (Twitter)
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--linkedin" aria-label="Share on LinkedIn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" rel="noopener noreferrer" class="share-btn share-btn--whatsapp" aria-label="Share on WhatsApp">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.108 1.522 5.83L.063 23.44l5.757-1.512A11.932 11.932 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 0 1-5.012-1.377l-.36-.214-3.716.976.99-3.624-.234-.372A9.793 9.793 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+                        WhatsApp
+                    </a>
+                </div>
+            </article>
+
+            <!-- Sidebar -->
+            <aside class="blog-sidebar">
+                <div class="sidebar-card">
+                    <h3>Calculate Gravel Now</h3>
+                    <p>Use our free calculator to estimate volume, weight, and cost for your gravel project.</p>
+                    <a href="{% url 'home' %}#calculator" class="btn btn--primary btn--block">Open Calculator</a>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Related Posts -->
+        {% if related_posts %}
+        <section class="related-posts">
+            <h2>Related Articles</h2>
+            <div class="related-grid">
+                {% for related in related_posts %}
+                <article class="blog-card">
+                    <a href="{{ related.get_absolute_url }}" class="blog-card-image-link">
+                        {% if related.featured_image %}
+                        <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" class="blog-card-image">
+                        {% else %}
+                        <div class="image-placeholder image-placeholder--card">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </div>
+                        {% endif %}
+                    </a>
+                    <div class="blog-card-body">
+                        <div class="blog-card-meta">
+                            {% if related.category %}<span class="category-badge category-badge--sm">{{ related.category.name }}</span>{% endif %}
+                            <span class="post-date">{{ related.publish_date|date:"M d, Y" }}</span>
+                        </div>
+                        <h3 class="blog-card-title"><a href="{{ related.get_absolute_url }}">{{ related.title }}</a></h3>
+                        <p class="blog-card-excerpt">{{ related.excerpt|truncatewords:20 }}</p>
+                        <a href="{{ related.get_absolute_url }}" class="read-more-link">Read More →</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-generate table of contents from H2/H3 headings
+document.addEventListener('DOMContentLoaded', function () {
+    const content = document.getElementById('articleContent');
+    const tocList = document.getElementById('tocList');
+    const tocContainer = document.getElementById('tocContainer');
+    if (!content || !tocList) return;
+
+    const headings = content.querySelectorAll('h2, h3');
+    if (headings.length < 2) {
+        tocContainer.style.display = 'none';
+        return;
+    }
+
+    headings.forEach(function (heading, i) {
+        const id = 'heading-' + i;
+        heading.id = id;
+        const li = document.createElement('li');
+        li.className = heading.tagName === 'H3' ? 'toc-item toc-item--sub' : 'toc-item';
+        const a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = heading.textContent;
+        li.appendChild(a);
+        tocList.appendChild(li);
+    });
+});
+
+// FAQ accordion (reuse if needed)
+document.querySelectorAll('.faq-question').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !expanded);
+        const answer = this.nextElementSibling;
+        answer.style.display = expanded ? 'none' : 'block';
+    });
+});
+</script>
+{% endblock %}

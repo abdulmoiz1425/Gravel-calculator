@@ -1,0 +1,479 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="page-hero">
+    <div class="container">
+        <h1>About Gravel Calculator</h1>
+        <p class="page-hero-tagline">A practical online tool built to help homeowners, contractors, landscapers, and property managers estimate gravel for common outdoor projects across the United States.</p>
+    </div>
+</section>
+
+<!-- ===== WELCOME INTRO ===== -->
+<section class="about-intro-section">
+    <div class="container">
+        <div class="about-intro-grid">
+            <div class="about-intro-text">
+                <div class="about-section-eyebrow">Welcome</div>
+                <h2>Simpler Gravel Planning Starts Here</h2>
+                <p>Planning a gravel project can be confusing when you need to convert length, width, depth, cubic yards, tons, and cost. Our goal is to make that process easier by giving users a simple way to estimate the amount of gravel needed before contacting a local supplier.</p>
+                <p>Enter the size of the area, choose a gravel depth, select a material type, and receive an estimated result in cubic yards, tons, and cost — all in seconds, no sign-up required.</p>
+                <div class="about-intro-actions">
+                    <a href="{% url 'home' %}#calculator" class="btn btn--primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                        Use the Calculator
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn--outline">Contact Us</a>
+                </div>
+            </div>
+
+            <div class="about-intro-stats">
+                <div class="ais-card">
+                    <div class="ais-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="ais-value">100% Free</div>
+                    <div class="ais-label">No registration, no payment</div>
+                </div>
+                <div class="ais-card">
+                    <div class="ais-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="ais-value">Instant</div>
+                    <div class="ais-label">Results in seconds</div>
+                </div>
+                <div class="ais-card">
+                    <div class="ais-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="ais-value">USA-Built</div>
+                    <div class="ais-label">Feet, inches, yards &amp; tons</div>
+                </div>
+                <div class="ais-card">
+                    <div class="ais-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <div class="ais-value">Any Device</div>
+                    <div class="ais-label">Mobile &amp; desktop ready</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== OUR PURPOSE ===== -->
+<section class="about-purpose-section">
+    <div class="container">
+        <div class="about-purpose-grid">
+            <div class="about-purpose-text">
+                <div class="about-section-eyebrow">Our Purpose</div>
+                <h2>Built to Help You Plan With Confidence</h2>
+                <p>Gravel Calculator was created to help people plan projects with more confidence. Many gravel projects start with the same questions — and we built this tool to answer them clearly.</p>
+                <p style="margin-top:1rem;">Our calculator provides a quick estimate that can support early planning, budgeting, and supplier discussions using the measurements you enter.</p>
+            </div>
+
+            <div class="purpose-questions">
+                <div class="pq-header">Common Questions We Answer</div>
+                <div class="pq-list">
+                    <div class="pq-item">
+                        <div class="pq-num">01</div>
+                        <div class="pq-text">How much gravel do I need?</div>
+                    </div>
+                    <div class="pq-item">
+                        <div class="pq-num">02</div>
+                        <div class="pq-text">How many cubic yards should I order?</div>
+                    </div>
+                    <div class="pq-item">
+                        <div class="pq-num">03</div>
+                        <div class="pq-text">How many tons of gravel will cover my area?</div>
+                    </div>
+                    <div class="pq-item">
+                        <div class="pq-num">04</div>
+                        <div class="pq-text">What depth should I use?</div>
+                    </div>
+                    <div class="pq-item">
+                        <div class="pq-num">05</div>
+                        <div class="pq-text">How much could the gravel cost?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHAT WE HELP WITH ===== -->
+<section class="about-usecases-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <div class="about-section-eyebrow" style="text-align:center;">What We Help With</div>
+            <h2 class="section-title">What Our Gravel Calculator Can Help With</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Our gravel calculator can be used for many residential and commercial projects</p>
+        </div>
+
+        <div class="usecases-grid">
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3>Gravel Driveways</h3>
+                <p>Estimate material for residential and commercial driveway installations by area and depth.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M3 17l4-8 4 4 4-6 4 6"/><path d="M3 21h18"/></svg>
+                </div>
+                <h3>Walkways &amp; Garden Paths</h3>
+                <p>Calculate gravel for pedestrian paths, garden walkways, and decorative stone trails.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+                </div>
+                <h3>Patios &amp; Seating Areas</h3>
+                <p>Plan gravel coverage for outdoor patios, seating areas, and entertaining spaces.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                </div>
+                <h3>French Drains &amp; Trenches</h3>
+                <p>Estimate clean gravel for drainage trenches, French drains, and pipe installations.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/></svg>
+                </div>
+                <h3>Shed Bases</h3>
+                <p>Calculate the gravel base needed to support a shed structure on stable, level ground.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M12 22c0-5.523-4.477-10-10-10"/><path d="M12 22c0-5.523 4.477-10 10-10"/><path d="M12 2v20"/></svg>
+                </div>
+                <h3>Landscaping Areas</h3>
+                <p>Estimate decorative stone and gravel for garden beds, borders, and landscape features.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#fdf4ff,#f5d0fe);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                </div>
+                <h3>Playground Gravel</h3>
+                <p>Calculate safety-grade gravel fill for children's play areas and playground surfaces.</p>
+            </div>
+
+            <div class="usecase-card">
+                <div class="uc-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h3>Decorative Gravel Projects</h3>
+                <p>Plan material for decorative stone features, rock gardens, and accent areas.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== BUILT FOR USA ===== -->
+<section class="about-usa-section">
+    <div class="container">
+        <div class="usa-banner">
+            <div class="usa-banner-content">
+                <div class="usa-banner-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                    <div class="about-section-eyebrow" style="color:rgba(255,255,255,0.65);">USA-Focused</div>
+                    <h2 style="color:#fff; margin-bottom:0.85rem;">Built for USA Gravel Projects</h2>
+                    <p style="color:rgba(255,255,255,0.8); line-height:1.85;">Our website is designed for users in the United States. We use common USA measurements such as feet, inches, cubic yards, and tons. Gravel prices, delivery fees, material density, and supplier methods can vary by state and local area — for this reason, our results are intended to help with planning rather than replace a final quote from a gravel supplier.</p>
+                </div>
+            </div>
+            <div class="usa-banner-units">
+                <div class="ubu-item">
+                    <span class="ubu-unit">Feet &amp; Inches</span>
+                    <span class="ubu-desc">Area measurement</span>
+                </div>
+                <div class="ubu-item">
+                    <span class="ubu-unit">Cubic Yards</span>
+                    <span class="ubu-desc">Volume output</span>
+                </div>
+                <div class="ubu-item">
+                    <span class="ubu-unit">Tons</span>
+                    <span class="ubu-desc">Weight output</span>
+                </div>
+                <div class="ubu-item">
+                    <span class="ubu-unit">$ USD</span>
+                    <span class="ubu-desc">Cost estimate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CLEAR & USEFUL INFO ===== -->
+<section class="about-info-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <div class="about-section-eyebrow" style="text-align:center;">Resources</div>
+            <h2 class="section-title">Clear and Useful Gravel Information</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">We aim to provide clear information that helps users understand how gravel calculations work — no technical knowledge needed</p>
+        </div>
+
+        <div class="info-topics-grid">
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+                </div>
+                <h3>Gravel Coverage by Depth</h3>
+                <p>Learn how much area a cubic yard covers at 1, 2, 3, 4, and 6 inch depths so you can plan your order with confidence.</p>
+            </div>
+
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+                </div>
+                <h3>Cubic Yards to Tons Conversions</h3>
+                <p>Understand how volume converts to weight based on gravel type, moisture level, and density — so you speak the same language as your supplier.</p>
+            </div>
+
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <h3>Gravel Types &amp; Common Uses</h3>
+                <p>Explore the differences between pea gravel, crushed stone, river rock, #57 gravel, and other common materials for your project type.</p>
+            </div>
+
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h3>Gravel Cost Estimates</h3>
+                <p>Get a better idea of what to budget before calling a supplier by combining your volume estimate with a local price per ton or cubic yard.</p>
+            </div>
+
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+                <h3>Ordering Tips</h3>
+                <p>Practical guidance on how much extra material to add, how to talk with suppliers, and what to look for when placing a gravel delivery order.</p>
+            </div>
+
+            <div class="info-topic-card">
+                <div class="itc-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <h3>Project Planning Steps</h3>
+                <p>Step-by-step guides for common gravel projects — from measuring your area to receiving your delivery and spreading the stone.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== OUR APPROACH ===== -->
+<section class="about-approach-section">
+    <div class="container">
+        <div class="approach-layout">
+            <div class="approach-text-col">
+                <div class="about-section-eyebrow">Our Approach</div>
+                <h2>How We Handle Estimates</h2>
+                <p>Gravel weight and coverage can change based on material size, moisture, compaction, ground conditions, and installation method. Because of these factors, no online calculator can guarantee the exact amount required for every project.</p>
+                <p style="margin-top:1rem;">We recommend adding a small extra amount for compaction, settling, uneven ground, and waste. Users should also confirm the final order quantity with a local gravel supplier, contractor, or project professional.</p>
+            </div>
+
+            <div class="approach-factors">
+                <div class="af-header">Factors That Affect Estimates</div>
+                <div class="af-list">
+                    <div class="af-item">
+                        <div class="af-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><circle cx="6" cy="8" r="2"/><circle cx="18" cy="9" r="2.5"/></svg>
+                        </div>
+                        <div>
+                            <strong>Material Size</strong>
+                            <p>Larger stone sizes leave more air gaps, affecting actual coverage per yard.</p>
+                        </div>
+                    </div>
+                    <div class="af-item">
+                        <div class="af-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M6.5 9.5l-4.24-4.24M17.5 9.5l4.24-4.24M2 16h20M5 20h14"/></svg>
+                        </div>
+                        <div>
+                            <strong>Moisture Content</strong>
+                            <p>Wet gravel is heavier than dry gravel, which affects ton estimates from suppliers.</p>
+                        </div>
+                    </div>
+                    <div class="af-item">
+                        <div class="af-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+                        </div>
+                        <div>
+                            <strong>Compaction</strong>
+                            <p>Compacted gravel layers take more material than loosely spread stone at the same depth.</p>
+                        </div>
+                    </div>
+                    <div class="af-item">
+                        <div class="af-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-8 4 4 4-6 4 6"/><path d="M3 21h18"/></svg>
+                        </div>
+                        <div>
+                            <strong>Ground Conditions</strong>
+                            <p>Slopes, low spots, and uneven surfaces require more material than flat, level areas.</p>
+                        </div>
+                    </div>
+                    <div class="af-item">
+                        <div class="af-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                        <div>
+                            <strong>Installation Method</strong>
+                            <p>Hand-spreading, machine spreading, and grading all affect how much material is used.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="af-disclaimer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Our results are planning estimates — always confirm final quantities with a local supplier or contractor.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHO WE HELP ===== -->
+<section class="about-users-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <div class="about-section-eyebrow" style="text-align:center;">Who We Help</div>
+            <h2 class="section-title">Made for Anyone Planning a Gravel Project</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">No matter the project size, our goal is to help you save time and better understand your material needs</p>
+        </div>
+
+        <div class="users-grid">
+            <div class="user-card">
+                <div class="user-card-icon" style="background:linear-gradient(135deg,#0f2447,#1a3a6b);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/></svg>
+                </div>
+                <h3>Homeowners</h3>
+                <p>Planning a driveway, patio, or garden path? Get a reliable starting estimate before calling a supplier so you can budget with confidence.</p>
+                <div class="user-card-tag">Driveways · Patios · Paths</div>
+            </div>
+
+            <div class="user-card">
+                <div class="user-card-icon" style="background:linear-gradient(135deg,#065f46,#059669);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22c0-5.523-4.477-10-10-10"/><path d="M12 22c0-5.523 4.477-10 10-10"/><path d="M12 2v20"/></svg>
+                </div>
+                <h3>Landscapers</h3>
+                <p>Quickly prepare accurate material estimates for client projects. The calculator supports multiple shapes, gravel types, and pricing options.</p>
+                <div class="user-card-tag">Estimates · Multiple Projects</div>
+            </div>
+
+            <div class="user-card">
+                <div class="user-card-icon" style="background:linear-gradient(135deg,#7c2d12,#ea580c);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3>Contractors</h3>
+                <p>Check project quantities quickly during planning, quoting, or site preparation. Works across all standard US measurement units.</p>
+                <div class="user-card-tag">Quantities · Quoting · Site Work</div>
+            </div>
+
+            <div class="user-card">
+                <div class="user-card-icon" style="background:linear-gradient(135deg,#1e1b4b,#4338ca);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><path d="M8 7V5a2 2 0 0 0-4 0v2"/></svg>
+                </div>
+                <h3>Property Managers</h3>
+                <p>Planning maintenance work across multiple sites? Get fast estimates to help budget and schedule gravel orders for parking areas and grounds.</p>
+                <div class="user-card-tag">Maintenance · Multi-Site Planning</div>
+            </div>
+
+            <div class="user-card">
+                <div class="user-card-icon" style="background:linear-gradient(135deg,#7f1d1d,#dc2626);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+                <h3>DIY Users</h3>
+                <p>Working on a small outdoor project at home? The calculator is simple to use with no technical knowledge required — just enter your measurements.</p>
+                <div class="user-card-tag">Small Projects · No Experience Needed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== OUR COMMITMENT ===== -->
+<section class="about-commitment-section">
+    <div class="container">
+        <div class="commitment-card">
+            <div class="commitment-content">
+                <div class="commitment-icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                    <h2>Our Commitment</h2>
+                    <p>We are committed to keeping our gravel calculator easy to use, helpful, and clear. We review our tools and content to improve the user experience and make project planning easier.</p>
+                    <p style="margin-top:0.85rem;">We also welcome feedback from users who find an error, need help, or have an idea for a useful gravel-related guide. Your input helps us improve the tool for everyone.</p>
+                </div>
+            </div>
+            <div class="commitment-pillars">
+                <div class="cp-item">
+                    <div class="cp-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <span>Easy to Use</span>
+                </div>
+                <div class="cp-item">
+                    <div class="cp-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <span>Helpful &amp; Clear</span>
+                </div>
+                <div class="cp-item">
+                    <div class="cp-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    </div>
+                    <span>Regularly Reviewed</span>
+                </div>
+                <div class="cp-item">
+                    <div class="cp-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <span>Always Free</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT CTA ===== -->
+<section class="about-contact-section">
+    <div class="container">
+        <div class="about-contact-grid">
+            <div class="about-contact-card about-contact-card--primary">
+                <div class="acc-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <h3>Have a Question or Suggestion?</h3>
+                <p>Have a question, suggestion, or correction? Please visit our Contact Us page and send us a message. We appreciate user feedback and use it to improve our website.</p>
+                <a href="{% url 'contact' %}" class="btn btn--primary">Contact Us</a>
+            </div>
+
+            <div class="about-contact-card about-contact-card--secondary">
+                <div class="acc-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                </div>
+                <h3>Ready to Estimate Your Project?</h3>
+                <p>Jump straight into the calculator. Enter your dimensions, choose your gravel type, and get instant results in cubic yards, tons, and cost — no account needed.</p>
+                <a href="{% url 'home' %}#calculator" class="btn btn--outline">Use Calculator</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

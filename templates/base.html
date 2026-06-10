@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ meta_title|default:"Gravel Calculator Pro – Free Online Calculator" }}{% endblock %}</title>
+    <meta name="description" content="{{ meta_description|default:'Free online gravel calculator for construction and landscaping projects.' }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ meta_title|default:'Gravel Calculator Pro' }}">
+    <meta property="og:description" content="{{ meta_description|default:'Free online gravel calculator for construction and landscaping.' }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="Gravel Calculator Pro">
+    {% block og_image %}<meta property="og:image" content="{% static 'images/og-default.jpg' %}">{% endblock %}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ meta_title|default:'Gravel Calculator Pro' }}">
+    <meta name="twitter:description" content="{{ meta_description|default:'Free online gravel calculator.' }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <meta name="theme-color" content="#1a3a6b">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    {% block schema %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="{% url 'home' %}" class="brand-logo">
+                <span class="brand-icon">&#9642;</span>
+                <span class="brand-text">Gravel<strong>Calculator</strong>Pro</span>
+            </a>
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav" id="mainNav">
+                <a href="{% url 'home' %}#calculator" class="nav-link">Calculator</a>
+                <a href="{% url 'about' %}" class="nav-link">About</a>
+                <a href="{% url 'blog:list' %}" class="nav-link">Blog</a>
+                <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <a href="{% url 'home' %}" class="brand-logo brand-logo--footer">
+                    <span class="brand-icon">&#9642;</span>
+                    <span class="brand-text">Gravel<strong>Calculator</strong>Pro</span>
+                </a>
+                <p class="footer-tagline">Free online gravel calculator for construction and landscaping projects.</p>
+            </div>
+            <nav class="footer-nav">
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'blog:list' %}">Blog</a>
+                <a href="{% url 'contact' %}">Contact</a>
+                <a href="{% url 'privacy' %}">Privacy Policy</a>
+                <a href="{% url 'cookie_policy' %}">Cookies</a>
+                <a href="{% url 'disclaimer' %}">Disclaimer</a>
+                <a href="{% url 'terms' %}">Terms</a>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2025 Gravel Calculator Pro. All rights reserved. &nbsp;|&nbsp; Developed by <a href="https://binarymindtechnologies.com/" target="_blank" rel="noopener noreferrer" class="footer-dev-link">BinaryMind Technologies</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            document.getElementById('mainNav').classList.toggle('is-open');
+            this.classList.toggle('is-active');
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

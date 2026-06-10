@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero page-hero--light">
+    <div class="container">
+        <h1>Cookie Policy</h1>
+        <p class="page-hero-tagline">How we use cookies and similar technologies on this website</p>
+    </div>
+</section>
+
+<section class="legal-page">
+    <div class="container">
+        <div class="legal-layout">
+
+            <aside class="legal-toc-col">
+                <div class="legal-toc">
+                    <p class="legal-toc-title">On This Page</p>
+                    <ul class="legal-toc-links">
+                        <li><a href="#what-are-cookies" class="legal-toc-link">1. What Are Cookies?</a></li>
+                        <li><a href="#how-we-use" class="legal-toc-link">2. How We Use Cookies</a></li>
+                        <li><a href="#types-of-cookies" class="legal-toc-link">3. Types of Cookies</a></li>
+                        <li><a href="#third-party-cookies" class="legal-toc-link">4. Third-Party Cookies</a></li>
+                        <li><a href="#google-analytics" class="legal-toc-link">5. Google Analytics</a></li>
+                        <li><a href="#google-ads" class="legal-toc-link">6. Google Advertising</a></li>
+                        <li><a href="#your-choices" class="legal-toc-link">7. Your Cookie Choices</a></li>
+                        <li><a href="#consent-settings" class="legal-toc-link">8. Cookie Consent Settings</a></li>
+                        <li><a href="#dnt" class="legal-toc-link">9. Do Not Track</a></li>
+                        <li><a href="#changes" class="legal-toc-link">10. Changes to This Policy</a></li>
+                        <li><a href="#contact" class="legal-toc-link">11. Contact Us</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <div class="legal-content-col">
+                <div class="legal-updated">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Last Updated: January 1, 2025
+                </div>
+
+                <div class="legal-intro">
+                    This Cookie Policy explains how Gravel Calculator Pro ("we," "us," or "our") uses cookies and similar tracking technologies when you visit gravelcalculator.pro. This policy is supplemental to our <a href="{% url 'privacy' %}">Privacy Policy</a>. By using our website, you consent to the use of cookies as described in this policy.
+                </div>
+
+                <div class="legal-section" id="what-are-cookies">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">1</span>
+                        <h2 class="legal-section-title">What Are Cookies?</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used by website owners to make websites work, or to work more efficiently, as well as to provide reporting information.</p>
+                        <p>Cookies set by the website owner (in this case, Gravel Calculator Pro) are called "first-party cookies." Cookies set by parties other than the website owner are called "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or through the website (such as advertising, interactive content, and analytics).</p>
+                        <p>Cookies can remain on your computer or mobile device for different periods of time. Some cookies are "session cookies," meaning they exist only while your browser is open and are deleted automatically once you close your browser. Other cookies are "persistent cookies," meaning they survive after your browser is closed and can be used by websites to recognize your computer when you open your browser and browse the internet again.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="how-we-use">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">2</span>
+                        <h2 class="legal-section-title">How We Use Cookies</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>We use cookies and similar technologies for the following purposes:</p>
+                        <ul class="legal-list">
+                            <li><strong>Website Functionality:</strong> To enable core website features and ensure the website works properly across all devices and browsers.</li>
+                            <li><strong>Analytics and Performance:</strong> To understand how visitors interact with our website, including which pages are visited most often, how long visitors stay, and where they come from.</li>
+                            <li><strong>User Preferences:</strong> To remember your preferences and settings (such as calculator units or previously entered values) so you don't have to re-enter them each visit.</li>
+                            <li><strong>Security:</strong> To protect our website and users from fraudulent activity, spam, and abuse.</li>
+                            <li><strong>Advertising:</strong> To serve relevant advertisements and to measure the effectiveness of advertising campaigns.</li>
+                            <li><strong>Affiliate Tracking:</strong> To track referrals from affiliate partners and ensure commissions are properly attributed.</li>
+                            <li><strong>Social Media Integration:</strong> To enable social sharing functionality and embed social media content.</li>
+                            <li><strong>Content Delivery:</strong> To deliver content efficiently through content delivery networks (CDNs).</li>
+                            <li><strong>Error Monitoring:</strong> To detect and diagnose technical problems and errors on our website.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="types-of-cookies">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">3</span>
+                        <h2 class="legal-section-title">Types of Cookies We Use</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <div class="legal-type-grid">
+                            <div class="legal-type-card">
+                                <p class="legal-type-card-title">Essential Cookies</p>
+                                <p>Required for the website to function correctly. These cannot be disabled as the website would not work without them. They include session management and security cookies.</p>
+                            </div>
+                            <div class="legal-type-card legal-type-card--analytics">
+                                <p class="legal-type-card-title">Analytics Cookies</p>
+                                <p>Help us understand how visitors use our site. All data is anonymized. Provided by Google Analytics 4 to track page views, sessions, and user behavior.</p>
+                            </div>
+                            <div class="legal-type-card legal-type-card--functionality">
+                                <p class="legal-type-card-title">Functionality Cookies</p>
+                                <p>Enable enhanced functionality and personalization, such as remembering your preferred units (feet vs. meters) or previously used calculator settings.</p>
+                            </div>
+                            <div class="legal-type-card legal-type-card--advertising">
+                                <p class="legal-type-card-title">Advertising Cookies</p>
+                                <p>Used by Google AdSense and other ad networks to serve relevant advertisements based on your interests and browsing history across the web.</p>
+                            </div>
+                            <div class="legal-type-card legal-type-card--affiliate">
+                                <p class="legal-type-card-title">Affiliate Cookies</p>
+                                <p>Track referrals to affiliate partner websites (such as gravel suppliers or Amazon) to attribute purchases and ensure proper commission payments.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="third-party-cookies">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">4</span>
+                        <h2 class="legal-section-title">Third-Party Cookies</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>In addition to our own cookies, we allow the following third-party services to set cookies on your device when you visit our website:</p>
+                        <ul class="legal-list">
+                            <li><strong>Google Analytics 4:</strong> Website analytics and traffic measurement. Cookies include _ga, _ga_*, and _gid.</li>
+                            <li><strong>Google AdSense / Google Ad Manager:</strong> Display advertising and ad targeting. Cookies include IDE, DSID, and various Google ad cookies.</li>
+                            <li><strong>Google Tag Manager:</strong> Tag management system used to deploy analytics and advertising tags. Sets its own cookies for tag management purposes.</li>
+                            <li><strong>Cloudflare:</strong> CDN, performance, and security services. May set cookies for security verification and bot protection (e.g., __cf_bm, __cfduid).</li>
+                            <li><strong>Amazon Associates:</strong> Affiliate tracking for Amazon product links. Sets cookies to track referrals and attribute purchases.</li>
+                            <li><strong>DoubleClick (Google):</strong> Interest-based advertising and remarketing. Sets cookies to track users across websites for ad targeting.</li>
+                            <li><strong>YouTube:</strong> If our site embeds any YouTube videos, YouTube may set cookies related to video playback and user preferences.</li>
+                        </ul>
+                        <p>These third-party services have their own privacy and cookie policies, which we encourage you to review. We do not control these third-party cookies.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="google-analytics">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">5</span>
+                        <h2 class="legal-section-title">Google Analytics</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>We use Google Analytics 4 (GA4) to analyze the use of our website. Google Analytics uses cookies to collect information about website usage, such as:</p>
+                        <ul class="legal-list">
+                            <li>The number of users visiting the website</li>
+                            <li>Which pages are most frequently visited</li>
+                            <li>How long visitors spend on each page</li>
+                            <li>Which websites referred visitors to our site</li>
+                            <li>The geographic location of visitors (country/region level)</li>
+                            <li>Device and browser type</li>
+                        </ul>
+                        <div class="legal-notice legal-notice--info">
+                            <span class="legal-notice-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                            <span class="legal-notice-text">Google Analytics data is anonymized — individual users cannot be identified. We have enabled IP anonymization to further protect your privacy.</span>
+                        </div>
+                        <p>You can opt out of Google Analytics tracking by installing the free <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>. This add-on prevents the Google Analytics JavaScript (ga.js, analytics.js, and dc.js) from sharing information with Google Analytics about visit activity.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="google-ads">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">6</span>
+                        <h2 class="legal-section-title">Google Advertising Services</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>We participate in Google's advertising programs, including Google AdSense and Google Ad Manager. These services allow Google to display advertisements on our website that may be targeted to you based on your browsing history and interests.</p>
+                        <p>Google uses cookies such as the NID cookie to deliver these ads, personalize their content, and measure their performance. Google may also use these cookies for remarketing — showing you ads on other websites after you have visited ours.</p>
+                        <p>You have several options to control Google advertising cookies:</p>
+                        <ul class="legal-list">
+                            <li>Visit <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a> to manage personalized ad preferences</li>
+                            <li>Install the <a href="https://support.google.com/ads/answer/7395996" target="_blank" rel="noopener noreferrer">Google Ads Opt-out Extension</a> for your browser</li>
+                            <li>Visit <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">aboutads.info</a> to opt out of interest-based advertising from multiple companies</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="your-choices">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">7</span>
+                        <h2 class="legal-section-title">Your Cookie Choices</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>You can control and manage cookies in several ways. Please note that disabling certain cookies may affect the functionality of our website:</p>
+                        <div class="legal-browser-grid">
+                            <div class="legal-browser-card">
+                                Google Chrome
+                                <span>Settings &rarr; Privacy &rarr; Cookies</span>
+                            </div>
+                            <div class="legal-browser-card">
+                                Mozilla Firefox
+                                <span>Options &rarr; Privacy &amp; Security</span>
+                            </div>
+                            <div class="legal-browser-card">
+                                Apple Safari
+                                <span>Preferences &rarr; Privacy</span>
+                            </div>
+                            <div class="legal-browser-card">
+                                Microsoft Edge
+                                <span>Settings &rarr; Cookies &amp; Site Permissions</span>
+                            </div>
+                            <div class="legal-browser-card">
+                                Opera Browser
+                                <span>Settings &rarr; Advanced &rarr; Privacy</span>
+                            </div>
+                            <div class="legal-browser-card">
+                                Brave Browser
+                                <span>Settings &rarr; Shields &rarr; Cookies</span>
+                            </div>
+                        </div>
+                        <p style="margin-top:1rem;">In addition to browser controls, you can opt out of specific advertising and analytics cookies using the opt-out tools provided in the sections above. Please note that opting out of advertising cookies does not mean you will no longer see ads — it means the ads you see will be less relevant to your interests.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="consent-settings">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">8</span>
+                        <h2 class="legal-section-title">Cookie Consent Settings</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>When you first visit our website, you may be presented with a cookie consent notice that allows you to accept or decline non-essential cookies. You can change your cookie preferences at any time by:</p>
+                        <ul class="legal-list">
+                            <li>Using your browser's cookie management settings to delete or block specific cookies</li>
+                            <li>Clearing all cookies from your browser and revisiting our site to make a new selection</li>
+                            <li>Using the third-party opt-out tools described in the sections above for specific services</li>
+                        </ul>
+                        <p>Please note that essential cookies cannot be disabled through our cookie consent tool as they are required for the website to function properly.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="dnt">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">9</span>
+                        <h2 class="legal-section-title">Do Not Track Signals</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>Some browsers include a "Do Not Track" (DNT) feature that signals to websites that you do not want to have your online activities tracked. At this time, our website does not currently respond to DNT browser signals, as there is no consistent industry standard for how to interpret and respond to such signals.</p>
+                        <p>However, you can use the opt-out tools described in this Cookie Policy to limit tracking by specific third-party services. We continue to monitor developments in DNT standards and may update our practices accordingly.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="changes">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">10</span>
+                        <h2 class="legal-section-title">Changes to This Cookie Policy</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <p>We may update this Cookie Policy from time to time to reflect changes in our practices or for legal, regulatory, or operational reasons. When we update this policy, we will revise the "Last Updated" date at the top of this page. We encourage you to review this Cookie Policy periodically to stay informed about our use of cookies.</p>
+                        <p>Your continued use of our website after any changes to this Cookie Policy constitutes your acceptance of the updated policy.</p>
+                    </div>
+                </div>
+
+                <div class="legal-section" id="contact">
+                    <div class="legal-section-header">
+                        <span class="legal-section-num">11</span>
+                        <h2 class="legal-section-title">Contact Us</h2>
+                    </div>
+                    <div class="legal-section-body">
+                        <div class="legal-contact-card">
+                            <h3>Cookie Questions?</h3>
+                            <p>If you have any questions about our use of cookies or other tracking technologies, or if you would like to exercise any of your rights relating to cookie data, please get in touch.</p>
+                            <a href="{% url 'contact' %}">Contact Us &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

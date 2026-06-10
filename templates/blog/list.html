@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <h1>Construction &amp; Gravel Blog</h1>
+        <p class="page-hero-tagline">Expert articles on gravel selection, driveway installation, drainage, cost management, and landscaping from our team of specialists.</p>
+        <p class="article-count">{{ total_count }} Expert Article{{ total_count|pluralize }}</p>
+    </div>
+</section>
+
+<section class="blog-section">
+    <div class="container">
+
+        {% if featured %}
+        <!-- Featured Post -->
+        <div class="featured-post">
+            <a href="{{ featured.get_absolute_url }}" class="featured-post-link">
+                <div class="featured-post-image">
+                    {% if featured.featured_image %}
+                    <img src="{{ featured.featured_image.url }}" alt="{{ featured.title }}" loading="lazy">
+                    {% else %}
+                    <div class="image-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    {% endif %}
+                    <span class="featured-badge">Featured</span>
+                </div>
+                <div class="featured-post-content">
+                    {% if featured.category %}
+                    <span class="category-badge">{{ featured.category.name }}</span>
+                    {% endif %}
+                    <h2 class="featured-post-title">{{ featured.title }}</h2>
+                    <p class="featured-post-excerpt">{{ featured.excerpt }}</p>
+                    <div class="post-meta">
+                        <span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            {{ featured.publish_date|date:"M d, Y" }}
+                        </span>
+                        <span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            {{ featured.reading_time }} min read
+                        </span>
+                        <span>{{ featured.author }}</span>
+                    </div>
+                    <div class="post-tags">
+                        {% for tag in featured.tags.all|slice:":3" %}
+                        <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                        {% with extra=featured.tags.count|add:"-3" %}
+                        {% if extra > 0 %}<span class="tag tag--more">+{{ extra }}</span>{% endif %}
+                        {% endwith %}
+                    </div>
+                    <span class="read-more-link">Read Full Article →</span>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Blog Grid -->
+        {% if page_obj %}
+        <div class="blog-grid">
+            {% for post in page_obj %}
+            <article class="blog-card">
+                <a href="{{ post.get_absolute_url }}" class="blog-card-image-link">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" class="blog-card-image">
+                    {% else %}
+                    <div class="image-placeholder image-placeholder--card">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    {% endif %}
+                </a>
+                <div class="blog-card-body">
+                    <div class="blog-card-meta">
+                        {% if post.category %}
+                        <span class="category-badge category-badge--sm">{{ post.category.name }}</span>
+                        {% endif %}
+                        <span class="post-date">{{ post.publish_date|date:"M d, Y" }}</span>
+                    </div>
+                    <h2 class="blog-card-title">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h2>
+                    <p class="blog-card-excerpt">{{ post.excerpt|truncatewords:30 }}</p>
+                    <div class="post-tags">
+                        {% for tag in post.tags.all|slice:":3" %}
+                        <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                        {% with extra=post.tags.count|add:"-3" %}
+                        {% if extra > 0 %}<span class="tag tag--more">+{{ extra }}</span>{% endif %}
+                        {% endwith %}
+                    </div>
+                    <a href="{{ post.get_absolute_url }}" class="read-more-link">Read More →</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <nav class="pagination" aria-label="Blog pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&larr; Previous</a>
+            {% endif %}
+            <span class="page-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next &rarr;</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <p>No blog posts published yet. Check back soon!</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
