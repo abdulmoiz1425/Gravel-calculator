@@ -11,5 +11,3 @@ db.sqlite3
 # Python cache
 __pycache__/
 *.pyc
-__pycache__/
-*.pyc
