@@ -7,6 +7,6 @@ def home(request):
     context = {
         'gravel_types': gravel_types,
         'meta_title': 'Gravel Calculator Pro – Free Gravel Volume, Weight & Cost Calculator',
-        'meta_description': 'Calculate exactly how much gravel you need for driveways, walkways, and landscaping. Free online gravel calculator with volume, weight, and cost estimation.',
+        'meta_description': 'Use our free Gravel Calculator 2026 to estimate gravel tons, cubic yards, cubic feet, and cost for driveways, French drains, pavers, and home projects.',
     }
     return render(request, 'home.html', context)
