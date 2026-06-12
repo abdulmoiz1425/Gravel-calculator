@@ -151,6 +151,97 @@ h3 { font-size: 1.1rem; font-weight: 600; }
 }
 .nav-link:hover { background: rgba(255,255,255,0.13); color: #fff; text-decoration: none; }
 
+/* ── Calculator nav dropdown ── */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+.nav-dropdown-arrow { transition: transform 0.2s; flex-shrink: 0; }
+.nav-dropdown.is-open .nav-dropdown-arrow,
+.nav-dropdown:hover .nav-dropdown-arrow { transform: rotate(180deg); }
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.7rem);
+    left: -0.6rem;
+    min-width: 290px;
+    white-space: nowrap;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 18px 44px rgba(15,36,71,0.22);
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.97);
+    transform-origin: top left;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.is-open .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.nav-dropdown-label {
+    display: block;
+    padding: 0.35rem 0.75rem 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9aafc4;
+}
+
+.nav-dropdown-divider {
+    height: 1px;
+    background: #eef1f5;
+    margin: 0.35rem 0.5rem;
+}
+
+.nav-dropdown-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 9px;
+    color: #28508a;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.nav-dropdown-link:hover {
+    background: linear-gradient(135deg, #fff8ec, #fef3c7);
+    color: #b45309;
+    text-decoration: none;
+    transform: translateX(3px);
+}
+
+.ndl-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: #eef4fb;
+    color: #1a3a6b;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+}
+.nav-dropdown-link:hover .ndl-icon { background: #f59e0b; color: #fff; }
+
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
@@ -3602,6 +3693,33 @@ input[type="number"]:focus, .full-select:focus {
     .main-nav.is-open { display: flex; }
     .nav-link { padding: 0.8rem 1rem; border-radius: 8px; }
     .header-inner { position: relative; }
+
+    /* ── Calculator nav dropdown (mobile) ── */
+    .nav-dropdown-toggle { width: 100%; justify-content: space-between; }
+    .nav-dropdown-menu {
+        position: static;
+        min-width: 0;
+        background: rgba(255,255,255,0.06);
+        box-shadow: none;
+        margin: 0 0 0 0.5rem;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        max-height: 0;
+        padding: 0 0.5rem;
+        overflow: hidden;
+        transition: max-height 0.22s ease;
+    }
+    .nav-dropdown.is-open .nav-dropdown-menu {
+        max-height: 460px;
+        padding: 0.5rem;
+    }
+    .nav-dropdown-label { color: rgba(255,255,255,0.45); }
+    .nav-dropdown-divider { background: rgba(255,255,255,0.1); }
+    .nav-dropdown-link { color: rgba(255,255,255,0.8); transform: none; }
+    .nav-dropdown-link:hover { background: rgba(255,255,255,0.13); color: #fff; transform: none; }
+    .ndl-icon { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.85); }
+    .nav-dropdown-link:hover .ndl-icon { background: #f59e0b; color: #1a3a6b; }
     .input-row { grid-template-columns: 1fr; }
     .featured-post-link { grid-template-columns: 1fr; }
     .featured-post-image { height: 220px; }
