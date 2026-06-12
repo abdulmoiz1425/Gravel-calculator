@@ -40,6 +40,30 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% block extra_css %}{% endblock %}
 
+    <!-- Organization & WebSite Schema (site-wide) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Gravel Calculator Pro",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/",
+      "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/favicon-512x512.png' %}",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61590387796864",
+        "https://medium.com/@gravelcalculator263",
+        "https://www.pinterest.com/gravelcalculator263/"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Gravel Calculator Pro",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/"
+    }
+    </script>
+
     {% block schema %}{% endblock %}
 </head>
 <body>
@@ -113,6 +137,17 @@
                     <span class="brand-text">Gravel<strong>Calculator</strong>Pro</span>
                 </a>
                 <p class="footer-tagline">Free online gravel calculator for construction and landscaping projects.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/profile.php?id=61590387796864" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+                    </a>
+                    <a href="https://medium.com/@gravelcalculator263" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                        <svg width="20" height="20" viewBox="0 0 1043.63 592.71" fill="currentColor"><path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460.03 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36zM911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.18 124.9 147.18 279zM1043.63 296.36c0 138.18-23.17 250.21-51.76 250.21s-51.75-112.03-51.75-250.21 23.17-250.22 51.76-250.22 51.75 112.04 51.75 250.22z"/></svg>
+                    </a>
+                    <a href="https://www.pinterest.com/gravelcalculator263/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.6 7.86 6.27 9.39-.09-.8-.16-2.02.04-2.89.18-.78 1.18-4.97 1.18-4.97s-.3-.6-.3-1.49c0-1.4.81-2.44 1.81-2.44.86 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.15-1.88 3.15-4.59 0-2.4-1.72-4.08-4.18-4.08-2.85 0-4.52 2.13-4.52 4.34 0 .86.33 1.78.74 2.28a.3.3 0 0 1 .07.29c-.08.32-.25 1-.29 1.15-.04.18-.15.22-.34.13-1.28-.6-2.08-2.47-2.08-3.98 0-3.24 2.36-6.22 6.79-6.22 3.57 0 6.34 2.54 6.34 5.94 0 3.54-2.23 6.39-5.33 6.39-1.04 0-2.02-.54-2.35-1.18 0 0-.51 1.97-.64 2.45-.23.89-.85 2-1.27 2.68.96.3 1.97.46 3.02.46 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    </a>
+                </div>
             </div>
             <nav class="footer-nav">
                 <a href="{% url 'about' %}">About</a>

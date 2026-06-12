@@ -23,7 +23,11 @@
   "publisher": {
     "@type": "Organization",
     "name": "Gravel Calculator Pro"
-  }
+  }{% if post.featured_image %},
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}"
+  }{% endif %}
 }
 </script>
 <script type="application/ld+json">
