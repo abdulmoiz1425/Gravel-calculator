@@ -100,3 +100,8 @@ CKEDITOR_CONFIGS = {
 LOGIN_URL = '/admin/login/'
 
 SILENCED_SYSTEM_CHECKS = ['ckeditor.W001']
+
+# Trust the X-Forwarded-Proto header from the reverse proxy/load balancer so
+# request.scheme, request.is_secure(), and request.build_absolute_uri() report
+# "https" correctly (fixes canonical/og:url/sitemap showing http://).
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -1,5 +1,5 @@
 /**
- * Gravel Calculator Pro — Client-Side Calculator
+ * Gravel Calculator Pro: Client-Side Calculator
  * All calculations run in the browser. No data is sent to the server.
  *
  * Conversion pipeline (SRS Section 11):
