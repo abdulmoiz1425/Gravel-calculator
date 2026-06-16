@@ -137,6 +137,8 @@ h3 { font-size: 1.1rem; font-weight: 600; }
     filter: drop-shadow(0 0 6px rgba(245,158,11,0.5));
 }
 .brand-text strong { color: #f59e0b; }
+.brand-logo-img { height: 44px; width: auto; display: block; }
+.brand-logo-img--footer { height: 38px; }
 
 .main-nav { display: flex; align-items: center; gap: 0.2rem; }
 
