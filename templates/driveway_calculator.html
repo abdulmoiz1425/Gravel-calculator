@@ -1,0 +1,964 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "SoftwareApplication"],
+  "name": "Driveway Gravel Calculator",
+  "url": "{{ request.build_absolute_uri }}",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Gravel for a Driveway",
+  "description": "Measure the driveway, choose depth, and convert the result into yards or tons",
+  "step": [
+    {"@type": "HowToStep", "position": 1, "name": "Measure the length", "text": "Measure the driveway length in feet."},
+    {"@type": "HowToStep", "position": 2, "name": "Measure the width", "text": "Measure the driveway width in feet."},
+    {"@type": "HowToStep", "position": 3, "name": "Choose the depth", "text": "Choose the gravel depth in inches."},
+    {"@type": "HowToStep", "position": 4, "name": "Convert depth", "text": "Convert depth from inches to feet."},
+    {"@type": "HowToStep", "position": 5, "name": "Multiply", "text": "Multiply length × width × depth."},
+    {"@type": "HowToStep", "position": 6, "name": "Divide for cubic yards", "text": "Divide by 27 for cubic yards."},
+    {"@type": "HowToStep", "position": 7, "name": "Convert to tons", "text": "Convert cubic yards to tons if needed."},
+    {"@type": "HowToStep", "position": 8, "name": "Add extra material", "text": "Add extra material for compaction and waste."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I calculate gravel for my driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiply the driveway length by the width and depth to get cubic feet. Divide by 27 to get cubic yards. Then convert to tons using the gravel weight from your supplier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much gravel do I need for a driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then add extra for compaction and waste."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much gravel do I need for my driveway calculator results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth, gravel type, and extra material percentage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many tons of gravel do I need for my driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "First calculate cubic yards. Then multiply cubic yards by the gravel weight per cubic yard. The exact tonnage depends on gravel type, moisture, and density."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many cubic yards of gravel do I need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use this formula: length × width × depth ÷ 27. Make sure depth is converted to feet before using the formula."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How deep should gravel be for a driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A light top-up may need 2–3 inches. A standard driveway layer often uses 4–6 inches. A new base or heavy-use driveway may need 6–12 inches or more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is driveway gravel sold by ton or cubic yard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can be sold by either one. Some suppliers price by ton, while others price by cubic yard. Ask your supplier which unit they use before ordering."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I order extra gravel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, a small extra amount is helpful. Extra gravel covers compaction, uneven ground, low spots, and spreading loss."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What gravel is best for a driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Crushed stone, crushed gravel, road base, and 3/4-inch gravel are common driveway choices. They pack better than rounded stones and can handle vehicle traffic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use pea gravel for a driveway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pea gravel can work for decorative areas, but it may shift under tires. It is not always the best choice for sloped or heavy-use driveways."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Driveway Gravel Calculator", "item": "{{ request.build_absolute_uri }}"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator-hero" id="calculator">
+    <div class="container">
+        <div class="calculator-header">
+            <h1 class="calculator-title">Driveway Gravel Calculator</h1>
+            <p class="calculator-subtitle">Estimate cubic yards, tons &amp; cost for your gravel driveway instantly</p>
+        </div>
+
+        <div class="calculator-card">
+            <!-- Shape Tabs -->
+            <div class="shape-tabs" role="tablist">
+                <button class="shape-tab active" data-shape="rectangle" role="tab" aria-selected="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/></svg>
+                    Rectangle
+                </button>
+                <button class="shape-tab" data-shape="circle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+                    Circle
+                </button>
+                <button class="shape-tab" data-shape="triangle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 22 21 2 21"/></svg>
+                    Triangle
+                </button>
+                <button class="shape-tab" data-shape="direct" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 9h6v6H9z"/></svg>
+                    Direct Area
+                </button>
+            </div>
+
+            <div class="calculator-body">
+                <!-- LEFT: Inputs -->
+                <form class="calc-form" id="calcForm" novalidate>
+
+                    <!-- Dimension Inputs -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Dimensions</h3>
+
+                        <!-- Rectangle -->
+                        <div class="shape-inputs" id="inputs-rectangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="length">Length</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="length" name="length" min="0.01" step="any" placeholder="e.g. 40">
+                                        <select id="lengthUnit" name="lengthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-length"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="width">Width</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="width" name="width" min="0.01" step="any" placeholder="e.g. 10">
+                                        <select id="widthUnit" name="widthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-width"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circle -->
+                        <div class="shape-inputs hidden" id="inputs-circle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="circleMode">Measure by</label>
+                                    <select id="circleMode" class="full-select">
+                                        <option value="radius">Radius</option>
+                                        <option value="diameter">Diameter</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="circleValue" id="circleValueLabel">Radius</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="circleValue" name="circleValue" min="0.01" step="any" placeholder="e.g. 5">
+                                        <select id="circleUnit" name="circleUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-circle"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Triangle -->
+                        <div class="shape-inputs hidden" id="inputs-triangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="base">Base</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="base" name="base" min="0.01" step="any" placeholder="e.g. 15">
+                                        <select id="baseUnit" name="baseUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-base"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="triHeight">Height</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="triHeight" name="triHeight" min="0.01" step="any" placeholder="e.g. 10">
+                                        <select id="triHeightUnit" name="triHeightUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-triHeight"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Direct Area -->
+                        <div class="shape-inputs hidden" id="inputs-direct">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="area">Area</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="area" name="area" min="0.01" step="any" placeholder="e.g. 400">
+                                        <select id="areaUnit" name="areaUnit">
+                                            <option value="ft2" selected>ft²</option>
+                                            <option value="yd2">yd²</option>
+                                            <option value="m2">m²</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-area"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depth -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Depth</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="depth">Depth</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="depth" name="depth" min="0.01" step="any" placeholder="e.g. 4">
+                                    <select id="depthUnit" name="depthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-depth"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gravel Type -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Gravel Type</h3>
+                        <div class="form-group">
+                            <label for="gravelType">Select Gravel Type</label>
+                            <select id="gravelType" class="full-select">
+                                {% for g in gravel_types %}
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                {% endfor %}
+                                <option value="custom">Custom Density</option>
+                            </select>
+                            <span class="field-error" id="err-gravelType"></span>
+                        </div>
+                        <div class="form-group hidden" id="customDensityGroup">
+                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.75">
+                            <span class="field-error" id="err-customDensity"></span>
+                        </div>
+                    </div>
+
+                    <!-- Price (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Price <span class="optional-tag">Optional</span></h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" placeholder="e.g. 45.00">
+                                <span class="field-error" id="err-price"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceUnit">Per Unit</label>
+                                <select id="priceUnit" class="full-select">
+                                    <option value="ton">$ / ton</option>
+                                    <option value="m3">$ / m³</option>
+                                    <option value="yd3">$ / yd³</option>
+                                    <option value="ft3">$ / ft³</option>
+                                    <option value="kg">$ / kg</option>
+                                    <option value="lb">$ / lb</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="calc-buttons">
+                        <button type="button" id="calculateBtn" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" id="resetBtn" class="btn btn--outline">Reset</button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: Results -->
+                <div class="calc-results" id="calcResults">
+                    <div class="results-placeholder" id="resultsPlaceholder">
+                        <div class="calc-guide">
+                            <div class="calc-guide-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5fc4" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                How to use this calculator
+                            </div>
+                            <ol class="calc-guide-steps">
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">1</span>
+                                    <div class="cgs-body">
+                                        <strong>Select Gravel Type</strong>
+                                        <p>Choose the gravel material for your driveway. Each type has a different density, which affects the ton estimate.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">2</span>
+                                    <div class="cgs-body">
+                                        <strong>Enter Dimensions</strong>
+                                        <p>Add the Length, Width, and Depth of your driveway. Switch between shapes using the tabs above.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">3</span>
+                                    <div class="cgs-body">
+                                        <strong>Add a Price <em style="font-weight:400;color:#94a3b8;">(Optional)</em></strong>
+                                        <p>Enter a price per ton or per yard to see a total cost estimate alongside volume and weight.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">4</span>
+                                    <div class="cgs-body">
+                                        <strong>Click Calculate</strong>
+                                        <p>Your results appear here — volume in cubic yards, estimated weight in tons, and total cost.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="results-content hidden" id="resultsContent">
+                        <div class="results-title">Your Results</div>
+                        <div class="result-cards">
+                            <div class="result-card result-card--area">
+                                <div class="result-label">Area</div>
+                                <div class="result-value" id="resArea">—</div>
+                            </div>
+                            <div class="result-card result-card--volume">
+                                <div class="result-label">Volume</div>
+                                <div class="result-value" id="resVolM3">—</div>
+                                <div class="result-sub" id="resVolYd3">—</div>
+                                <div class="result-sub" id="resVolFt3">—</div>
+                            </div>
+                            <div class="result-card result-card--weight">
+                                <div class="result-label">Weight</div>
+                                <div class="result-value" id="resWeightTons">—</div>
+                                <div class="result-sub" id="resWeightKg">—</div>
+                                <div class="result-sub" id="resWeightLb">—</div>
+                            </div>
+                            <div class="result-card result-card--cost hidden" id="costCard">
+                                <div class="result-label">Estimated Cost</div>
+                                <div class="result-value" id="resCost">—</div>
+                            </div>
+                        </div>
+                        <p class="results-note">Results include a 10% waste buffer, always recommended for real projects.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTRO SECTION ===== -->
+<section class="intro-section">
+    <div class="container">
+        <h2 class="intro-headline">Driveway Gravel Calculator for Tons, Yards, and Cost</h2>
+        <p class="intro-text">A gravel driveway looks simple until you need to order material. One wrong number can leave you short, or you may pay for gravel you do not need. A driveway gravel calculator helps you estimate the amount of gravel needed using length, width, depth, gravel type, and price, and shows the result in cubic yards, tons, and estimated cost before you order material.</p>
+
+        <div class="order-example-box" style="margin-top:1.75rem;">
+            <strong>Quick Answer:</strong> To calculate gravel for driveway projects, multiply the driveway length by the width and depth to get cubic feet. Then divide by 27 to convert cubic feet into cubic yards. To estimate tons, multiply cubic yards by the gravel weight per cubic yard. Add extra material for compaction, waste, and uneven areas.
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">Most driveways need a clear material estimate because gravel is often sold by the ton or cubic yard. You enter your driveway size, select the depth, then add the gravel price if you want a cost estimate. This is helpful for homeowners, DIY users, landscapers, and contractors, and it also helps when comparing supplier quotes. You can use the same calculator for patios, paths, garden areas, and other gravel projects.</p>
+    </div>
+</section>
+
+<!-- ===== HIGHLIGHT STRIP ===== -->
+<section class="highlight-strip">
+    <div class="container">
+        <ul class="highlight-list">
+            <li><span class="highlight-icon">✓</span> Total Square Feet</li>
+            <li><span class="highlight-icon">✓</span> Cubic Feet of Gravel</li>
+            <li><span class="highlight-icon">✓</span> Cubic Yards of Gravel</li>
+            <li><span class="highlight-icon">✓</span> Estimated Tons</li>
+            <li><span class="highlight-icon">✓</span> Estimated Cost</li>
+            <li><span class="highlight-icon">✓</span> Extra Material Allowance</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===== WHAT THE CALCULATOR MEASURES ===== -->
+<section class="gravel-types-home-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">What the Calculator Measures</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The calculator measures the gravel volume needed to cover your driveway using three main measurements</p>
+        </div>
+
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="7 8 3 12 7 16"/><polyline points="17 8 21 12 17 16"/></svg>
+                </div>
+                <h3>Length</h3>
+                <span class="gth-tag">Measurement</span>
+                <p>One side of the driveway area, measured in feet for the clearest results when calculating square footage.</p>
+            </div>
+
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="8 7 12 3 16 7"/><polyline points="8 17 12 21 16 17"/></svg>
+                </div>
+                <h3>Width</h3>
+                <span class="gth-tag">Measurement</span>
+                <p>The other side of the driveway area. Length and width together give the total surface area.</p>
+            </div>
+
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                </div>
+                <h3>Depth</h3>
+                <span class="gth-tag">Measurement</span>
+                <p>How thick the gravel layer will be. A thin top-up layer needs less gravel; a new driveway base needs more.</p>
+            </div>
+        </div>
+
+        <p style="text-align:center; color:#64748b; margin-top:2.5rem; max-width:700px; margin-left:auto; margin-right:auto;">Some calculators also include density. Density matters because different gravel types weigh different amounts, which is why selecting the right gravel type above changes your tonnage results.</p>
+    </div>
+</section>
+
+<!-- ===== INPUTS NEEDED ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Inputs You Need Before Calculating</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Gather these numbers before using the calculator above</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-method">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Numbers to Gather
+                </h3>
+                <ol class="order-steps-list">
+                    <li><span class="osl-num">1</span><span>Driveway length</span></li>
+                    <li><span class="osl-num">2</span><span>Driveway width</span></li>
+                    <li><span class="osl-num">3</span><span>Gravel depth</span></li>
+                    <li><span class="osl-num">4</span><span>Gravel type</span></li>
+                    <li><span class="osl-num">5</span><span>Price per ton or cubic yard</span></li>
+                    <li><span class="osl-num">6</span><span>Extra percentage for waste or compaction</span></li>
+                </ol>
+                <div class="order-example-box">
+                    <strong>Tip:</strong> For a straight driveway, this is simple. For curved or wide driveways, split the area into smaller sections, calculate each part, then add the totals together.
+                </div>
+            </div>
+
+            <div class="order-options">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    Why Depth Changes the Final Amount
+                </h3>
+                <p style="color:#64748b; line-height:1.8; margin-bottom:1rem;">Depth can change the total amount by a lot. A 2-inch gravel layer uses half as much material as a 4-inch layer. A 6-inch layer uses more than a light surface refresh.</p>
+                <p style="color:#64748b; line-height:1.8;">Use a shallow depth for topping up existing gravel. Use a deeper layer for new driveways, soft ground, or areas that carry heavier vehicles.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOW TO CALCULATE (FORMULA) ===== -->
+<section class="formula-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How to Calculate Gravel for a Driveway</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The basic formula is Length × Width × Depth = Volume</p>
+        </div>
+
+        <div class="formula-layout">
+            <div class="formula-steps-col">
+                <p class="formula-intro">You calculate driveway gravel by measuring the driveway, choosing depth, and converting the result into yards or tons. Make sure all measurements use the same unit before calculating. If your depth is in inches, convert it to feet first.</p>
+
+                <div class="formula-cards">
+                    <div class="formula-card">
+                        <div class="formula-card-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        </div>
+                        <div>
+                            <div class="formula-card-label">Step 1: Area</div>
+                            <div class="formula-card-eq">Length × Width = Square Feet</div>
+                        </div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                        </div>
+                        <div>
+                            <div class="formula-card-label">Step 2: Cubic Feet</div>
+                            <div class="formula-card-eq">Sq Ft × Depth in Feet = Cubic Feet</div>
+                        </div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        </div>
+                        <div>
+                            <div class="formula-card-label">Step 3: Cubic Yards</div>
+                            <div class="formula-card-eq">Cubic Feet ÷ 27 = Cubic Yards</div>
+                        </div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div>
+                            <div class="formula-card-label">Step 4: Tons</div>
+                            <div class="formula-card-eq">Cubic Yards × Weight Factor = Tons</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formula-example-col">
+                <div class="formula-example-card">
+                    <div class="formula-example-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Worked Example
+                    </div>
+                    <div class="formula-example-body">
+                        <p class="formula-example-scenario">A driveway is <strong>40 ft long</strong> and <strong>10 ft wide</strong>. You want <strong>4 inches</strong> of gravel.</p>
+                        <div class="formula-example-steps">
+                            <div class="formula-example-step">
+                                <span class="fes-num">1</span>
+                                <span class="fes-text">40 × 10 = <strong>400 sq ft</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">2</span>
+                                <span class="fes-text">4 inches = <strong>0.333 ft</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">3</span>
+                                <span class="fes-text">400 × 0.333 = <strong>133.2 cubic feet</strong></span>
+                            </div>
+                            <div class="formula-example-step fes-result">
+                                <span class="fes-num">4</span>
+                                <span class="fes-text">133.2 ÷ 27 = <strong>about 4.93 cubic yards</strong></span>
+                            </div>
+                        </div>
+                        <p class="formula-example-note">Add extra material for compaction, waste, and uneven areas before ordering.</p>
+                    </div>
+                </div>
+
+                <div class="formula-table-card">
+                    <div class="formula-table-header">Depth Conversion Reference</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Depth (inches)</th>
+                                <th>Depth (feet)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2 inches</td><td>0.167 feet</td></tr>
+                            <tr><td>4 inches</td><td>0.333 feet</td></tr>
+                            <tr><td>6 inches</td><td>0.5 feet</td></tr>
+                            <tr><td>12 inches</td><td>1 foot</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="formula-table-note">Always convert inches to feet before multiplying length × width × depth.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DEPTH GUIDE ===== -->
+<section class="depth-guide-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Driveway Gravel Depth Guide</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">These are planning ranges, not fixed rules: soil, drainage, slope, and vehicle weight can change the depth you need</p>
+        </div>
+
+        <div class="formula-table-card" style="margin-bottom:3rem;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Driveway Use</th>
+                        <th>Suggested Gravel Depth</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Light top-up</td><td>2–3 inches</td><td>Refreshing an existing gravel surface</td></tr>
+                    <tr><td>Standard gravel layer</td><td>4–6 inches</td><td>Normal residential driveway use</td></tr>
+                    <tr><td>New driveway base</td><td>6–12 inches</td><td>New builds or weak ground</td></tr>
+                    <tr><td>Heavy traffic area</td><td>8–12+ inches</td><td>Trucks, trailers, and frequent use</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="depth-grid">
+            <div class="depth-card">
+                <div class="depth-card-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M3 12h18"/><path d="M3 12l4-4M3 12l4 4"/></svg>
+                </div>
+                <div class="depth-card-body">
+                    <h3>Resurfacing an Existing Driveway</h3>
+                    <div class="depth-range">2 – 3 inches</div>
+                    <p>If the base is still solid, a thin layer can refresh the surface and fill low spots. Do not add gravel over deep mud, poor drainage, or weak base material without fixing the cause first.</p>
+                </div>
+            </div>
+
+            <div class="depth-card">
+                <div class="depth-card-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+                </div>
+                <div class="depth-card-body">
+                    <h3>New Gravel Driveway Base</h3>
+                    <div class="depth-range">6 – 12 inches</div>
+                    <p>New driveways usually need a compacted base layer plus a surface layer. The base helps carry weight and reduces rutting. A gravel base calculator can help estimate this layer.</p>
+                </div>
+            </div>
+
+            <div class="depth-card">
+                <div class="depth-card-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="depth-card-body">
+                    <h3>Heavy Vehicle Driveways</h3>
+                    <div class="depth-range">8 – 12+ inches</div>
+                    <p>Trucks, work vans, trailers, or RVs need more support. You may need deeper gravel, stronger base material, and proper compaction. Ask your supplier about the best size and depth for your soil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COVERAGE & COST ===== -->
+<section class="coverage-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Gravel Driveway Coverage &amp; Cost</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Coverage shows how far your gravel spreads; cost shows what it will run you</p>
+        </div>
+
+        <div class="coverage-layout">
+            <div class="coverage-info">
+                <p>A gravel driveway coverage calculator helps you understand how far your gravel will spread at a chosen depth. The same amount of gravel covers more area at 2 inches than it does at 6 inches, since a deeper layer uses more material in each section.</p>
+                <p style="margin-top:1rem;">Gravel prices vary across the USA, so the safest way to estimate cost is to enter your local price into the calculator above rather than relying on a fixed national average.</p>
+                <div class="coverage-tip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>Delivery fees, minimum order amounts, and remote locations can also change your final cost. Confirm these details with your supplier.</span>
+                </div>
+            </div>
+
+            <div class="coverage-table-wrap">
+                <div class="coverage-table-card">
+                    <div class="coverage-table-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Cost Formulas
+                    </div>
+                    <div class="coverage-rows">
+                        <div class="coverage-row" style="flex-direction:column; align-items:flex-start; gap:0.3rem;">
+                            <div class="coverage-depth">Cost Per Ton</div>
+                            <div class="coverage-sqft" style="font-weight:600;">Total tons × price per ton = material cost</div>
+                        </div>
+                        <div class="coverage-row" style="flex-direction:column; align-items:flex-start; gap:0.3rem;">
+                            <div class="coverage-depth">Cost Per Cubic Yard</div>
+                            <div class="coverage-sqft" style="font-weight:600;">Cubic yards × price per cubic yard = material cost</div>
+                        </div>
+                    </div>
+                    <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">This does not include labor, grading, base prep, drainage work, or equipment rental. Add extra gravel for compaction, spreading loss, uneven ground, low spots, and future touch-ups.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== GRAVEL TYPES FOR DRIVEWAYS ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Gravel Types for Driveways</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The best gravel depends on the layer, traffic, and drainage needs</p>
+        </div>
+
+        <div class="formula-table-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Gravel Type</th>
+                        <th>Best Use</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Crushed stone</td><td>Base and surface</td><td>Strong and compactable</td></tr>
+                    <tr><td>Crushed gravel</td><td>General driveway use</td><td>Common for residential driveways</td></tr>
+                    <tr><td>Road base</td><td>Lower base layer</td><td>Packs well under the surface</td></tr>
+                    <tr><td>3/4-inch gravel</td><td>Surface or base</td><td>Common driveway size</td></tr>
+                    <tr><td>Pea gravel</td><td>Decorative areas</td><td>Can shift under tires</td></tr>
+                </tbody>
+            </table>
+            <p class="formula-table-note">Crushed gravel and crushed stone are often better for driveways because they lock together. Pea gravel can look clean, but it may not stay firm on a sloped or high-traffic driveway, so use it carefully if vehicles will drive over it often.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COMMON MISTAKES ===== -->
+<section class="tips-section">
+    <div class="container">
+        <h2 class="section-title">Common Mistakes When Calculating Driveway Gravel</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Most gravel estimate mistakes come from wrong depth, weak base planning, or no extra material</p>
+        <div class="tips-grid">
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                    Using the Wrong Depth
+                </h3>
+                <ul>
+                    <li>Depth is easy to underestimate.</li>
+                    <li>A 2-inch layer may work for a light refresh, but it is not enough for a new driveway base.</li>
+                    <li>If the driveway has soft soil or deep ruts, more planning is needed.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Forgetting Compaction
+                </h3>
+                <ul>
+                    <li>Gravel can settle after spreading and compacting.</li>
+                    <li>If you calculate the exact amount with no extra allowance, you may end up short.</li>
+                    <li>This is more common with base layers and crushed materials.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Not Ordering Extra Gravel
+                </h3>
+                <ul>
+                    <li>Uneven ground, spreading loss, and low spots can use more gravel than expected.</li>
+                    <li>Ordering a small extra allowance is often better than paying for a second delivery.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                    Ignoring Drainage
+                </h3>
+                <ul>
+                    <li>If water sits on the driveway, gravel may wash out or sink.</li>
+                    <li>A good driveway should shed water away from the surface.</li>
+                    <li>Slope, base material, and drainage paths matter as much as gravel depth.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+    <div class="container">
+        <div class="mid-cta-card">
+            <h2>Ready to Calculate Your Driveway Gravel?</h2>
+            <p>Use the free calculator above to estimate cubic yards, tons, and cost, then confirm final weight, price, and delivery details with your local supplier.</p>
+            <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Common questions about driveway gravel calculations, depth, and cost</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do I calculate gravel for my driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Multiply the driveway length by the width and depth to get cubic feet. Divide by 27 to get cubic yards. Then convert to tons using the gravel weight from your supplier.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much gravel do I need for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then add extra for compaction and waste.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much gravel do I need for my driveway calculator results?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth, gravel type, and extra material percentage, just like the calculator above.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many tons of gravel do I need for my driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>First calculate cubic yards. Then multiply cubic yards by the gravel weight per cubic yard. The exact tonnage depends on gravel type, moisture, and density.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many cubic yards of gravel do I need?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Use this formula: length × width × depth ÷ 27. Make sure depth is converted to feet before using the formula.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How deep should gravel be for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>A light top-up may need 2–3 inches. A standard driveway layer often uses 4–6 inches. A new base or heavy-use driveway may need 6–12 inches or more.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Is driveway gravel sold by ton or cubic yard?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>It can be sold by either one. Some suppliers price by ton, while others price by cubic yard. Ask your supplier which unit they use before ordering.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Should I order extra gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, a small extra amount is helpful. Extra gravel covers compaction, uneven ground, low spots, and spreading loss.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    What gravel is best for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Crushed stone, crushed gravel, road base, and 3/4-inch gravel are common driveway choices. They pack better than rounded stones and can handle vehicle traffic.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Can I use pea gravel for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Pea gravel can work for decorative areas, but it may shift under tires. It is not always the best choice for sloped or heavy-use driveways.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA / CONCLUSION ===== -->
+<section class="final-cta-section">
+    <div class="container">
+        <h2>Start Your Driveway Gravel Project Today</h2>
+        <p>A driveway gravel estimate is easier when you know the driveway size, gravel depth, and material type. Measure the area, choose the right depth, calculate cubic yards, then convert the result into tons if your supplier sells by weight.</p>
+        <div class="cta-buttons">
+            <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore the Main Calculator</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calculator.js' %}"></script>
+{% endblock %}

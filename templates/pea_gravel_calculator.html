@@ -1,0 +1,863 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pea Gravel Calculator – Tons, Yards, Bags &amp; Cost | Gravel Calculator Pro{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "SoftwareApplication"],
+  "name": "Pea Gravel Calculator",
+  "url": "{{ request.scheme }}://{{ request.get_host }}/pea-gravel-calculator/",
+  "description": "Free pea gravel calculator to estimate cubic feet, cubic yards, tons, bags, and cost for patios, walkways, playgrounds, and driveways.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Pea Gravel Needed",
+  "description": "Follow these steps to estimate how much pea gravel you need for your project.",
+  "step": [
+    {"@type":"HowToStep","position":1,"name":"Measure length","text":"Measure the length of your project area in feet."},
+    {"@type":"HowToStep","position":2,"name":"Measure width","text":"Measure the width of your project area in feet."},
+    {"@type":"HowToStep","position":3,"name":"Enter depth","text":"Enter the desired pea gravel depth in inches. Typical depths: 1–2 in for landscape cover, 2–3 in for patios and paths, 4–6 in for driveways and playgrounds."},
+    {"@type":"HowToStep","position":4,"name":"Calculate cubic feet","text":"Multiply length × width × (depth ÷ 12) to get cubic feet."},
+    {"@type":"HowToStep","position":5,"name":"Convert to cubic yards","text":"Divide cubic feet by 27 to get cubic yards."},
+    {"@type":"HowToStep","position":6,"name":"Estimate tons and bags","text":"Multiply cubic yards by 1.3 for tons. Divide cubic feet by bag size (usually 0.5 cu ft) for the number of bags needed."},
+    {"@type":"HowToStep","position":7,"name":"Add extra material","text":"Add 5–10% extra to account for settling, spreading, and uneven areas."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How much pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Measure length, width, and depth. Multiply them to get cubic feet, then divide by 27 for cubic yards. Use the calculator to convert yards into tons, bags, and cost."}},
+    {"@type":"Question","name":"How do I calculate pea gravel needed?","acceptedAnswer":{"@type":"Answer","text":"Use this formula: length × width × depth. Keep length and width in feet. Convert depth from inches to feet before multiplying."}},
+    {"@type":"Question","name":"How many tons of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply cubic yards by the tons-per-yard estimate. Many pea gravel estimates use about 1.2 to 1.4 tons per cubic yard, but supplier density can vary."}},
+    {"@type":"Question","name":"How many yards of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply length by width by depth (in feet) to get cubic feet. Then divide cubic feet by 27 to get cubic yards."}},
+    {"@type":"Question","name":"How many bags of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Divide total cubic feet by the bag volume. If one bag holds 0.5 cubic feet and your project needs 20 cubic feet, you need about 40 bags."}},
+    {"@type":"Question","name":"How much does pea gravel cover?","acceptedAnswer":{"@type":"Answer","text":"One cubic yard covers about 162 square feet at 2 inches deep. It covers about 108 square feet at 3 inches deep."}},
+    {"@type":"Question","name":"How deep should pea gravel be?","acceptedAnswer":{"@type":"Answer","text":"Use 1–2 inches for landscape beds, 2–3 inches for patios and paths, and 4–6 inches for driveways and playgrounds."}},
+    {"@type":"Question","name":"Can I use pea gravel for a driveway?","acceptedAnswer":{"@type":"Answer","text":"Yes, but it needs a stable base and good edging. Pea gravel can shift under tires, so it may need more maintenance than crushed stone."}},
+    {"@type":"Question","name":"Is pea gravel cheaper by the bag or bulk?","acceptedAnswer":{"@type":"Answer","text":"Bulk pea gravel is often cheaper for larger jobs. Bags are better for small areas, repairs, and projects where delivery is not practical."}},
+    {"@type":"Question","name":"Should I order extra pea gravel?","acceptedAnswer":{"@type":"Answer","text":"Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type":"ListItem","position":2,"name":"Pea Gravel Calculator","item":"{{ request.scheme }}://{{ request.get_host }}/pea-gravel-calculator/"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator-hero" id="calculator">
+    <div class="container">
+        <div class="calculator-header">
+            <h1 class="calculator-title">Pea Gravel Calculator</h1>
+            <p class="calculator-subtitle">Estimate cubic feet, cubic yards, tons, bags &amp; cost — free and instant</p>
+        </div>
+
+        <div class="calculator-card">
+            <div class="calculator-body">
+                <!-- LEFT: Inputs -->
+                <form class="calc-form" id="pgCalcForm" novalidate>
+
+                    <!-- Dimensions -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Dimensions</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="pgLength">Length</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="pgLength" name="pgLength" min="0.01" step="any" placeholder="e.g. 12">
+                                    <select id="pgLengthUnit" name="pgLengthUnit">
+                                        <option value="ft" selected>ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="in">in</option>
+                                        <option value="m">m</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-pgLength"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="pgWidth">Width</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="pgWidth" name="pgWidth" min="0.01" step="any" placeholder="e.g. 10">
+                                    <select id="pgWidthUnit" name="pgWidthUnit">
+                                        <option value="ft" selected>ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="in">in</option>
+                                        <option value="m">m</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-pgWidth"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depth -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Depth</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="pgDepth">Depth</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="pgDepth" name="pgDepth" min="0.01" step="any" placeholder="e.g. 3">
+                                    <select id="pgDepthUnit" name="pgDepthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-pgDepth"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="pgBagSize">Bag Size (cu ft)</label>
+                                <input type="number" id="pgBagSize" name="pgBagSize" min="0.01" step="0.01" value="0.5" placeholder="0.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Price <span class="optional-tag">Optional</span></h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="pgPrice">Price</label>
+                                <input type="number" id="pgPrice" name="pgPrice" min="0" step="0.01" placeholder="e.g. 45.00">
+                                <span class="field-error" id="err-pgPrice"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="pgPriceUnit">Per Unit</label>
+                                <select id="pgPriceUnit" class="full-select">
+                                    <option value="ton">$ / ton</option>
+                                    <option value="yd3">$ / yd³</option>
+                                    <option value="bag">$ / bag</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="calc-buttons">
+                        <button type="button" id="pgCalculateBtn" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" id="pgResetBtn" class="btn btn--outline">Reset</button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: Results -->
+                <div class="calc-results" id="pgCalcResults">
+                    <div class="results-placeholder" id="pgResultsPlaceholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        <p>Enter your measurements<br>and click <strong>Calculate</strong></p>
+                    </div>
+                    <div class="results-content hidden" id="pgResultsContent">
+                        <div class="results-title">Your Results</div>
+                        <div class="result-cards">
+                            <div class="result-card result-card--area">
+                                <div class="result-label">Cubic Feet</div>
+                                <div class="result-value" id="pgResCubicFt">—</div>
+                            </div>
+                            <div class="result-card result-card--volume">
+                                <div class="result-label">Cubic Yards</div>
+                                <div class="result-value" id="pgResCubicYd">—</div>
+                            </div>
+                            <div class="result-card result-card--weight">
+                                <div class="result-label">Tons</div>
+                                <div class="result-value" id="pgResTons">—</div>
+                                <div class="result-sub" id="pgResPounds">—</div>
+                            </div>
+                            <div class="result-card result-card--cost">
+                                <div class="result-label">Bags Needed</div>
+                                <div class="result-value" id="pgResBags">—</div>
+                            </div>
+                            <div class="result-card hidden" id="pgCostCard">
+                                <div class="result-label">Estimated Cost</div>
+                                <div class="result-value" id="pgResCost">—</div>
+                            </div>
+                        </div>
+                        <p class="results-note">Results include a 10% extra allowance for settling and spreading. Confirm details with your local supplier before ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTRO SECTION ===== -->
+<section class="intro-section">
+    <div class="container">
+        <h2 class="intro-headline">Free Pea Gravel Calculator</h2>
+        <p class="intro-text">Most people order too much or too little pea gravel because they guess the depth. A small mistake in inches can change the total by several bags or even a full cubic yard. Use this Pea Gravel Calculator to estimate how much material you need for a patio, walkway, driveway, playground, dog run, or landscape bed.</p>
+
+        <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
+            <strong>Quick Answer:</strong> A 12 ft × 10 ft patio at 3 inches deep needs about <strong>1.11 cubic yards, 1.44 tons, and around 60 half-cubic-foot bags</strong> of pea gravel before extra allowance.
+        </div>
+
+        <p class="intro-text">You can use this tool as a pea gravel amount calculator, coverage calculator, cost calculator, weight calculator, tons tool, yards tool, or bags tool. Enter the length, width, and depth to calculate pea gravel in cubic feet, cubic yards, tons, bags, and estimated cost.</p>
+    </div>
+</section>
+
+<!-- ===== HIGHLIGHT STRIP ===== -->
+<section class="highlight-strip">
+    <div class="container">
+        <ul class="highlight-list">
+            <li><span class="highlight-icon">✓</span> Cubic Feet</li>
+            <li><span class="highlight-icon">✓</span> Cubic Yards</li>
+            <li><span class="highlight-icon">✓</span> Estimated Tons &amp; Pounds</li>
+            <li><span class="highlight-icon">✓</span> Number of Bags</li>
+            <li><span class="highlight-icon">✓</span> Estimated Cost</li>
+            <li><span class="highlight-icon">✓</span> 10% Extra Allowance</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How the Pea Gravel Calculator Works</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The calculator multiplies length, width, and depth to find volume, then converts that volume into cubic yards, tons, bags, and cost</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-method">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Calculation Steps
+                </h3>
+                <ol class="order-steps">
+                    <li><strong>Measure length</strong> in feet (or select your unit above).</li>
+                    <li><strong>Measure width</strong> in feet.</li>
+                    <li><strong>Enter depth</strong> in inches — the calculator converts it to feet automatically.</li>
+                    <li><strong>Multiply</strong> length × width × depth to get cubic feet.</li>
+                    <li><strong>Divide by 27</strong> to convert cubic feet to cubic yards.</li>
+                    <li><strong>Multiply cubic yards by 1.3</strong> to estimate tons (pea gravel density varies 1.2–1.4 tons/yd³).</li>
+                    <li><strong>Divide cubic feet by bag size</strong> (usually 0.5 cu ft) to estimate bag count.</li>
+                </ol>
+                <p>This gives you a practical estimate before you order. For the best accuracy, confirm material density and pricing with your local supplier.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DEPTH GUIDE ===== -->
+<section class="depth-guide-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Recommended Pea Gravel Depth by Project Type</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The right depth depends on how the area will be used — decorative areas need less, driveways and playgrounds need more</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Project</th><th>Recommended Depth</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Landscape bed</td><td>1–2 inches</td><td>Best for light decorative cover</td></tr>
+                <tr><td>Garden path</td><td>2–3 inches</td><td>Use edging to hold gravel in place</td></tr>
+                <tr><td>Patio area</td><td>2–3 inches</td><td>Works best with a firm compacted base</td></tr>
+                <tr><td>Dog run</td><td>3–4 inches</td><td>Helps with drainage</td></tr>
+                <tr><td>Playground surface</td><td>4–6 inches</td><td>Check local safety requirements</td></tr>
+                <tr><td>Driveway</td><td>4–6 inches</td><td>Needs a stable base layer underneath</td></tr>
+            </tbody>
+        </table>
+
+        <div class="depth-cards">
+            <div class="depth-card">
+                <div class="depth-card-icon">🌿</div>
+                <div class="depth-card-body">
+                    <h3>Patio &amp; Walkway</h3>
+                    <div class="depth-badge">2–3 inches</div>
+                    <p>Use landscape fabric, edging, and a compacted base. Pea gravel can shift if the border is weak. Add edging along both sides of walkways to prevent spreading into grass or soil.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🚗</div>
+                <div class="depth-card-body">
+                    <h3>Pea Gravel Driveway</h3>
+                    <div class="depth-badge">4–6 inches</div>
+                    <p>A pea gravel driveway needs a stable compacted base underneath the top layer. Pea gravel can shift under tires and may need more maintenance than crushed stone.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🛝</div>
+                <div class="depth-card-body">
+                    <h3>Playground</h3>
+                    <div class="depth-badge">4–6+ inches</div>
+                    <p>Check local rules before using pea gravel under play equipment. Safety needs can change by fall height, border design, and site conditions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COVERAGE CHART ===== -->
+<section class="coverage-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Pea Gravel Coverage Chart</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Coverage depends on depth — one cubic yard covers more area at 1 inch than at 4 inches</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Depth</th><th>Coverage per 1 Cubic Yard</th><th>Coverage per 1 Cubic Foot</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1 inch</td><td>324 sq ft</td><td>12 sq ft</td></tr>
+                <tr><td>2 inches</td><td>162 sq ft</td><td>6 sq ft</td></tr>
+                <tr><td>3 inches</td><td>108 sq ft</td><td>4 sq ft</td></tr>
+                <tr><td>4 inches</td><td>81 sq ft</td><td>3 sq ft</td></tr>
+                <tr><td>6 inches</td><td>54 sq ft</td><td>2 sq ft</td></tr>
+            </tbody>
+        </table>
+
+        <p class="intro-text" style="margin-top:1.75rem;">To calculate coverage for any area, multiply the area by the depth in feet. For example: 100 sq ft × 0.25 ft (3 in) = 25 cubic feet. Depth changes the order amount fast — a 200 sq ft area at 4 inches needs double the gravel of the same area at 2 inches.</p>
+    </div>
+</section>
+
+<!-- ===== FORMULA SECTION ===== -->
+<section class="formula-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Pea Gravel Formula</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Use these formulas to calculate pea gravel by hand for patios, paths, driveways, playgrounds, and landscape beds</p>
+        </div>
+
+        <div class="formula-cards">
+            <div class="formula-card">
+                <div class="formula-card-label">Area</div>
+                <div class="formula-card-eq">Length × Width</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Volume (cu ft)</div>
+                <div class="formula-card-eq">Area × Depth (ft)</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Cubic Yards</div>
+                <div class="formula-card-eq">Cubic Feet ÷ 27</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Tons</div>
+                <div class="formula-card-eq">Cubic Yards × 1.3</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Bags</div>
+                <div class="formula-card-eq">Cubic Feet ÷ Bag Size</div>
+            </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="formula-example-card" style="margin-top:2.5rem;">
+            <div class="formula-example-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Worked Example
+            </div>
+            <div class="formula-example-body">
+                <p class="formula-example-scenario">A patio is <strong>12 ft long</strong> and <strong>10 ft wide</strong>. You want <strong>3 inches</strong> of pea gravel.</p>
+                <div class="formula-example-steps">
+                    <div class="formula-example-step">
+                        <span class="fes-num">1</span>
+                        <span class="fes-text">12 × 10 = <strong>120 sq ft</strong></span>
+                    </div>
+                    <div class="formula-example-step">
+                        <span class="fes-num">2</span>
+                        <span class="fes-text">3 inches = <strong>0.25 ft</strong></span>
+                    </div>
+                    <div class="formula-example-step">
+                        <span class="fes-num">3</span>
+                        <span class="fes-text">120 × 0.25 = <strong>30 cubic feet</strong></span>
+                    </div>
+                    <div class="formula-example-step">
+                        <span class="fes-num">4</span>
+                        <span class="fes-text">30 ÷ 27 = <strong>1.11 cubic yards</strong></span>
+                    </div>
+                    <div class="formula-example-step">
+                        <span class="fes-num">5</span>
+                        <span class="fes-text">1.11 × 1.3 = <strong>1.44 tons</strong></span>
+                    </div>
+                    <div class="formula-example-step fes-result">
+                        <span class="fes-num">6</span>
+                        <span class="fes-text">30 ÷ 0.5 = <strong>60 bags</strong> (at 0.5 cu ft per bag)</span>
+                    </div>
+                </div>
+                <p class="formula-example-note">Add 5–10% extra for settling, spreading, and uneven areas before ordering.</p>
+            </div>
+        </div>
+
+        <!-- Depth Conversion Table -->
+        <h3 style="margin-top:2.5rem;margin-bottom:1rem;color:#1a3a6b;">Depth Conversion: Inches to Feet</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Depth (Inches)</th><th>Depth (Feet)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1 inch</td><td>0.083 ft</td></tr>
+                <tr><td>2 inches</td><td>0.167 ft</td></tr>
+                <tr><td>3 inches</td><td>0.25 ft</td></tr>
+                <tr><td>4 inches</td><td>0.333 ft</td></tr>
+                <tr><td>6 inches</td><td>0.5 ft</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== BAG CALCULATOR ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Pea Gravel Bag Calculator</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Estimates how many bags you need for small projects — borders, planters, short paths, and repairs</p>
+        </div>
+
+        <p class="intro-text">Most bagged pea gravel products list volume in cubic feet. Many common bags hold about 0.5 cubic feet, though the exact size can vary. Use the volume printed on the bag — it is more accurate than weight alone for coverage estimates.</p>
+
+        <table class="data-table" style="margin-top:1.75rem;">
+            <thead>
+                <tr><th>Option</th><th>Best For</th><th>Main Benefit</th><th>Main Limit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Bags</td><td>Small areas</td><td>Easy to carry, no delivery needed</td><td>Higher cost per volume</td></tr>
+                <tr><td>Bulk yards</td><td>Medium projects</td><td>Good for patios and paths</td><td>Needs delivery or hauling</td></tr>
+                <tr><td>Bulk tons</td><td>Large jobs</td><td>Common supplier unit</td><td>Weight varies by material</td></tr>
+            </tbody>
+        </table>
+
+        <div class="order-example-box" style="margin-top:1.75rem;">
+            <strong>Bag Example:</strong> A 12 ft × 10 ft patio at 3 in deep = 30 cubic feet.<br>
+            30 ÷ 0.5 (bag size) = <strong>60 half-cubic-foot bags</strong> before extra allowance.
+        </div>
+
+        <div class="order-example-box" style="margin-top:1rem;">
+            <strong>Cost by Bag Example:</strong> 40 bags × $6 per bag = <strong>$240 estimated material cost</strong>.<br>
+            This does not include delivery, taxes, site prep, edging, fabric, or labor.
+        </div>
+    </div>
+</section>
+
+<!-- ===== COST SECTION ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Pea Gravel Cost Calculator</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Estimates project cost from material amount and price per ton, cubic yard, or bag</p>
+        </div>
+
+        <div class="formula-cards">
+            <div class="formula-card">
+                <div class="formula-card-label">Cost by Ton</div>
+                <div class="formula-card-eq">Tons × Price / Ton</div>
+                <p style="font-size:0.85rem;color:#64748b;margin-top:0.6rem;">Example: 2 tons × $45 = $90</p>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Cost by Yard</div>
+                <div class="formula-card-eq">Yards × Price / Yard</div>
+                <p style="font-size:0.85rem;color:#64748b;margin-top:0.6rem;">Example: 3 yd³ × $55 = $165</p>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Cost by Bag</div>
+                <div class="formula-card-eq">Bags × Price / Bag</div>
+                <p style="font-size:0.85rem;color:#64748b;margin-top:0.6rem;">Example: 40 bags × $6 = $240</p>
+            </div>
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">Cost depends on your location, supplier, delivery distance, gravel color, and order size. Bagged gravel often costs more per cubic foot than bulk gravel. Check current local pricing before ordering — prices can change by ZIP code and delivery distance.</p>
+
+        <div class="order-example-box" style="margin-top:1.25rem;">
+            <strong>Delivery Tip:</strong> Check minimum order amount, delivery fee, sales tax, truck access, material color, and whether the gravel is screened or washed before comparing supplier quotes.
+        </div>
+    </div>
+</section>
+
+<!-- ===== COMMON MISTAKES ===== -->
+<section class="tips-section">
+    <div class="container">
+        <h2 class="section-title">Common Mistakes When Calculating Pea Gravel</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Most pea gravel mistakes come from wrong depth, poor unit conversion, or no extra material allowance</p>
+        <div class="tips-grid">
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                    Using the Wrong Depth
+                </h3>
+                <ul>
+                    <li>Do not use the same depth for every project.</li>
+                    <li>A landscape border does not need the same depth as a driveway.</li>
+                    <li>Choose depth based on use, traffic, base condition, and drainage needs.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Forgetting to Convert Inches to Feet
+                </h3>
+                <ul>
+                    <li>Depth must be in feet before using the formula.</li>
+                    <li>If you use 3 instead of 0.25 feet, the result will be 12× too high.</li>
+                    <li>Divide inches by 12 to convert (e.g., 3 in ÷ 12 = 0.25 ft).</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Not Adding Extra for Settling
+                </h3>
+                <ul>
+                    <li>Pea gravel settles after spreading, walking, and weather changes.</li>
+                    <li>Many projects benefit from a 5% to 10% extra allowance.</li>
+                    <li>Add more if the ground is uneven or the shape is hard to measure.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                    Ignoring Edging and Shape Changes
+                </h3>
+                <ul>
+                    <li>Rounded pea gravel spreads without edging.</li>
+                    <li>Weak borders make the area look thinner over time.</li>
+                    <li>For curved areas, measure carefully — small shape changes add more area than expected.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+    <div class="container">
+        <div class="mid-cta-card">
+            <h2>Ready to Estimate Your Pea Gravel?</h2>
+            <p>Use the free calculator above to get instant results in cubic feet, cubic yards, tons, bags, and cost — no sign-up required.</p>
+            <a href="#calculator" class="btn btn--primary btn--lg">Calculate Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Pea Gravel Calculator FAQs</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Common questions about pea gravel calculations, depth, bags, and cost</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much pea gravel do I need?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Measure length, width, and depth. Multiply them to get cubic feet, then divide by 27 for cubic yards. Use the calculator to convert yards into tons, bags, and cost.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do I calculate pea gravel needed?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Use this formula: length × width × depth. Keep length and width in feet. Convert depth from inches to feet before multiplying. Example: 12 ft × 10 ft × 0.25 ft = 30 cubic feet.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many tons of pea gravel do I need?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Multiply cubic yards by the tons-per-yard estimate. Many pea gravel estimates use about 1.2 to 1.4 tons per cubic yard, but supplier density can vary. Our calculator uses 1.3 tons per cubic yard as a standard estimate.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many yards of pea gravel do I need?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Multiply length by width by depth (in feet) to get cubic feet. Then divide cubic feet by 27 to get cubic yards. For a 12 × 10 ft patio at 3 inches deep: 30 ÷ 27 = 1.11 cubic yards.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many bags of pea gravel do I need?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Divide total cubic feet by the bag volume. If one bag holds 0.5 cubic feet and your project needs 20 cubic feet, you need about 40 bags. Use the volume printed on the bag — not the weight — for best accuracy.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much does pea gravel cover?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>One cubic yard covers about 162 square feet at 2 inches deep. It covers about 108 square feet at 3 inches deep. At 1 inch deep, one cubic yard covers about 324 square feet.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How deep should pea gravel be?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Use 1–2 inches for landscape beds, 2–3 inches for patios and paths, and 4–6 inches for heavier-use areas like driveways and playgrounds. Always match depth to how the area will be used.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Can I use pea gravel for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, but it needs a stable base and good edging. Pea gravel can shift under tires and may need more maintenance than crushed stone. Use a compacted base layer under the top layer for best results.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Is pea gravel cheaper by the bag or bulk?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Bulk pea gravel is often cheaper for larger jobs. Bags are better for small areas, repairs, and projects where delivery is not practical. For large projects, compare bulk and bag pricing before ordering.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Should I order extra pea gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground. Our calculator already includes a 10% extra allowance in the results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== RELATED CALCULATORS ===== -->
+<section class="gravel-types-home-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Related Gravel Calculators</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Use the right tool when your project needs more than pea gravel</p>
+        </div>
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                </div>
+                <h3>Gravel Calculator</h3>
+                <span class="gth-tag">General Purpose</span>
+                <p>General-purpose gravel calculator for all gravel types. Compare cubic yards, tons, and cost for crushed stone, river rock, and more material types.</p>
+                <a href="{% url 'home' %}#calculator" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3>Driveway Gravel Calculator</h3>
+                <span class="gth-tag">Driveways</span>
+                <p>Estimate gravel for driveways including base layers, sub-base, and heavy vehicle traffic requirements. Better suited for larger driveway projects.</p>
+                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><circle cx="12" cy="12" r="4"/><circle cx="6" cy="8" r="2"/><circle cx="18" cy="9" r="2.5"/><circle cx="7" cy="16" r="2.5"/></svg>
+                </div>
+                <h3>Landscaping Gravel Calculator</h3>
+                <span class="gth-tag">Landscaping</span>
+                <p>Estimate pea gravel, crushed stone, or river rock for landscape beds, borders, tree rings, and decorative ground cover projects of any size.</p>
+                <a href="{% url 'home' %}#calculator" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta-section">
+    <div class="container">
+        <h2>Start Your Pea Gravel Estimate</h2>
+        <p>Enter your area size and depth to get instant results in cubic feet, cubic yards, tons, bags, and cost — no account needed.</p>
+        <div class="cta-buttons">
+            <a href="#calculator" class="btn btn--primary btn--lg">Use the Pea Gravel Calculator</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    'use strict';
+
+    var TO_METERS = { ft: 0.3048, yd: 0.9144, 'in': 0.0254, m: 1, cm: 0.01 };
+
+    var calcBtn  = document.getElementById('pgCalculateBtn');
+    var resetBtn = document.getElementById('pgResetBtn');
+    var form     = document.getElementById('pgCalcForm');
+
+    function clrErr(id) { var el = document.getElementById(id); if (el) el.textContent = ''; }
+    function setErr(id, msg) { var el = document.getElementById(id); if (el) el.textContent = msg; }
+    function setText(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+
+    function fmtNum(n, d) {
+        return parseFloat(n.toFixed(d)).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: d
+        });
+    }
+
+    function getPos(inputId, errId, label) {
+        var el = document.getElementById(inputId);
+        var v = parseFloat(el ? el.value : '');
+        if (isNaN(v) || v <= 0) {
+            setErr(errId, 'Please enter a valid ' + label + ' greater than zero.');
+            if (el) el.focus();
+            return null;
+        }
+        return v;
+    }
+
+    function clearAll() {
+        ['err-pgLength', 'err-pgWidth', 'err-pgDepth', 'err-pgPrice'].forEach(clrErr);
+    }
+
+    function calculate() {
+        clearAll();
+
+        var lenVal  = getPos('pgLength', 'err-pgLength', 'length');
+        var widVal  = getPos('pgWidth',  'err-pgWidth',  'width');
+        var depVal  = getPos('pgDepth',  'err-pgDepth',  'depth');
+        if (lenVal === null || widVal === null || depVal === null) return;
+
+        var lenUnit = document.getElementById('pgLengthUnit').value;
+        var widUnit = document.getElementById('pgWidthUnit').value;
+        var depUnit = document.getElementById('pgDepthUnit').value;
+
+        // Convert to meters then to feet for calculation
+        var lenFt = (lenVal * TO_METERS[lenUnit]) / TO_METERS['ft'];
+        var widFt = (widVal * TO_METERS[widUnit]) / TO_METERS['ft'];
+        var depFt = (depVal * TO_METERS[depUnit]) / TO_METERS['ft'];
+
+        var bagSizeEl = document.getElementById('pgBagSize');
+        var bagSize   = parseFloat(bagSizeEl ? bagSizeEl.value : '0.5');
+        if (isNaN(bagSize) || bagSize <= 0) bagSize = 0.5;
+
+        // Core calculation (pea gravel density: 1.3 tons/yd³)
+        var cubicFt  = lenFt * widFt * depFt;
+        var cubicYd  = cubicFt / 27;
+        var tons     = cubicYd * 1.3;
+        var pounds   = tons * 2000;
+        var bags     = cubicFt / bagSize;
+
+        // Add 10% extra
+        var cubicFtX = cubicFt * 1.10;
+        var cubicYdX = cubicYd * 1.10;
+        var tonsX    = tons    * 1.10;
+        var poundsX  = pounds  * 1.10;
+        var bagsX    = Math.ceil(bags * 1.10);
+
+        setText('pgResCubicFt',  fmtNum(cubicFtX, 2) + ' ft³');
+        setText('pgResCubicYd',  fmtNum(cubicYdX, 3) + ' yd³');
+        setText('pgResTons',     fmtNum(tonsX, 2) + ' tons');
+        setText('pgResPounds',   fmtNum(poundsX, 0) + ' lbs');
+        setText('pgResBags',     bagsX + ' bags');
+
+        // Optional cost
+        var priceEl     = document.getElementById('pgPrice');
+        var priceUnitEl = document.getElementById('pgPriceUnit');
+        var price       = parseFloat(priceEl ? priceEl.value : '');
+        var costCard    = document.getElementById('pgCostCard');
+
+        if (!isNaN(price) && price >= 0 && priceEl && priceEl.value !== '') {
+            var unit = priceUnitEl ? priceUnitEl.value : 'ton';
+            var cost = 0;
+            if (unit === 'ton')  cost = tonsX    * price;
+            if (unit === 'yd3')  cost = cubicYdX * price;
+            if (unit === 'bag')  cost = bagsX    * price;
+            setText('pgResCost', '$' + fmtNum(cost, 2));
+            if (costCard) costCard.classList.remove('hidden');
+        } else {
+            if (costCard) costCard.classList.add('hidden');
+        }
+
+        document.getElementById('pgResultsPlaceholder').classList.add('hidden');
+        document.getElementById('pgResultsContent').classList.remove('hidden');
+    }
+
+    if (calcBtn) calcBtn.addEventListener('click', calculate);
+
+    if (resetBtn && form) {
+        resetBtn.addEventListener('click', function () {
+            form.reset();
+            clearAll();
+            document.getElementById('pgResultsContent').classList.add('hidden');
+            document.getElementById('pgResultsPlaceholder').classList.remove('hidden');
+            var costCard = document.getElementById('pgCostCard');
+            if (costCard) costCard.classList.add('hidden');
+        });
+    }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            document.querySelectorAll('.faq-question').forEach(function (b) {
+                b.setAttribute('aria-expanded', 'false');
+                var ans = b.nextElementSibling;
+                if (ans) ans.style.display = 'none';
+            });
+            if (!expanded) {
+                this.setAttribute('aria-expanded', 'true');
+                var myAns = this.nextElementSibling;
+                if (myAns) myAns.style.display = 'block';
+            }
+        });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+</script>
+{% endblock %}

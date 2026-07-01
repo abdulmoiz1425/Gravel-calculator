@@ -1,0 +1,802 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}French Drain Gravel Calculator – Estimate Yards and Tons | Gravel Calculator Pro{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "SoftwareApplication"],
+  "name": "French Drain Gravel Calculator",
+  "url": "{{ request.scheme }}://{{ request.get_host }}/french-drain-gravel-calculator/",
+  "description": "Free French drain gravel calculator to estimate cubic feet, cubic yards, and tons of drainage stone from your trench length, width, and depth. Subtracts pipe volume and adds a waste allowance for an accurate order estimate.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Gravel for a French Drain",
+  "description": "Step-by-step method to estimate how much drainage stone you need for a French drain trench.",
+  "step": [
+    {"@type":"HowToStep","position":1,"name":"Measure the trench length","text":"Measure the trench length from the water collection area to the outlet in feet."},
+    {"@type":"HowToStep","position":2,"name":"Measure width and depth","text":"Measure the inside trench width and the planned gravel depth."},
+    {"@type":"HowToStep","position":3,"name":"Convert inches to feet","text":"Convert all inch measurements to feet. For example, 12 inches equals 1 foot."},
+    {"@type":"HowToStep","position":4,"name":"Calculate cubic feet","text":"Multiply length × width × depth to find cubic feet."},
+    {"@type":"HowToStep","position":5,"name":"Subtract pipe space","text":"If your French drain includes a perforated pipe, subtract the pipe's cylindrical volume for a closer estimate."},
+    {"@type":"HowToStep","position":6,"name":"Convert to cubic yards","text":"Divide the result by 27 to get cubic yards."},
+    {"@type":"HowToStep","position":7,"name":"Add waste allowance","text":"Add a 5% to 10% waste allowance for trench variation and spreading."},
+    {"@type":"HowToStep","position":8,"name":"Convert to tons","text":"Multiply cubic yards by your supplier's material density factor to estimate tons."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How do you calculate gravel for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then add a small waste allowance."}},
+    {"@type":"Question","name":"How do you calculate the amount of gravel needed for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Measure the inside of the trench, not the full yard area. Enter the length, width, and depth into a French drain gravel calculator, then round up to your supplier's order unit."}},
+    {"@type":"Question","name":"How do you calculate gravel for French drains with more than one trench?","acceptedAnswer":{"@type":"Answer","text":"Calculate each trench separately, then add the cubic-yard totals together. Include each branch's width and depth because they may not all be the same."}},
+    {"@type":"Question","name":"Does a French drain gravel calculator subtract the drain pipe?","acceptedAnswer":{"@type":"Answer","text":"It should. Pipe displacement may be small for short drains, but it matters more on longer trenches or when you want a tighter gravel estimate."}},
+    {"@type":"Question","name":"How much extra gravel should I order?","acceptedAnswer":{"@type":"Answer","text":"A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. Use a larger buffer only when the site is irregular or the supplier has a minimum order size."}},
+    {"@type":"Question","name":"Can I use the calculator for a pipeless French drain?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter the full trench dimensions and leave the pipe diameter field empty. The calculator will estimate the gravel needed to fill a gravel-only drainage trench."}},
+    {"@type":"Question","name":"Why does my supplier's ton estimate differ from the calculator?","acceptedAnswer":{"@type":"Answer","text":"Gravel density can change based on stone type, size, moisture, and local material. Use your supplier's stated tons-per-yard factor for the final order."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type":"ListItem","position":2,"name":"French Drain Gravel Calculator","item":"{{ request.scheme }}://{{ request.get_host }}/french-drain-gravel-calculator/"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator-hero" id="calculator">
+    <div class="container">
+        <div class="calculator-header">
+            <h1 class="calculator-title">French Drain Gravel Calculator</h1>
+            <p class="calculator-subtitle">Estimate cubic feet, cubic yards &amp; tons of drainage stone — includes pipe volume subtraction and a 10% waste buffer</p>
+        </div>
+
+        <div class="calculator-card">
+            <div class="calculator-body">
+                <!-- LEFT: Inputs -->
+                <form class="calc-form" id="fdCalcForm" novalidate>
+
+                    <!-- Trench Dimensions -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Trench Dimensions</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="fdLength">Trench Length</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="fdLength" min="0.01" step="any" placeholder="e.g. 50">
+                                    <select id="fdLengthUnit">
+                                        <option value="ft" selected>ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="m">m</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="fdErrLength"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="fdWidth">Trench Width</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="fdWidth" min="0.01" step="any" placeholder="e.g. 12">
+                                    <select id="fdWidthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="m">m</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="fdErrWidth"></span>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="fdDepth">Gravel Depth</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="fdDepth" min="0.01" step="any" placeholder="e.g. 18">
+                                    <select id="fdDepthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="m">m</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="fdErrDepth"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pipe Diameter (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Perforated Pipe <span class="optional-tag">Optional</span></h3>
+                        <div class="form-group">
+                            <label for="fdPipe">Pipe Diameter (inches)</label>
+                            <input type="number" id="fdPipe" min="0" step="0.5" placeholder="e.g. 4 — leave blank for gravel-only trench">
+                            <p style="font-size:0.78rem;color:#7a90ad;margin-top:0.35rem;line-height:1.5;">Entering the pipe diameter subtracts the pipe's cylindrical volume for a closer gravel estimate.</p>
+                        </div>
+                    </div>
+
+                    <!-- Drainage Gravel Type -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Drainage Stone Type</h3>
+                        <div class="form-group">
+                            <label for="fdGravelType">Select Type</label>
+                            <select id="fdGravelType" class="full-select">
+                                <option value="1.50">#57 Stone / Clean Crushed Stone (1.50 tons/yd³)</option>
+                                <option value="1.55">Washed Angular Stone (1.55 tons/yd³)</option>
+                                <option value="1.40">Pea Gravel (1.40 tons/yd³)</option>
+                                <option value="1.50">Crushed Drainage Rock (1.50 tons/yd³)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Price (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Price <span class="optional-tag">Optional</span></h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="fdPrice">Price</label>
+                                <input type="number" id="fdPrice" min="0" step="0.01" placeholder="e.g. 45.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="fdPriceUnit">Per Unit</label>
+                                <select id="fdPriceUnit" class="full-select">
+                                    <option value="ton">$ / ton</option>
+                                    <option value="yd3">$ / yd³</option>
+                                    <option value="ft3">$ / ft³</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="calc-buttons">
+                        <button type="button" id="fdCalculateBtn" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" id="fdResetBtn" class="btn btn--outline">Reset</button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: Results -->
+                <div class="calc-results" id="fdCalcResults">
+                    <div class="results-placeholder" id="fdResultsPlaceholder">
+                        <div class="calc-guide">
+                            <div class="calc-guide-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5fc4" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                How to use this calculator
+                            </div>
+                            <ol class="calc-guide-steps">
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">1</span>
+                                    <div class="cgs-body">
+                                        <strong>Enter Trench Dimensions</strong>
+                                        <p>Add the trench length, width, and gravel depth. Width and depth default to inches — the most common way to measure a trench.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">2</span>
+                                    <div class="cgs-body">
+                                        <strong>Add Pipe Diameter <em style="font-weight:400;color:#94a3b8;">(Optional)</em></strong>
+                                        <p>If your French drain includes a perforated pipe, enter its diameter in inches. The pipe volume will be subtracted for a closer gravel estimate.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">3</span>
+                                    <div class="cgs-body">
+                                        <strong>Select Drainage Stone Type</strong>
+                                        <p>Choose the drainage stone you plan to use. This affects the ton estimate — confirm the exact density with your supplier.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">4</span>
+                                    <div class="cgs-body">
+                                        <strong>Click Calculate</strong>
+                                        <p>Results appear here — trench volume, gravel volume in cubic feet and yards, estimated tons, and optional cost.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="results-content hidden" id="fdResultsContent">
+                        <div class="results-title">Your Results</div>
+                        <div class="result-cards">
+                            <div class="result-card result-card--area">
+                                <div class="result-label">Trench Volume</div>
+                                <div class="result-value" id="fdResTrenchFt3">—</div>
+                            </div>
+                            <div class="result-card result-card--volume">
+                                <div class="result-label">Gravel Volume</div>
+                                <div class="result-value" id="fdResGravelFt3">—</div>
+                                <div class="result-sub" id="fdResYd3">—</div>
+                                <div class="result-sub" id="fdResYd3Note" style="font-size:0.72rem;color:#94a3b8;margin-top:0.1rem;">incl. 10% waste buffer</div>
+                            </div>
+                            <div class="result-card result-card--weight">
+                                <div class="result-label">Estimated Weight</div>
+                                <div class="result-value" id="fdResTons">—</div>
+                            </div>
+                            <div class="result-card result-card--cost hidden" id="fdCostCard">
+                                <div class="result-label">Estimated Cost</div>
+                                <div class="result-value" id="fdResCost">—</div>
+                            </div>
+                        </div>
+                        <p class="results-note">Results include a 10% waste buffer for trench variation and spreading. Confirm the exact material weight and tons-per-yard factor with your local supplier before ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTRO SECTION ===== -->
+<section class="intro-section">
+    <div class="container">
+        <h2 class="intro-headline">French Drain Gravel Calculator for Yards and Tons</h2>
+        <p class="intro-text">Ordering gravel for a drainage trench can be harder than it looks. A few extra inches of depth or a longer trench can change your order by a full cubic yard. Use this French Drain Gravel Calculator to turn your measurements into a clear estimate before contacting a gravel supplier.</p>
+
+        <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
+            <strong>Quick Answer:</strong> A French drain gravel calculator estimates how much drainage stone you need from your trench length, width, and gravel depth. For a closer estimate, subtract the space taken by the perforated pipe and add a small waste allowance. Your final result should show <strong>cubic feet, cubic yards, and tons</strong>.
+        </div>
+
+        <p class="intro-text">Enter the trench length, width, and depth. Then choose the drainage stone type and include the pipe diameter if needed. The calculator gives you a useful starting estimate — your local supplier can confirm the exact material weight.</p>
+    </div>
+</section>
+
+<!-- ===== HIGHLIGHT STRIP ===== -->
+<section class="highlight-strip">
+    <div class="container">
+        <ul class="highlight-list">
+            <li><span class="highlight-icon">✓</span> Trench Volume in Cubic Feet</li>
+            <li><span class="highlight-icon">✓</span> Cubic Yards for Bulk Orders</li>
+            <li><span class="highlight-icon">✓</span> Pipe Volume Subtraction</li>
+            <li><span class="highlight-icon">✓</span> Tons by Material Type</li>
+            <li><span class="highlight-icon">✓</span> 10% Waste Buffer</li>
+            <li><span class="highlight-icon">✓</span> Optional Cost Estimate</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===== WHAT IT MEASURES ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">What Does a French Drain Gravel Calculator Measure?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The calculator measures the empty trench space that will be filled with drainage stone</p>
+        </div>
+
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M3 3h18v2H3z"/><path d="M3 9h18v2H3z"/><path d="M3 15h18v2H3z"/><path d="M3 21h18v2H3z"/></svg>
+                </div>
+                <h3>Trench Volume</h3>
+                <span class="gth-tag">Length × Width × Depth</span>
+                <p>The full inside trench space. Measure the inside of the trench, not the wider excavation area, for an accurate starting volume.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                </div>
+                <h3>Pipe Displacement</h3>
+                <span class="gth-tag">Pipe Volume Subtracted</span>
+                <p>If a perforated pipe runs through the trench, its cylindrical volume is subtracted from the trench total. This matters more on longer trenches.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 2v4"/></svg>
+                </div>
+                <h3>Waste Allowance</h3>
+                <span class="gth-tag">10% Buffer Included</span>
+                <p>Trench walls are rarely perfect and some gravel is lost during spreading. A 10% buffer prevents running short before the installation is complete.</p>
+            </div>
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">The result is shown in three units: <strong>cubic feet</strong> for checking the calculation, <strong>cubic yards</strong> for bulk gravel orders, and <strong>tons</strong> when your supplier sells gravel by weight.</p>
+    </div>
+</section>
+
+<!-- ===== HOW TO CALCULATE ===== -->
+<section class="depth-guide-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How to Calculate Gravel for a French Drain</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Measure the trench in feet — convert all inch measurements before using the formula</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-method">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Step-by-Step Calculation Method
+                </h3>
+                <ol class="order-steps">
+                    <li><strong>Measure the trench length</strong> from the water collection area to the outlet.</li>
+                    <li><strong>Measure the inside trench width</strong> and the planned gravel depth.</li>
+                    <li><strong>Convert inches to feet.</strong> For example, 12 inches equals 1 foot, 18 inches equals 1.5 feet.</li>
+                    <li><strong>Multiply length × width × depth</strong> to find cubic feet.</li>
+                    <li><strong>Subtract the pipe space</strong> if your installation includes a perforated pipe. Enter the pipe diameter to have this done automatically.</li>
+                    <li><strong>Divide by 27</strong> to convert cubic feet into cubic yards.</li>
+                    <li><strong>Add a 5% to 10% waste allowance</strong> for normal trench variation, spreading, and uneven ground.</li>
+                    <li><strong>Convert cubic yards into tons</strong> using your supplier's material density factor.</li>
+                </ol>
+
+                <div class="order-example-box" style="margin-top:1.5rem;">
+                    <strong>Common Mistake:</strong> People calculating gravel for a French drain often forget the waste allowance or supplier density factor. The calculator result is an ordering estimate, not a guaranteed delivery weight.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FORMULA SECTION ===== -->
+<section class="formula-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">French Drain Gravel Formula</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Three formulas turn trench measurements into a gravel order estimate</p>
+        </div>
+
+        <div class="formula-layout">
+            <div class="formula-steps-col">
+                <div class="formula-cards">
+                    <div class="formula-card">
+                        <div class="formula-card-label">Trench Volume (ft³)</div>
+                        <div class="formula-card-eq">Length × Width × Depth</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Cubic Yards</div>
+                        <div class="formula-card-eq">Cubic Feet ÷ 27</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Estimated Tons</div>
+                        <div class="formula-card-eq">Cubic Yards × Tons-per-Yard</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Pipe Volume (ft³)</div>
+                        <div class="formula-card-eq">π × (Diameter ÷ 2)² × Length</div>
+                    </div>
+                </div>
+                <p class="intro-text" style="margin-top:1.25rem;font-size:0.9rem;">Use the full trench volume for a quick planning number. For a more accurate estimate, subtract the pipe volume before adding a small waste allowance.</p>
+            </div>
+
+            <div class="formula-example-col">
+                <div class="formula-example-card">
+                    <div class="formula-example-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Worked Example: 50-Foot French Drain
+                    </div>
+                    <div class="formula-example-body">
+                        <p class="formula-example-scenario">A trench is <strong>50 ft long</strong>, <strong>12 inches wide</strong>, and <strong>18 inches deep</strong>, with a <strong>4-inch perforated pipe</strong>.</p>
+                        <div class="formula-example-steps">
+                            <div class="formula-example-step">
+                                <span class="fes-num">1</span>
+                                <span class="fes-text">Convert: 12 in = <strong>1 ft</strong> width, 18 in = <strong>1.5 ft</strong> depth</span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">2</span>
+                                <span class="fes-text">Trench volume: 50 × 1 × 1.5 = <strong>75 ft³</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">3</span>
+                                <span class="fes-text">4-inch pipe subtracted → gravel volume ≈ <strong>70.6 ft³</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">4</span>
+                                <span class="fes-text">70.6 ÷ 27 = <strong>2.62 yd³</strong></span>
+                            </div>
+                            <div class="formula-example-step fes-result">
+                                <span class="fes-num">5</span>
+                                <span class="fes-text">+ 10% waste: 2.62 × 1.10 = <strong>2.88 yd³ → order ~3 yd³</strong></span>
+                            </div>
+                        </div>
+                        <p class="formula-example-note">At 1.4 tons/yd³, this project needs approximately <strong>4 tons of drainage gravel</strong>. Confirm the exact density with your supplier before ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== GRAVEL TYPES TABLE ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">What Gravel Should You Use for a French Drain?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Use clean drainage stone that leaves open spaces for water to move through the trench</p>
+        </div>
+
+        <p class="intro-text" style="margin-bottom:1.75rem;">Your local supplier may call it #57 stone, washed crushed stone, drainage rock, or clean angular gravel. Ask the supplier which material is best for drainage in your area and request the exact tons-per-yard weight before placing the final order.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Gravel Type</th><th>Best Use</th><th>Planning Note</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#57 stone or clean crushed stone</td>
+                    <td>Most residential French drains</td>
+                    <td>A common choice because water can flow through open spaces</td>
+                </tr>
+                <tr>
+                    <td>Washed angular stone</td>
+                    <td>Pipe bedding and trench backfill</td>
+                    <td>Often used where stable drainage fill is needed</td>
+                </tr>
+                <tr>
+                    <td>Pea gravel</td>
+                    <td>Only where a local drainage design allows it</td>
+                    <td>Check with an installer or supplier before using it</td>
+                </tr>
+                <tr>
+                    <td>Crushed drainage rock</td>
+                    <td>Long drainage trenches and larger projects</td>
+                    <td>Available sizes and weights vary by supplier</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="depth-cards" style="margin-top:2rem;">
+            <div class="depth-card">
+                <div class="depth-card-icon">🪨</div>
+                <div class="depth-card-body">
+                    <h3>#57 Stone / Clean Crushed Stone</h3>
+                    <div class="depth-badge">Most Common</div>
+                    <p>The go-to choice for residential French drains. Uniform stone size leaves plenty of open space for water movement and doesn't clog as easily as fines-heavy material.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">💧</div>
+                <div class="depth-card-body">
+                    <h3>Washed Angular Stone</h3>
+                    <div class="depth-badge">Bedding &amp; Backfill</div>
+                    <p>Angular edges interlock to create a stable, firm fill around the pipe. Often used for pipe bedding where the trench needs additional structural support.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">⚠️</div>
+                <div class="depth-card-body">
+                    <h3>Pea Gravel</h3>
+                    <div class="depth-badge">Check With Supplier</div>
+                    <p>Smooth and round — may shift or not provide the same drainage performance. Only use where a local drainage design specifically allows it. Ask your installer first.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOW MUCH TO ORDER ===== -->
+<section class="tips-section">
+    <div class="container">
+        <h2 class="section-title">How Much Gravel Should You Order?</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Start with the calculator total, then use these checks before placing the order</p>
+        <div class="tips-grid">
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>
+                    Measure Inside the Trench
+                </h3>
+                <ul>
+                    <li>Measure the inside trench dimensions, not the wider excavation area.</li>
+                    <li>Keep all measurements in the same unit before converting.</li>
+                    <li>A wider measurement increases the estimate significantly.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+                    Include Pipe Displacement
+                </h3>
+                <ul>
+                    <li>Enter the pipe's outside diameter for a closer gravel estimate.</li>
+                    <li>Pipe displacement is small for short drains but matters on longer runs.</li>
+                    <li>A 4-inch pipe in a 50-foot trench displaces about 4.4 cubic feet.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Confirm Supplier Density
+                </h3>
+                <ul>
+                    <li>Ask for the supplier's material density or tons-per-yard factor.</li>
+                    <li>Gravel density changes by stone type, size, and moisture content.</li>
+                    <li>Many suppliers sell by whole yards, half yards, or full tons.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add a Waste Buffer
+                </h3>
+                <ul>
+                    <li>Add a 5% to 10% buffer for normal trench variation and spreading loss.</li>
+                    <li>Round up to the supplier's available delivery unit.</li>
+                    <li>Check whether the delivery truck can safely access your site.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PLANNING NOTES ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">French Drain Planning Notes Before You Dig</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Gravel quantity is only one part of a working French drain — plan the full drainage route before excavation</p>
+        </div>
+
+        <p class="intro-text">The trench also needs a safe outlet and a consistent fall toward that outlet. A perforated pipe, clean drainage stone, and suitable filter fabric can help reduce soil movement into the gravel.</p>
+        <p class="intro-text" style="margin-top:1rem;">Water should move away from the problem area and discharge in a safe, permitted location. Avoid directing water toward neighboring properties, foundations, walkways, or areas that may cause erosion.</p>
+
+        <div class="order-example-box" style="margin-top:1.5rem;border-left:4px solid #e53e3e;background:#fff5f5;">
+            <strong style="color:#c53030;">⚠ Safety Note:</strong> Call 811 before digging in the United States and follow your state's notice requirements. Local drainage rules, setback requirements, permits, and discharge restrictions can vary by location. This calculator provides a material estimate only and does not replace an engineered drainage design.
+        </div>
+
+        <div class="order-example-box" style="margin-top:1rem;">
+            <strong>Method Note:</strong> This page provides general material estimates based on user-entered measurements. Gravel weights and local installation rules vary. Confirm your final gravel order and drainage plan with a qualified local supplier or contractor when the project affects a foundation, utility route, retaining wall, or regulated drainage area.
+        </div>
+    </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+    <div class="container">
+        <div class="mid-cta-card">
+            <h2>Ready to Estimate Your French Drain Gravel?</h2>
+            <p>Enter your trench dimensions, choose your drainage stone, and add the pipe diameter for a more accurate estimate. Confirm tons-per-yard and delivery details with your local supplier.</p>
+            <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Common questions about calculating gravel for French drain projects</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do you calculate gravel for a French drain?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then add a small waste allowance. The calculator above handles all these steps automatically.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do you calculate the amount of gravel needed for a French drain?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Measure the inside of the trench, not the full yard area. Enter the length, width, and depth into the French drain gravel calculator above, then round up to your supplier's order unit.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do you calculate gravel for French drains with more than one trench?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Calculate each trench separately, then add the cubic-yard totals together. Include each branch's individual width and depth because they may not all be the same size.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Does a French drain gravel calculator subtract the drain pipe?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>It should — and this calculator does. Pipe displacement may be small for short drains, but it matters more on longer trenches or when you want a tighter gravel estimate. Enter the pipe diameter in the Perforated Pipe field to subtract it automatically.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much extra gravel should I order?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. The calculator includes a 10% buffer automatically. Use a larger buffer only when the site is irregular or the supplier has a minimum order size.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Can I use the calculator for a pipeless French drain?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. Enter the full trench dimensions and leave the Pipe Diameter field empty. The calculator will estimate the gravel needed to fill a gravel-only drainage trench without subtracting any pipe volume.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Why does my supplier's ton estimate differ from the calculator?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Gravel density can change based on stone type, size, moisture, and local material. The calculator uses common planning densities. Always use your supplier's stated tons-per-yard factor for the final order.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== GRAVEL TYPES LINKS ===== -->
+<section class="gravel-types-home-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Other Gravel Calculators</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Need estimates for other project types? Try one of these</p>
+        </div>
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                </div>
+                <h3>Crushed Gravel Calculator</h3>
+                <span class="gth-tag">Driveways &amp; Bases</span>
+                <p>Need gravel for a compacted base or driveway project? The Crushed Gravel Calculator estimates yards, tons, and cost for crusher run, 3/4 stone, and granite.</p>
+                <a href="{% url 'crushed_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><circle cx="12" cy="12" r="4"/><circle cx="6" cy="8" r="2"/><circle cx="18" cy="9" r="2.5"/><circle cx="7" cy="16" r="2.5"/></svg>
+                </div>
+                <h3>Pea Gravel Calculator</h3>
+                <span class="gth-tag">Landscaping &amp; Paths</span>
+                <p>For decorative landscape stone, patios, walkways, and playgrounds. The Pea Gravel Calculator shows cubic yards, tons, bags, and cost.</p>
+                <a href="{% url 'pea_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <h3>Driveway Gravel Calculator</h3>
+                <span class="gth-tag">Driveways</span>
+                <p>Estimate gravel for any driveway size and depth. Supports multiple gravel types, shape options, and an optional cost estimate.</p>
+                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta-section">
+    <div class="container">
+        <h2>Plan Your French Drain Gravel Order With Confidence</h2>
+        <p>Measure the inside of your trench, use the calculator to estimate cubic yards and tons, and allow a small buffer so the project does not stop short. Confirm utility locations and local drainage requirements before excavation.</p>
+        <div class="cta-buttons">
+            <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var TO_FT = { ft: 1, yd: 3, 'in': 1/12, m: 3.28084, cm: 0.0328084 };
+
+    function v(id) { return document.getElementById(id); }
+    function fmt(n, dec) { return n.toFixed(dec !== undefined ? dec : 2); }
+
+    function clearErrors() {
+        ['fdErrLength','fdErrWidth','fdErrDepth'].forEach(function(id) {
+            v(id).textContent = '';
+        });
+    }
+
+    function validate(lenVal, widVal, depVal) {
+        var ok = true;
+        if (isNaN(lenVal) || lenVal <= 0) { v('fdErrLength').textContent = 'Enter a valid length.'; ok = false; }
+        if (isNaN(widVal) || widVal <= 0) { v('fdErrWidth').textContent = 'Enter a valid width.'; ok = false; }
+        if (isNaN(depVal) || depVal <= 0) { v('fdErrDepth').textContent = 'Enter a valid depth.'; ok = false; }
+        return ok;
+    }
+
+    v('fdCalculateBtn').addEventListener('click', function () {
+        clearErrors();
+
+        var lenVal  = parseFloat(v('fdLength').value);
+        var lenUnit = v('fdLengthUnit').value;
+        var widVal  = parseFloat(v('fdWidth').value);
+        var widUnit = v('fdWidthUnit').value;
+        var depVal  = parseFloat(v('fdDepth').value);
+        var depUnit = v('fdDepthUnit').value;
+        var pipeDia = parseFloat(v('fdPipe').value) || 0;
+        var density = parseFloat(v('fdGravelType').value);
+        var priceVal  = parseFloat(v('fdPrice').value);
+        var priceUnit = v('fdPriceUnit').value;
+
+        if (!validate(lenVal, widVal, depVal)) return;
+
+        // Convert everything to feet
+        var lenFt = lenVal * TO_FT[lenUnit];
+        var widFt = widVal * TO_FT[widUnit];
+        var depFt = depVal * TO_FT[depUnit];
+
+        // Trench volume in cubic feet
+        var trenchFt3 = lenFt * widFt * depFt;
+
+        // Pipe volume (cylindrical) — pipe diameter entered in inches
+        var pipeFt3 = 0;
+        if (pipeDia > 0) {
+            var pipeRadFt = (pipeDia / 12) / 2;
+            pipeFt3 = Math.PI * pipeRadFt * pipeRadFt * lenFt;
+        }
+
+        // Gravel volume
+        var gravelFt3 = Math.max(0, trenchFt3 - pipeFt3);
+        var gravelYd3 = gravelFt3 / 27;
+
+        // Add 10% waste buffer
+        var gravelYd3Final = gravelYd3 * 1.10;
+        var gravelFt3Final = gravelYd3Final * 27;
+
+        // Tons
+        var tons = gravelYd3Final * density;
+
+        // Cost
+        var cost = null;
+        if (!isNaN(priceVal) && priceVal > 0) {
+            if (priceUnit === 'ton') cost = tons * priceVal;
+            else if (priceUnit === 'yd3') cost = gravelYd3Final * priceVal;
+            else if (priceUnit === 'ft3') cost = gravelFt3Final * priceVal;
+        }
+
+        // Populate results
+        v('fdResTrenchFt3').textContent = fmt(trenchFt3) + ' ft³';
+        v('fdResGravelFt3').textContent = fmt(gravelFt3Final) + ' ft³';
+        v('fdResYd3').textContent       = fmt(gravelYd3Final) + ' yd³';
+
+        v('fdResTons').textContent = fmt(tons) + ' tons';
+
+        if (cost !== null) {
+            v('fdResCost').textContent = '$' + cost.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            v('fdCostCard').classList.remove('hidden');
+        } else {
+            v('fdCostCard').classList.add('hidden');
+        }
+
+        v('fdResultsPlaceholder').classList.add('hidden');
+        v('fdResultsContent').classList.remove('hidden');
+    });
+
+    v('fdResetBtn').addEventListener('click', function () {
+        v('fdCalcForm').reset();
+        clearErrors();
+        v('fdResultsContent').classList.add('hidden');
+        v('fdResultsPlaceholder').classList.remove('hidden');
+        v('fdCostCard').classList.add('hidden');
+    });
+}());
+</script>
+{% endblock %}

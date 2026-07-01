@@ -377,8 +377,42 @@
                 <!-- RIGHT: Results -->
                 <div class="calc-results" id="calcResults">
                     <div class="results-placeholder" id="resultsPlaceholder">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
-                        <p>Enter your measurements<br>and click <strong>Calculate</strong></p>
+                        <div class="calc-guide">
+                            <div class="calc-guide-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5fc4" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                How to use this calculator
+                            </div>
+                            <ol class="calc-guide-steps">
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">1</span>
+                                    <div class="cgs-body">
+                                        <strong>Select Gravel Type</strong>
+                                        <p>Choose the material you're ordering. Each type has a different density, which affects the ton estimate.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">2</span>
+                                    <div class="cgs-body">
+                                        <strong>Enter Dimensions</strong>
+                                        <p>Add the Length, Width, and Depth of your project area. Switch between shapes using the tabs above.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">3</span>
+                                    <div class="cgs-body">
+                                        <strong>Add a Price <em style="font-weight:400;color:#94a3b8;">(Optional)</em></strong>
+                                        <p>Enter a price per ton or per yard to see a total cost estimate alongside volume and weight.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">4</span>
+                                    <div class="cgs-body">
+                                        <strong>Click Calculate</strong>
+                                        <p>Your results appear here — volume in cubic yards, estimated weight in tons, and total cost.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                     <div class="results-content hidden" id="resultsContent">
                         <div class="results-title">Your Results</div>
@@ -1180,7 +1214,7 @@
         </div>
 
         <div class="related-calcs-grid">
-            <a href="#calculator" class="related-calc-card">
+            <a href="{% url 'driveway_calculator' %}" class="related-calc-card">
                 <div class="rcc-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                 </div>

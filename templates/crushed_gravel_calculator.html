@@ -1,0 +1,892 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Crushed Gravel Calculator – Estimate Yards, Tons &amp; Cost | Gravel Calculator Pro{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "SoftwareApplication"],
+  "name": "Crushed Gravel Calculator",
+  "url": "{{ request.scheme }}://{{ request.get_host }}/crushed-gravel-calculator/",
+  "description": "Free crushed gravel calculator to estimate cubic yards, tons, and cost for driveways, walkways, patio bases, and drainage projects. Supports crusher run, 3/4 gravel, crusher fines, and crushed granite.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Crushed Gravel Needed",
+  "description": "Follow these steps to estimate how much crushed gravel you need for your project.",
+  "step": [
+    {"@type":"HowToStep","position":1,"name":"Measure the length","text":"Measure the project length in feet."},
+    {"@type":"HowToStep","position":2,"name":"Measure the width","text":"Measure the project width in feet."},
+    {"@type":"HowToStep","position":3,"name":"Choose the depth","text":"Choose the gravel depth in inches based on your project type."},
+    {"@type":"HowToStep","position":4,"name":"Select gravel type","text":"Select crushed gravel, crusher run, crusher fines, 3/4 gravel, or crushed granite."},
+    {"@type":"HowToStep","position":5,"name":"Add price per ton","text":"Add price per ton if you want a cost estimate."},
+    {"@type":"HowToStep","position":6,"name":"Add waste buffer","text":"Add a 10% waste buffer if the gravel will be compacted."},
+    {"@type":"HowToStep","position":7,"name":"Review the estimate","text":"Review the estimate in cubic yards and tons, then confirm with your supplier before ordering."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How do I calculate crushed gravel?","acceptedAnswer":{"@type":"Answer","text":"Measure the length, width, and depth of the area. Multiply them to get cubic feet, then divide by 27 to get cubic yards. Use supplier density to convert yards into tons."}},
+    {"@type":"Question","name":"How much crushed gravel do I need for a driveway?","acceptedAnswer":{"@type":"Answer","text":"It depends on driveway size and depth. A light top layer may need 3–4 inches, while a base layer may need 4–8 inches. Use a calculator to estimate yards and tons."}},
+    {"@type":"Question","name":"What is the best calculator to calculate crushed gravel?","acceptedAnswer":{"@type":"Answer","text":"The best calculator should show cubic yards, tons, cost, and waste buffer. It should also let you choose crushed gravel type, depth, and price per ton."}},
+    {"@type":"Question","name":"Is a crush gravel calculator the same as a crushed gravel calculator?","acceptedAnswer":{"@type":"Answer","text":"Yes. 'Crush gravel calculator' is a common search variation. Most users mean a crushed gravel calculator that estimates crushed stone or crushed rock by yards and tons."}},
+    {"@type":"Question","name":"How many tons are in a yard of crushed gravel?","acceptedAnswer":{"@type":"Answer","text":"The ton amount depends on gravel density, stone size, and moisture. Ask your supplier for their cubic-yard-to-ton conversion before placing the final order."}},
+    {"@type":"Question","name":"Is crusher run the same as crushed gravel?","acceptedAnswer":{"@type":"Answer","text":"Not exactly. Crusher run includes crushed stone and stone dust, so it compacts into a firm base. Clean crushed gravel usually has fewer fines and drains better."}},
+    {"@type":"Question","name":"What is the difference between crusher run and crush and run?","acceptedAnswer":{"@type":"Answer","text":"They often refer to the same material. The name changes by region or supplier. Both are used for compacted base layers, driveways, and road base."}},
+    {"@type":"Question","name":"How deep should crushed gravel be?","acceptedAnswer":{"@type":"Answer","text":"Light paths may need 2–3 inches. Walkways often need 3–4 inches. Driveway and base layers may need 4–8 inches depending on soil and traffic."}},
+    {"@type":"Question","name":"How much does 3/4 crushed gravel cover?","acceptedAnswer":{"@type":"Answer","text":"Coverage depends on depth. One cubic yard covers about 81 square feet at 4 inches deep. At 3 inches deep, it covers about 108 square feet."}},
+    {"@type":"Question","name":"Should I add extra crushed gravel for compaction?","acceptedAnswer":{"@type":"Answer","text":"Yes. Adding a 5% to 15% buffer is smart for many projects. A 10% buffer is a common planning number for waste, spreading loss, and compaction."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type":"ListItem","position":2,"name":"Crushed Gravel Calculator","item":"{{ request.scheme }}://{{ request.get_host }}/crushed-gravel-calculator/"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator-hero" id="calculator">
+    <div class="container">
+        <div class="calculator-header">
+            <h1 class="calculator-title">Crushed Gravel Calculator</h1>
+            <p class="calculator-subtitle">Estimate cubic yards, tons &amp; cost for driveways, paths, base layers &amp; drainage — free and instant</p>
+        </div>
+
+        <div class="calculator-card">
+            <!-- Shape Tabs -->
+            <div class="shape-tabs" role="tablist">
+                <button class="shape-tab active" data-shape="rectangle" role="tab" aria-selected="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/></svg>
+                    Rectangle
+                </button>
+                <button class="shape-tab" data-shape="circle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+                    Circle
+                </button>
+                <button class="shape-tab" data-shape="triangle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 22 21 2 21"/></svg>
+                    Triangle
+                </button>
+                <button class="shape-tab" data-shape="direct" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 9h6v6H9z"/></svg>
+                    Direct Area
+                </button>
+            </div>
+
+            <div class="calculator-body">
+                <!-- LEFT: Inputs -->
+                <form class="calc-form" id="calcForm" novalidate>
+
+                    <!-- Dimension Inputs -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Dimensions</h3>
+
+                        <!-- Rectangle -->
+                        <div class="shape-inputs" id="inputs-rectangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="length">Length</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="length" name="length" min="0.01" step="any" placeholder="e.g. 30">
+                                        <select id="lengthUnit" name="lengthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-length"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="width">Width</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="width" name="width" min="0.01" step="any" placeholder="e.g. 10">
+                                        <select id="widthUnit" name="widthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-width"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circle -->
+                        <div class="shape-inputs hidden" id="inputs-circle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="circleMode">Measure by</label>
+                                    <select id="circleMode" class="full-select">
+                                        <option value="radius">Radius</option>
+                                        <option value="diameter">Diameter</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="circleValue" id="circleValueLabel">Radius</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="circleValue" name="circleValue" min="0.01" step="any" placeholder="e.g. 5">
+                                        <select id="circleUnit" name="circleUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-circle"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Triangle -->
+                        <div class="shape-inputs hidden" id="inputs-triangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="base">Base</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="base" name="base" min="0.01" step="any" placeholder="e.g. 15">
+                                        <select id="baseUnit" name="baseUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-base"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="triHeight">Height</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="triHeight" name="triHeight" min="0.01" step="any" placeholder="e.g. 10">
+                                        <select id="triHeightUnit" name="triHeightUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-triHeight"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Direct Area -->
+                        <div class="shape-inputs hidden" id="inputs-direct">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="area">Area</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="area" name="area" min="0.01" step="any" placeholder="e.g. 300">
+                                        <select id="areaUnit" name="areaUnit">
+                                            <option value="ft2" selected>ft²</option>
+                                            <option value="yd2">yd²</option>
+                                            <option value="m2">m²</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-area"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depth -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Depth</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="depth">Depth</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="depth" name="depth" min="0.01" step="any" placeholder="e.g. 4">
+                                    <select id="depthUnit" name="depthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-depth"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gravel Type -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Crushed Gravel Type</h3>
+                        <div class="form-group">
+                            <label for="gravelType">Select Type</label>
+                            <select id="gravelType" class="full-select">
+                                {% for g in gravel_types %}
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                {% endfor %}
+                                <option value="custom">Custom Density</option>
+                            </select>
+                            <span class="field-error" id="err-gravelType"></span>
+                        </div>
+                        <div class="form-group hidden" id="customDensityGroup">
+                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.75">
+                            <span class="field-error" id="err-customDensity"></span>
+                        </div>
+                    </div>
+
+                    <!-- Price (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Price <span class="optional-tag">Optional</span></h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" placeholder="e.g. 45.00">
+                                <span class="field-error" id="err-price"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceUnit">Per Unit</label>
+                                <select id="priceUnit" class="full-select">
+                                    <option value="ton">$ / ton</option>
+                                    <option value="m3">$ / m³</option>
+                                    <option value="yd3">$ / yd³</option>
+                                    <option value="ft3">$ / ft³</option>
+                                    <option value="kg">$ / kg</option>
+                                    <option value="lb">$ / lb</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="calc-buttons">
+                        <button type="button" id="calculateBtn" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" id="resetBtn" class="btn btn--outline">Reset</button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: Results -->
+                <div class="calc-results" id="calcResults">
+                    <div class="results-placeholder" id="resultsPlaceholder">
+                        <div class="calc-guide">
+                            <div class="calc-guide-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5fc4" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                How to use this calculator
+                            </div>
+                            <ol class="calc-guide-steps">
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">1</span>
+                                    <div class="cgs-body">
+                                        <strong>Select Crushed Gravel Type</strong>
+                                        <p>Choose the material you're ordering — crusher run, 3/4 crushed stone, granite, and others have different densities.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">2</span>
+                                    <div class="cgs-body">
+                                        <strong>Enter Dimensions</strong>
+                                        <p>Add the Length, Width, and Depth of your project area. Switch between shapes using the tabs above.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">3</span>
+                                    <div class="cgs-body">
+                                        <strong>Add a Price <em style="font-weight:400;color:#94a3b8;">(Optional)</em></strong>
+                                        <p>Enter a price per ton or per yard to see a total cost estimate alongside volume and weight.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">4</span>
+                                    <div class="cgs-body">
+                                        <strong>Click Calculate</strong>
+                                        <p>Your results appear here — volume in cubic yards, estimated weight in tons, and total cost.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="results-content hidden" id="resultsContent">
+                        <div class="results-title">Your Results</div>
+                        <div class="result-cards">
+                            <div class="result-card result-card--area">
+                                <div class="result-label">Area</div>
+                                <div class="result-value" id="resArea">—</div>
+                            </div>
+                            <div class="result-card result-card--volume">
+                                <div class="result-label">Volume</div>
+                                <div class="result-value" id="resVolM3">—</div>
+                                <div class="result-sub" id="resVolYd3">—</div>
+                                <div class="result-sub" id="resVolFt3">—</div>
+                            </div>
+                            <div class="result-card result-card--weight">
+                                <div class="result-label">Weight</div>
+                                <div class="result-value" id="resWeightTons">—</div>
+                                <div class="result-sub" id="resWeightKg">—</div>
+                                <div class="result-sub" id="resWeightLb">—</div>
+                            </div>
+                            <div class="result-card result-card--cost hidden" id="costCard">
+                                <div class="result-label">Estimated Cost</div>
+                                <div class="result-value" id="resCost">—</div>
+                            </div>
+                        </div>
+                        <p class="results-note">Results include a 10% waste buffer for compaction and spreading. Always confirm the final amount with your local supplier before ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTRO SECTION ===== -->
+<section class="intro-section">
+    <div class="container">
+        <h2 class="intro-headline">Crushed Gravel Calculator for Yards, Tons, and Cost</h2>
+        <p class="intro-text">Need to know how much crushed gravel to order? A Crushed Gravel Calculator helps you estimate cubic yards, tons, and cost using your project's length, width, and depth. Instead of guessing, you can calculate crushed gravel before calling a supplier — avoiding the cost of a second delivery or paying for material you do not need.</p>
+
+        <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
+            <strong>Quick Answer:</strong> A project area 30 ft long, 10 ft wide, and 4 inches deep needs about <strong>3.67 cubic yards</strong> of crushed gravel. At 1.5 tons per cubic yard, that is roughly <strong>5.5 tons</strong> before extra allowance.
+        </div>
+
+        <p class="intro-text">This is useful for driveways, walkways, patio bases, drainage areas, and landscaping projects. The calculator supports crushed gravel, crusher run, crusher fines, 3/4 gravel, and crushed granite.</p>
+    </div>
+</section>
+
+<!-- ===== HIGHLIGHT STRIP ===== -->
+<section class="highlight-strip">
+    <div class="container">
+        <ul class="highlight-list">
+            <li><span class="highlight-icon">✓</span> Total Square Footage</li>
+            <li><span class="highlight-icon">✓</span> Cubic Feet &amp; Cubic Yards</li>
+            <li><span class="highlight-icon">✓</span> Estimated Tons &amp; Weight</li>
+            <li><span class="highlight-icon">✓</span> Optional Cost Estimate</li>
+            <li><span class="highlight-icon">✓</span> 10% Compaction Buffer</li>
+            <li><span class="highlight-icon">✓</span> Multiple Gravel Types</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===== HOW TO USE ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How to Use the Crushed Gravel Calculator</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Enter your project measurements, choose the depth and gravel type, and get an instant estimate</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-method">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Step-by-Step Instructions
+                </h3>
+                <ol class="order-steps">
+                    <li><strong>Measure the project length</strong> — use feet for the most accurate result.</li>
+                    <li><strong>Measure the project width</strong> — length and width together give your surface area.</li>
+                    <li><strong>Choose the gravel depth in inches</strong> — see the depth guide below for common ranges.</li>
+                    <li><strong>Select the crushed gravel type</strong> — crushed gravel, crusher run, crusher fines, 3/4 gravel, or crushed granite.</li>
+                    <li><strong>Add price per ton</strong> (optional) if you want a cost estimate.</li>
+                    <li><strong>Add a waste buffer</strong> if the gravel will be compacted — the calculator includes 10% automatically.</li>
+                    <li><strong>Review the estimate</strong> in cubic yards and tons, then confirm with your supplier before ordering.</li>
+                </ol>
+
+                <div class="order-example-box" style="margin-top:1.5rem;">
+                    <strong>Measurement Tip:</strong> A small measuring mistake can change the final amount, especially on driveways and wide paths. Measure in feet when possible. Convert depth from inches to feet by dividing by 12 (e.g., 4 inches = 0.33 ft).
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHAT THE CALCULATOR MEASURES ===== -->
+<section class="gravel-types-home-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">What the Calculator Measures</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The calculator uses three main inputs to estimate your crushed gravel order</p>
+        </div>
+
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><polyline points="7 8 3 12 7 16"/><polyline points="17 8 21 12 17 16"/></svg>
+                </div>
+                <h3>Length &amp; Width</h3>
+                <span class="gth-tag">Surface Area</span>
+                <p>Measure both sides of your project in feet. Together they give the total surface area the gravel must cover.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                </div>
+                <h3>Depth</h3>
+                <span class="gth-tag">Gravel Layer</span>
+                <p>How thick the crushed gravel layer will be. Depth changes the order amount more than any other input — choose based on project type.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                </div>
+                <h3>Gravel Type</h3>
+                <span class="gth-tag">Material Density</span>
+                <p>Different crushed gravel types have different densities. The type you select changes the ton estimate — crusher run weighs more than clean crushed stone.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FORMULA SECTION ===== -->
+<section class="formula-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Crushed Gravel Calculator Formula</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The basic formula is based on volume — first calculate cubic feet, then convert to cubic yards</p>
+        </div>
+
+        <div class="formula-layout">
+            <div class="formula-steps-col">
+                <div class="formula-cards">
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 1: Cubic Feet</div>
+                        <div class="formula-card-eq">Length × Width × Depth</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 2: Cubic Yards</div>
+                        <div class="formula-card-eq">Cubic Feet ÷ 27</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 3: Convert Depth</div>
+                        <div class="formula-card-eq">Inches ÷ 12 = Feet</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 4: Estimated Cost</div>
+                        <div class="formula-card-eq">Tons × Price per Ton</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formula-example-col">
+                <div class="formula-example-card">
+                    <div class="formula-example-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Worked Example
+                    </div>
+                    <div class="formula-example-body">
+                        <p class="formula-example-scenario">A project area is <strong>30 ft long</strong> and <strong>10 ft wide</strong>. You want <strong>4 inches</strong> of crushed gravel.</p>
+                        <div class="formula-example-steps">
+                            <div class="formula-example-step">
+                                <span class="fes-num">1</span>
+                                <span class="fes-text">4 ÷ 12 = <strong>0.33 ft</strong> depth</span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">2</span>
+                                <span class="fes-text">30 × 10 = <strong>300 sq ft</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">3</span>
+                                <span class="fes-text">300 × 0.33 = <strong>99 cubic feet</strong></span>
+                            </div>
+                            <div class="formula-example-step fes-result">
+                                <span class="fes-num">4</span>
+                                <span class="fes-text">99 ÷ 27 = <strong>3.67 cubic yards</strong></span>
+                            </div>
+                        </div>
+                        <p class="formula-example-note">Add 10% extra for compaction and spreading loss before ordering.</p>
+                    </div>
+                </div>
+
+                <div class="formula-table-card">
+                    <div class="formula-table-header">Depth Conversion Reference</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Depth (inches)</th><th>Depth (feet)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2 inches</td><td>0.167 ft</td></tr>
+                            <tr><td>3 inches</td><td>0.25 ft</td></tr>
+                            <tr><td>4 inches</td><td>0.333 ft</td></tr>
+                            <tr><td>6 inches</td><td>0.5 ft</td></tr>
+                            <tr><td>8 inches</td><td>0.667 ft</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DEPTH GUIDE ===== -->
+<section class="depth-guide-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Crushed Gravel Depth Guide for Driveways and Paths</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The right depth depends on how the gravel will be used — light landscaping needs less depth than a driveway or base layer</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Project Type</th><th>Common Depth</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Garden path</td><td>2–3 inches</td><td>Good for light foot traffic</td></tr>
+                <tr><td>Walkway</td><td>3–4 inches</td><td>Better support and coverage</td></tr>
+                <tr><td>Patio base</td><td>4–6 inches</td><td>Depends on surface material</td></tr>
+                <tr><td>Driveway top layer</td><td>3–4 inches</td><td>Works over a strong base</td></tr>
+                <tr><td>Driveway base layer</td><td>4–8 inches</td><td>Needed for better support</td></tr>
+                <tr><td>Drainage area</td><td>4–6 inches</td><td>Depends on water flow</td></tr>
+            </tbody>
+        </table>
+
+        <div class="depth-cards">
+            <div class="depth-card">
+                <div class="depth-card-icon">🛤️</div>
+                <div class="depth-card-body">
+                    <h3>Paths &amp; Walkways</h3>
+                    <div class="depth-badge">2–4 inches</div>
+                    <p>Garden paths need 2–3 inches for light foot traffic. Walkways used more frequently benefit from 3–4 inches for better support and coverage.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🚗</div>
+                <div class="depth-card-body">
+                    <h3>Driveway &amp; Base Layers</h3>
+                    <div class="depth-badge">4–8 inches</div>
+                    <p>A top driveway layer may need 3–4 inches over a strong base. A new driveway base or base layer often needs 4–8 inches for soft soil or heavy vehicle use.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">💧</div>
+                <div class="depth-card-body">
+                    <h3>Patio &amp; Drainage</h3>
+                    <div class="depth-badge">4–6 inches</div>
+                    <p>Patio bases need 4–6 inches depending on the surface material above. Drainage areas need 4–6 inches based on water flow and soil conditions.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">For soft soil or heavy vehicle use, a thicker base may be needed. Loose gravel settles after installation — do not choose depth only by price. A thin layer can move, sink, or leave bare spots.</p>
+    </div>
+</section>
+
+<!-- ===== GRAVEL TYPES ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Types of Crushed Gravel</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Choose the right material based on your project — not all crushed gravel serves the same purpose</p>
+        </div>
+
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                </div>
+                <h3>3/4 Crushed Gravel</h3>
+                <span class="gth-tag">Driveways &amp; Drainage</span>
+                <p>Three-quarter inch crushed gravel locks together better than rounded gravel. Used for driveway surfaces, base layers, walkways, drainage areas, shed pads, and patio bases.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </div>
+                <h3>Crusher Run</h3>
+                <span class="gth-tag">Base Layers</span>
+                <p>Also called crush and run. Contains stone dust and fines that compact into a firm base. Used for driveway bases, road base, parking pads, paver bases, and compacted paths.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
+                <h3>Crusher Fines</h3>
+                <span class="gth-tag">Paths &amp; Landscaping</span>
+                <p>Small crushed stone particles that create a smooth walking surface when compacted. Used for walking paths, garden trails, small patio areas, and decorative landscaping.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Crushed Granite</h3>
+                <span class="gth-tag">Decorative &amp; Structural</span>
+                <p>Popular for a clean look and a strong surface. Used for landscape beds, garden paths, patio bases, walkways, driveway surfaces, and decorative gravel areas.</p>
+            </div>
+        </div>
+
+        <div class="order-example-box" style="margin-top:1.75rem;">
+            <strong>Compaction Note:</strong> When using crusher run or crusher fines, add a waste or compaction buffer. Since these materials pack down, the loose amount you order may settle after installation. A 10% to 15% extra buffer is a safe starting point.
+        </div>
+    </div>
+</section>
+
+<!-- ===== COVERAGE TABLE ===== -->
+<section class="coverage-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Crushed Gravel Coverage and Yards-to-Tons Guide</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Coverage depends on depth — the same cubic yard covers more area at 2 inches than at 6 inches</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Depth</th><th>1 Cubic Yard Covers About</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>2 inches</td><td>162 square feet</td></tr>
+                <tr><td>3 inches</td><td>108 square feet</td></tr>
+                <tr><td>4 inches</td><td>81 square feet</td></tr>
+                <tr><td>6 inches</td><td>54 square feet</td></tr>
+                <tr><td>8 inches</td><td>40.5 square feet</td></tr>
+            </tbody>
+        </table>
+
+        <p class="intro-text" style="margin-top:1.75rem;">For yards-to-tons conversion, supplier density matters. Crushed gravel, crusher run, and crushed granite may not weigh the same per cubic yard. Always ask your supplier for their specific material weight per cubic yard before placing a final order.</p>
+    </div>
+</section>
+
+<!-- ===== COST SECTION ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Crushed Gravel Cost Calculator</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Estimate your project budget before ordering — use tons or cubic yards depending on how your supplier sells material</p>
+        </div>
+
+        <div class="formula-cards">
+            <div class="formula-card">
+                <div class="formula-card-label">Cost by Ton</div>
+                <div class="formula-card-eq">Tons × Price / Ton</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Cost by Yard</div>
+                <div class="formula-card-eq">Yards × Price / Yard</div>
+            </div>
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">Gravel price is not the only cost. Your final project cost may also include delivery fees, minimum order fees, fuel surcharges, local taxes, spreading or installation costs, extra material for compaction, and extra material for uneven ground.</p>
+
+        <div class="order-example-box" style="margin-top:1.25rem;">
+            <strong>Price Tip:</strong> Prices can change by location, supplier, stone type, and delivery distance. Use the calculator as a planning tool, then confirm the final price with your supplier. Some suppliers sell by the ton, others by the cubic yard — make sure your estimate matches how they sell the material.
+        </div>
+    </div>
+</section>
+
+<!-- ===== COMMON MISTAKES ===== -->
+<section class="tips-section">
+    <div class="container">
+        <h2 class="section-title">Common Crushed Gravel Calculation Mistakes</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Small mistakes can lead to a wrong estimate — check these before ordering</p>
+        <div class="tips-grid">
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Not Converting Depth Correctly
+                </h3>
+                <ul>
+                    <li>If depth is in inches, divide by 12 before using the formula.</li>
+                    <li>Four inches is not 4 feet — it is 0.33 feet.</li>
+                    <li>This single mistake can make the estimate 12× too high.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                    Forgetting Compaction Loss
+                </h3>
+                <ul>
+                    <li>Crushed gravel and crusher run settle after spreading and compacting.</li>
+                    <li>Ordering the exact loose volume may leave you short.</li>
+                    <li>Add 10% extra to account for settling and compaction.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                    Using the Wrong Gravel Type
+                </h3>
+                <ul>
+                    <li>Crusher run, crusher fines, 3/4 crushed gravel, and crushed granite do not always serve the same purpose.</li>
+                    <li>Choose the material based on your project use — drainage, load-bearing, decorative, or base.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Skipping the Waste Buffer
+                </h3>
+                <ul>
+                    <li>Uneven ground, spreading loss, and compaction all increase the amount needed.</li>
+                    <li>A 5% to 15% buffer helps avoid a short order.</li>
+                    <li>A second delivery costs more than adding extra material upfront.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                    Ordering Without Checking Supplier Units
+                </h3>
+                <ul>
+                    <li>Some suppliers sell by the ton. Others sell by the cubic yard.</li>
+                    <li>Make sure your estimate matches how they sell the material.</li>
+                    <li>Confirm material density before you compare prices.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+    <div class="container">
+        <div class="mid-cta-card">
+            <h2>Ready to Calculate Your Crushed Gravel?</h2>
+            <p>Use the free calculator above to estimate cubic yards, tons, and cost, then confirm final weight, price, and delivery details with your local supplier.</p>
+            <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Common questions about crushed gravel calculations, depth, gravel types, and cost</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do I calculate crushed gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Measure the length, width, and depth of the area. Multiply them to get cubic feet, then divide by 27 to get cubic yards. Use supplier density to convert yards into tons.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much crushed gravel do I need for a driveway?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>It depends on driveway size and depth. A light top layer may need 3–4 inches, while a base layer may need 4–8 inches. Use the calculator above to estimate yards and tons based on your specific dimensions.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    What is the best calculator to calculate crushed gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>The best calculator should show cubic yards, tons, cost, and a waste buffer. It should also let you choose crushed gravel type, depth, and price per ton — just like the calculator on this page.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Is a crush gravel calculator the same as a crushed gravel calculator?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. "Crush gravel calculator" is a common search variation. Most users mean a crushed gravel calculator that estimates crushed stone or crushed rock by yards and tons.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many tons are in a yard of crushed gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>The ton amount depends on gravel density, stone size, and moisture. Crushed stone is often around 1.4–1.5 tons per cubic yard, but the exact figure varies. Ask your supplier for their cubic-yard-to-ton conversion before placing the final order.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Is crusher run the same as crushed gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Not exactly. Crusher run includes crushed stone and stone dust, so it compacts into a firm base. Clean crushed gravel usually has fewer fines and drains better. Choose crusher run when you need a stable compacted base.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    What is the difference between crusher run and crush and run?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>They often refer to the same material. The name changes by region or supplier. Both are used for compacted base layers, driveways, and road base.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How deep should crushed gravel be?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Light paths may need 2–3 inches. Walkways often need 3–4 inches. Driveway top layers typically use 3–4 inches over a strong base. Driveway base layers and drainage areas may need 4–8 inches depending on soil and traffic.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How much does 3/4 crushed gravel cover?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Coverage depends on depth. One cubic yard covers about 81 square feet at 4 inches deep. At 3 inches deep, it covers about 108 square feet. At 2 inches deep, it covers about 162 square feet.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Should I add extra crushed gravel for compaction?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. Adding a 5% to 15% buffer is smart for many projects. A 10% buffer is a common planning number for waste, spreading loss, and compaction. The calculator on this page already includes a 10% buffer in the results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta-section">
+    <div class="container">
+        <h2>Estimate Crushed Gravel Before Ordering</h2>
+        <p>Measure your length, width, and depth. Then calculate cubic yards, estimate tons, and add a buffer for compaction or waste. Confirm the final amount with your local supplier before placing the order.</p>
+        <div class="cta-buttons">
+            <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calculator.js' %}"></script>
+{% endblock %}
