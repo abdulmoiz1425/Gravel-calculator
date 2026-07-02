@@ -39,6 +39,17 @@ def french_drain_calculator(request):
     return render(request, 'french_drain_calculator.html', context)
 
 
+def landscaping_gravel_calculator(request):
+    gravel_types = GravelType.objects.filter(is_active=True)
+    context = {
+        'gravel_types': gravel_types,
+        'default_gravel_name': 'Pea Gravel',
+        'meta_title': 'Landscaping Gravel Calculator – Estimate Yards, Tons & Cost',
+        'meta_description': 'Use our free landscaping gravel calculator to estimate cubic yards, tons, and cost for garden beds, paths, borders, patios, and decorative stone areas. Supports multiple shapes and gravel types.',
+    }
+    return render(request, 'landscaping_gravel_calculator.html', context)
+
+
 def crushed_gravel_calculator(request):
     gravel_types = GravelType.objects.filter(is_active=True)
     context = {

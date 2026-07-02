@@ -9,6 +9,7 @@ class StaticViewSitemap(Sitemap):
         'pea_gravel_calculator': {'priority': 0.8, 'changefreq': 'weekly'},
         'crushed_gravel_calculator': {'priority': 0.8, 'changefreq': 'weekly'},
         'french_drain_calculator': {'priority': 0.8, 'changefreq': 'weekly'},
+        'landscaping_gravel_calculator': {'priority': 0.8, 'changefreq': 'weekly'},
         'about': {'priority': 0.7, 'changefreq': 'monthly'},
         'blog:list': {'priority': 0.8, 'changefreq': 'weekly'},
         'contact': {'priority': 0.5, 'changefreq': 'monthly'},

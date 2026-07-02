@@ -1,0 +1,935 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Landscaping Gravel Calculator – Estimate Yards, Tons &amp; Cost | Gravel Calculator Pro{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "SoftwareApplication"],
+  "name": "Landscaping Gravel Calculator",
+  "url": "{{ request.scheme }}://{{ request.get_host }}/landscaping-gravel-calculator/",
+  "description": "Free landscaping gravel calculator to estimate cubic yards, tons, and cost for garden beds, paths, borders, patios, and decorative stone areas. Supports multiple shapes and gravel types.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Landscaping Gravel",
+  "description": "Use this method to estimate how much gravel you need for a landscaping project.",
+  "step": [
+    {"@type":"HowToStep","position":1,"name":"Measure the length","text":"Measure the longest dimension of your project area in feet."},
+    {"@type":"HowToStep","position":2,"name":"Measure the width","text":"Measure the widest dimension of the area in feet."},
+    {"@type":"HowToStep","position":3,"name":"Choose the depth","text":"Decide how deep the gravel layer should be. Most decorative beds need 2–3 inches; paths need 3–4 inches."},
+    {"@type":"HowToStep","position":4,"name":"Select the gravel type","text":"Choose the gravel type that matches your project. Different materials have different densities and appearances."},
+    {"@type":"HowToStep","position":5,"name":"Add price if needed","text":"Enter a price per cubic yard or ton to get a cost estimate alongside volume and weight."},
+    {"@type":"HowToStep","position":6,"name":"Click Calculate","text":"Your results show cubic yards, tons, and optional cost. Add 5–10% extra for settling and uneven ground."}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How do I calculate the amount of gravel needed for landscaping?","acceptedAnswer":{"@type":"Answer","text":"Measure the length, width, and desired depth of the area. Multiply those figures to get cubic feet, then divide by 27 to get cubic yards. Add 5% to 10% extra for settling and uneven areas."}},
+    {"@type":"Question","name":"How deep should landscaping gravel be?","acceptedAnswer":{"@type":"Answer","text":"Most decorative beds need 2 to 3 inches. Paths and patios often need 3 to 4 inches. Drainage areas may need 4 to 6 inches, depending on the stone and water flow."}},
+    {"@type":"Question","name":"How many square feet does one cubic yard of gravel cover?","acceptedAnswer":{"@type":"Answer","text":"Coverage depends on depth. One cubic yard covers about 162 square feet at 2 inches deep or about 108 square feet at 3 inches deep."}},
+    {"@type":"Question","name":"How is landscape gravel calculated in tons?","acceptedAnswer":{"@type":"Answer","text":"First calculate the volume in cubic yards. Then multiply by the estimated material weight. Your local supplier can confirm the correct weight for the gravel type you choose."}},
+    {"@type":"Question","name":"Is pea gravel good for landscaping?","acceptedAnswer":{"@type":"Answer","text":"Yes. Landscape pea gravel works well for decorative beds, paths, patios, and play areas. It has a smooth surface, but it needs edging because the stones can shift."}},
+    {"@type":"Question","name":"Should I put landscape fabric under gravel?","acceptedAnswer":{"@type":"Answer","text":"Landscape fabric can help separate gravel from soil and reduce weed growth. It works best in decorative beds and low-traffic areas. A compacted base may be more useful under paths and patios."}},
+    {"@type":"Question","name":"Can I use this as a gravel and landscaping stone calculator app?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool works in a mobile browser, so you can use it on a phone or tablet without installing a separate app. Save the page to your home screen for quicker access."}},
+    {"@type":"Question","name":"What size gravel is best for garden beds?","acceptedAnswer":{"@type":"Answer","text":"Small decorative gravel, pea gravel, and river rock are common choices for garden beds. Choose a size that matches your plants, edging, drainage needs, and preferred look."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.scheme }}://{{ request.get_host }}/"},
+    {"@type":"ListItem","position":2,"name":"Landscaping Gravel Calculator","item":"{{ request.scheme }}://{{ request.get_host }}/landscaping-gravel-calculator/"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ===== CALCULATOR SECTION ===== -->
+<section class="calculator-hero" id="calculator">
+    <div class="container">
+        <div class="calculator-header">
+            <h1 class="calculator-title">Landscaping Gravel Calculator</h1>
+            <p class="calculator-subtitle">Estimate cubic yards, tons &amp; cost for garden beds, paths, borders, patios &amp; decorative stone areas — free and instant</p>
+        </div>
+
+        <div class="calculator-card">
+            <!-- Shape Tabs -->
+            <div class="shape-tabs" role="tablist">
+                <button class="shape-tab active" data-shape="rectangle" role="tab" aria-selected="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/></svg>
+                    Rectangle
+                </button>
+                <button class="shape-tab" data-shape="circle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+                    Circle
+                </button>
+                <button class="shape-tab" data-shape="triangle" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 22 21 2 21"/></svg>
+                    Triangle
+                </button>
+                <button class="shape-tab" data-shape="direct" role="tab" aria-selected="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M9 9h6v6H9z"/></svg>
+                    Direct Area
+                </button>
+            </div>
+
+            <div class="calculator-body">
+                <!-- LEFT: Inputs -->
+                <form class="calc-form" id="calcForm" novalidate>
+
+                    <!-- Dimensions -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Dimensions</h3>
+
+                        <!-- Rectangle -->
+                        <div class="shape-inputs" id="inputs-rectangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="length">Length</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="length" name="length" min="0.01" step="any" placeholder="e.g. 18">
+                                        <select id="lengthUnit" name="lengthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-length"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="width">Width</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="width" name="width" min="0.01" step="any" placeholder="e.g. 6">
+                                        <select id="widthUnit" name="widthUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-width"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circle -->
+                        <div class="shape-inputs hidden" id="inputs-circle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="circleMode">Measure by</label>
+                                    <select id="circleMode" class="full-select">
+                                        <option value="radius">Radius</option>
+                                        <option value="diameter">Diameter</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="circleValue" id="circleValueLabel">Radius</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="circleValue" name="circleValue" min="0.01" step="any" placeholder="e.g. 5">
+                                        <select id="circleUnit" name="circleUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-circle"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Triangle -->
+                        <div class="shape-inputs hidden" id="inputs-triangle">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="base">Base</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="base" name="base" min="0.01" step="any" placeholder="e.g. 12">
+                                        <select id="baseUnit" name="baseUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-base"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="triHeight">Height</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="triHeight" name="triHeight" min="0.01" step="any" placeholder="e.g. 8">
+                                        <select id="triHeightUnit" name="triHeightUnit">
+                                            <option value="ft" selected>ft</option>
+                                            <option value="yd">yd</option>
+                                            <option value="in">in</option>
+                                            <option value="m">m</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-triHeight"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Direct Area -->
+                        <div class="shape-inputs hidden" id="inputs-direct">
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label for="area">Area</label>
+                                    <div class="input-with-unit">
+                                        <input type="number" id="area" name="area" min="0.01" step="any" placeholder="e.g. 108">
+                                        <select id="areaUnit" name="areaUnit">
+                                            <option value="ft2" selected>ft²</option>
+                                            <option value="yd2">yd²</option>
+                                            <option value="m2">m²</option>
+                                        </select>
+                                    </div>
+                                    <span class="field-error" id="err-area"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Depth -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Depth</h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="depth">Depth</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="depth" name="depth" min="0.01" step="any" placeholder="e.g. 2">
+                                    <select id="depthUnit" name="depthUnit">
+                                        <option value="in" selected>in</option>
+                                        <option value="ft">ft</option>
+                                        <option value="yd">yd</option>
+                                        <option value="cm">cm</option>
+                                    </select>
+                                </div>
+                                <span class="field-error" id="err-depth"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gravel Type -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Gravel Type</h3>
+                        <div class="form-group">
+                            <label for="gravelType">Select Type</label>
+                            <select id="gravelType" class="full-select">
+                                {% for g in gravel_types %}
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                {% endfor %}
+                                <option value="custom">Custom Density</option>
+                            </select>
+                            <span class="field-error" id="err-gravelType"></span>
+                        </div>
+                        <div class="form-group hidden" id="customDensityGroup">
+                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.50">
+                            <span class="field-error" id="err-customDensity"></span>
+                        </div>
+                    </div>
+
+                    <!-- Price (Optional) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Price <span class="optional-tag">Optional</span></h3>
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" placeholder="e.g. 55.00">
+                                <span class="field-error" id="err-price"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceUnit">Per Unit</label>
+                                <select id="priceUnit" class="full-select">
+                                    <option value="ton">$ / ton</option>
+                                    <option value="m3">$ / m³</option>
+                                    <option value="yd3">$ / yd³</option>
+                                    <option value="ft3">$ / ft³</option>
+                                    <option value="kg">$ / kg</option>
+                                    <option value="lb">$ / lb</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="calc-buttons">
+                        <button type="button" id="calculateBtn" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" id="resetBtn" class="btn btn--outline">Reset</button>
+                    </div>
+                </form>
+
+                <!-- RIGHT: Results -->
+                <div class="calc-results" id="calcResults">
+                    <div class="results-placeholder" id="resultsPlaceholder">
+                        <div class="calc-guide">
+                            <div class="calc-guide-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d5fc4" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                How to use this calculator
+                            </div>
+                            <ol class="calc-guide-steps">
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">1</span>
+                                    <div class="cgs-body">
+                                        <strong>Select a Shape</strong>
+                                        <p>Use the tabs above to choose your project shape — rectangle for beds and borders, circle for fire pit areas, triangle for corner beds, or enter the area directly.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">2</span>
+                                    <div class="cgs-body">
+                                        <strong>Enter Dimensions &amp; Depth</strong>
+                                        <p>Measure after ground preparation, not before removing grass or old mulch. Most decorative beds need 2–3 inches; paths need 3–4 inches.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">3</span>
+                                    <div class="cgs-body">
+                                        <strong>Select Gravel Type</strong>
+                                        <p>Choose the material that matches your project. Different stones have different densities, which affects the ton estimate.</p>
+                                    </div>
+                                </li>
+                                <li class="calc-guide-step">
+                                    <span class="cgs-num">4</span>
+                                    <div class="cgs-body">
+                                        <strong>Click Calculate</strong>
+                                        <p>Results appear here — area, volume in cubic yards, estimated tons, and optional cost. Add 5–10% extra for settling and uneven edges.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="results-content hidden" id="resultsContent">
+                        <div class="results-title">Your Results</div>
+                        <div class="result-cards">
+                            <div class="result-card result-card--area">
+                                <div class="result-label">Area</div>
+                                <div class="result-value" id="resArea">—</div>
+                            </div>
+                            <div class="result-card result-card--volume">
+                                <div class="result-label">Volume</div>
+                                <div class="result-value" id="resVolM3">—</div>
+                                <div class="result-sub" id="resVolYd3">—</div>
+                                <div class="result-sub" id="resVolFt3">—</div>
+                            </div>
+                            <div class="result-card result-card--weight">
+                                <div class="result-label">Weight</div>
+                                <div class="result-value" id="resWeightTons">—</div>
+                                <div class="result-sub" id="resWeightKg">—</div>
+                                <div class="result-sub" id="resWeightLb">—</div>
+                            </div>
+                            <div class="result-card result-card--cost hidden" id="costCard">
+                                <div class="result-label">Estimated Cost</div>
+                                <div class="result-value" id="resCost">—</div>
+                            </div>
+                        </div>
+                        <p class="results-note">Add 5–10% extra material for uneven edges, low spots, and settling. Confirm the final quantity and delivery details with your local supplier before ordering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== INTRO SECTION ===== -->
+<section class="intro-section">
+    <div class="container">
+        <h2 class="intro-headline">Landscaping Gravel Calculator for Garden Beds, Paths &amp; Patios</h2>
+        <p class="intro-text">Planning a garden bed, gravel path, border, or decorative stone area? This landscaping gravel calculator helps you estimate how much material you need before placing an order. Enter your project length, width, depth, gravel type, and price to get the volume in cubic yards, the approximate weight in tons, and the expected material cost.</p>
+
+        <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
+            <strong>Quick Answer:</strong> To calculate landscaping gravel, multiply the project length by width and depth in feet. This gives cubic feet. Divide by 27 to get cubic yards. Then add around <strong>5% to 10% extra</strong> for uneven ground, settling, and small measuring errors.
+        </div>
+
+        <p class="intro-text">Most gravel suppliers sell bulk material by cubic yard or ton. Your final tonnage can change based on the gravel size, stone type, and moisture level — always confirm the final quantity with your local supplier before purchasing.</p>
+    </div>
+</section>
+
+<!-- ===== HIGHLIGHT STRIP ===== -->
+<section class="highlight-strip">
+    <div class="container">
+        <ul class="highlight-list">
+            <li><span class="highlight-icon">✓</span> Area in Square Feet</li>
+            <li><span class="highlight-icon">✓</span> Cubic Feet &amp; Cubic Yards</li>
+            <li><span class="highlight-icon">✓</span> Estimated Tons &amp; Weight</li>
+            <li><span class="highlight-icon">✓</span> Optional Cost Estimate</li>
+            <li><span class="highlight-icon">✓</span> Rectangle, Circle &amp; Triangle</li>
+            <li><span class="highlight-icon">✓</span> Multiple Gravel Types</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===== HOW TO CALCULATE ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How to Calculate Landscaping Gravel</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">A landscape gravel calculator makes the math easier — knowing the basic method helps you check your result before ordering</p>
+        </div>
+
+        <div class="formula-layout">
+            <div class="formula-steps-col">
+                <div class="formula-cards">
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 1: Cubic Feet</div>
+                        <div class="formula-card-eq">Length × Width × Depth</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 2: Cubic Yards</div>
+                        <div class="formula-card-eq">Cubic Feet ÷ 27</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 3: Convert Depth</div>
+                        <div class="formula-card-eq">Inches ÷ 12 = Feet</div>
+                    </div>
+                    <div class="formula-card">
+                        <div class="formula-card-label">Step 4: Add Buffer</div>
+                        <div class="formula-card-eq">Cubic Yards × 1.10</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formula-example-col">
+                <div class="formula-example-card">
+                    <div class="formula-example-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        Example: Garden Bed (18 × 6 ft, 2-inch depth)
+                    </div>
+                    <div class="formula-example-body">
+                        <p class="formula-example-scenario">A rectangular landscape bed is <strong>18 ft long</strong>, <strong>6 ft wide</strong>, with a <strong>2-inch gravel layer</strong>.</p>
+                        <div class="formula-example-steps">
+                            <div class="formula-example-step">
+                                <span class="fes-num">1</span>
+                                <span class="fes-text">Convert depth: 2 ÷ 12 = <strong>0.167 ft</strong></span>
+                            </div>
+                            <div class="formula-example-step">
+                                <span class="fes-num">2</span>
+                                <span class="fes-text">18 × 6 × 0.167 = <strong>~18 cubic feet</strong></span>
+                            </div>
+                            <div class="formula-example-step fes-result">
+                                <span class="fes-num">3</span>
+                                <span class="fes-text">18 ÷ 27 = <strong>~0.67 cubic yards</strong></span>
+                            </div>
+                        </div>
+                        <p class="formula-example-note">Order around <strong>0.75 cubic yards</strong> to allow for uneven ground and edge coverage — the standard 10% buffer keeps you from running short.</p>
+                    </div>
+                </div>
+
+                <div class="formula-table-card">
+                    <div class="formula-table-header">Depth Conversion Reference</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Depth (inches)</th><th>Depth (feet)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 inch</td><td>0.083 ft</td></tr>
+                            <tr><td>2 inches</td><td>0.167 ft</td></tr>
+                            <tr><td>3 inches</td><td>0.250 ft</td></tr>
+                            <tr><td>4 inches</td><td>0.333 ft</td></tr>
+                            <tr><td>6 inches</td><td>0.500 ft</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOW MUCH GRAVEL ===== -->
+<section class="gravel-types-home-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How Much Gravel Do I Need for Landscaping?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Three details determine your order — get all three right before calling a supplier</p>
+        </div>
+
+        <div class="gravel-types-home-grid">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="1"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <h3>Size of the Area</h3>
+                <span class="gth-tag">Length &amp; Width</span>
+                <p>Measure the full coverage area in feet. For irregular shapes, measure the longest length and widest width, then adjust slightly for missing corners.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                </div>
+                <h3>Depth of the Layer</h3>
+                <span class="gth-tag">Inches</span>
+                <p>A shallow layer may work for a decorative border, while a path or patio needs a deeper layer. Too little gravel leaves bare spots after rain or foot traffic.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                </div>
+                <h3>Type of Stone</h3>
+                <span class="gth-tag">Material &amp; Density</span>
+                <p>Different stones have different densities. Fine pea gravel weighs differently than large river rock. Always ask your supplier for the exact tons-per-yard figure.</p>
+            </div>
+        </div>
+
+        <div class="order-example-box" style="margin-top:1.75rem;">
+            <strong>Tip:</strong> For most small projects, add a little extra material. A 5% to 10% buffer is usually enough for uneven edges, low spots, and settling. Ordering too much costs more — but running short means a second delivery charge.
+        </div>
+    </div>
+</section>
+
+<!-- ===== DEPTH GUIDE TABLE ===== -->
+<section class="depth-guide-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Recommended Gravel Depth for Landscaping Projects</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The right depth depends on how people will use the area — measure after preparing the ground, not before</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Landscaping Project</th><th>Suggested Depth</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Decorative garden beds</td><td>2–3 inches</td><td>Helps cover soil and reduce visible weeds</td></tr>
+                <tr><td>Flower bed borders</td><td>2–3 inches</td><td>Works well with edging and landscape fabric</td></tr>
+                <tr><td>Walkways and garden paths</td><td>3–4 inches</td><td>Use a firm base for better stability</td></tr>
+                <tr><td>Patio sitting areas</td><td>3–4 inches</td><td>Compact the base before adding top gravel</td></tr>
+                <tr><td>Dry creek beds</td><td>3–6 inches</td><td>Depth depends on rock size and drainage needs</td></tr>
+                <tr><td>Drainage areas</td><td>4–6 inches</td><td>Larger stone often improves water movement</td></tr>
+                <tr><td>Dog runs</td><td>2–4 inches</td><td>Choose a comfortable, easy-to-clean gravel type</td></tr>
+            </tbody>
+        </table>
+
+        <div class="depth-cards" style="margin-top:2rem;">
+            <div class="depth-card">
+                <div class="depth-card-icon">🌸</div>
+                <div class="depth-card-body">
+                    <h3>Garden Beds &amp; Borders</h3>
+                    <div class="depth-badge">2–3 inches</div>
+                    <p>Decorative garden beds and flower borders need 2–3 inches to cover soil well and reduce weed growth. Pair with landscape fabric for better long-term results.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🛤️</div>
+                <div class="depth-card-body">
+                    <h3>Walkways &amp; Patios</h3>
+                    <div class="depth-badge">3–4 inches</div>
+                    <p>Paths and patio areas need 3–4 inches for stability under foot traffic. Compact the base layer before adding the decorative top layer for best results.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">💧</div>
+                <div class="depth-card-body">
+                    <h3>Drainage &amp; Creek Beds</h3>
+                    <div class="depth-badge">4–6 inches</div>
+                    <p>Drainage areas and dry creek beds need 4–6 inches. Larger stone allows more water movement. Depth varies based on rock size and expected water flow.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="intro-text" style="margin-top:1.75rem;">A thin layer may look fine on day one, but it can shift or expose soil quickly. Measure the depth after preparing the ground, not before removing grass or old mulch.</p>
+    </div>
+</section>
+
+<!-- ===== GRAVEL TYPES TABLE ===== -->
+<section class="order-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Which Gravel Type Is Best for Landscaping?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">The best landscaping gravel depends on appearance, drainage, foot traffic, and maintenance needs</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Gravel Type</th><th>Best For</th><th>Benefits</th><th>Watch Out For</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pea gravel</td>
+                    <td>Paths, patios, play areas, garden beds</td>
+                    <td>Smooth, rounded, and comfortable underfoot</td>
+                    <td>Can move around without edging</td>
+                </tr>
+                <tr>
+                    <td>Crushed gravel</td>
+                    <td>Paths, base layers, drainage</td>
+                    <td>Locks together better than rounded stone</td>
+                    <td>May feel rough when walked on barefoot</td>
+                </tr>
+                <tr>
+                    <td>River rock</td>
+                    <td>Decorative beds and dry creek areas</td>
+                    <td>Natural look and larger stone options</td>
+                    <td>Usually costs more and is less stable for paths</td>
+                </tr>
+                <tr>
+                    <td>Decomposed granite</td>
+                    <td>Walkways and patios</td>
+                    <td>Creates a compact surface when installed correctly</td>
+                    <td>Needs regular maintenance in wet climates</td>
+                </tr>
+                <tr>
+                    <td>Crushed stone</td>
+                    <td>Drainage and structural base</td>
+                    <td>Good drainage and strong support</td>
+                    <td>Appearance may be less decorative</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="gravel-types-home-grid" style="margin-top:2rem;">
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="4"/><circle cx="6" cy="8" r="2"/><circle cx="18" cy="9" r="2.5"/><circle cx="7" cy="16" r="2.5"/></svg>
+                </div>
+                <h3>Pea Gravel</h3>
+                <span class="gth-tag">Soft &amp; Decorative</span>
+                <p>The most popular choice for decorative beds, patios, and play areas. Smooth, comfortable underfoot, and easy to work with. Needs edging to stay in place.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                </div>
+                <h3>River Rock</h3>
+                <span class="gth-tag">Decorative &amp; Natural</span>
+                <p>Large, rounded stones that create a natural look in decorative beds and dry creek areas. More expensive than pea gravel and less stable for walking paths.</p>
+            </div>
+            <div class="gravel-type-home-card">
+                <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </div>
+                <h3>Decomposed Granite</h3>
+                <span class="gth-tag">Compact &amp; Stable</span>
+                <p>Creates a firm, compact walking surface when properly installed. Great for walkways and patios, but needs ongoing maintenance in wet or high-rainfall climates.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CUBIC YARDS VS TONS ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Cubic Yards vs. Tons: What Should You Order?</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Volume and weight are not the same — confirm which unit your supplier uses before ordering</p>
+        </div>
+
+        <p class="intro-text">Landscaping suppliers may quote gravel by cubic yard, ton, bag, or truckload. A cubic yard measures <strong>volume</strong>. A ton measures <strong>weight</strong>. The same cubic yard of gravel can weigh different amounts depending on stone size, density, and moisture. Fine crushed stone may weigh differently from large river rock.</p>
+
+        <div class="formula-cards" style="margin-top:1.75rem;">
+            <div class="formula-card">
+                <div class="formula-card-label">Buy by Volume</div>
+                <div class="formula-card-eq">Use cubic yard result</div>
+            </div>
+            <div class="formula-card">
+                <div class="formula-card-label">Buy by Weight</div>
+                <div class="formula-card-eq">Use ton estimate</div>
+            </div>
+        </div>
+
+        <div class="order-example-box" style="margin-top:1.5rem;">
+            <strong>Before paying:</strong> Ask the supplier which unit they use and whether delivery is included in the price. Your calculator result is an estimate — not a supplier invoice. Always confirm the final quantity and material density before placing the order.
+        </div>
+    </div>
+</section>
+
+<!-- ===== IRREGULAR AREAS ===== -->
+<section class="coverage-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">How to Measure an Irregular Landscaping Area</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Not every landscape project is a perfect rectangle — curved beds and winding paths need a simple estimating approach</p>
+        </div>
+
+        <div class="order-layout">
+            <div class="order-method">
+                <h3 class="order-method-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>
+                    For Curved &amp; Irregular Areas
+                </h3>
+                <ol class="order-steps">
+                    <li>Measure the <strong>longest length</strong> of the curved area.</li>
+                    <li>Measure the <strong>widest width</strong>.</li>
+                    <li>Multiply those measurements to get a rough coverage area.</li>
+                    <li>Reduce the result slightly if large corners are missing.</li>
+                    <li>Add extra gravel for curves, borders, and uneven ground.</li>
+                </ol>
+
+                <h3 class="order-method-title" style="margin-top:1.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>
+                    For Winding Paths
+                </h3>
+                <p class="intro-text">Divide the path into smaller rectangular sections. Calculate each section separately, then add the totals together. This is more accurate than guessing one large area.</p>
+
+                <div class="order-example-box" style="margin-top:1.25rem;">
+                    <strong>Circular Areas:</strong> Use the <strong>Circle</strong> tab in the calculator above. Measure the diameter from one side to the other and enter it as the diameter — the calculator handles the rest.
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size:1.1rem;font-weight:700;color:#1a3a6b;margin:2rem 0 1rem;">Coverage Guide</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Depth</th><th>1 Cubic Yard Covers About</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1 inch</td><td>324 square feet</td></tr>
+                <tr><td>2 inches</td><td>162 square feet</td></tr>
+                <tr><td>3 inches</td><td>108 square feet</td></tr>
+                <tr><td>4 inches</td><td>81 square feet</td></tr>
+                <tr><td>6 inches</td><td>54 square feet</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== COMMON MISTAKES ===== -->
+<section class="tips-section">
+    <div class="container">
+        <h2 class="section-title">Common Landscaping Gravel Ordering Mistakes</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">A good estimate prevents wasted money and an extra delivery charge</p>
+        <div class="tips-grid">
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1" opacity="0.6"/><rect x="2" y="17" width="20" height="4" rx="1" opacity="0.3"/></svg>
+                    Measuring Before Ground Preparation
+                </h3>
+                <ul>
+                    <li>Grass, old mulch, and soil removal can change the final depth.</li>
+                    <li>Measure after preparing the area whenever possible.</li>
+                    <li>A depth measurement taken too early leads to under-ordering.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Forgetting to Convert Inches to Feet
+                </h3>
+                <ul>
+                    <li>Most landscaping depths are in inches, but formulas use feet.</li>
+                    <li>Divide depth in inches by 12 before calculating.</li>
+                    <li>2 inches = 0.167 ft — this single step changes everything.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Ordering the Exact Minimum
+                </h3>
+                <ul>
+                    <li>Gravel does not spread perfectly across every area.</li>
+                    <li>Add 5% to 10% extra for grading, curves, and low spots.</li>
+                    <li>A second delivery costs more than a little extra material upfront.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                    Ignoring Edging
+                </h3>
+                <ul>
+                    <li>Pea gravel and small decorative stone shift without edging.</li>
+                    <li>Stones spread into grass, mulch, or walkways over time.</li>
+                    <li>Plan and budget for edging before ordering material.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+                    Using One Gravel Type for Every Job
+                </h3>
+                <ul>
+                    <li>Rounded stone looks good in beds but shifts under foot traffic.</li>
+                    <li>Crushed gravel provides more stability for paths and base layers.</li>
+                    <li>Match the material to the project, not just the look.</li>
+                </ul>
+            </div>
+            <div class="tips-card">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    Forgetting Delivery Access
+                </h3>
+                <ul>
+                    <li>Check whether the delivery truck can reach your drop location.</li>
+                    <li>Ask your supplier where material will be unloaded.</li>
+                    <li>Confirm how much space the truck needs before scheduling.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COST SECTION ===== -->
+<section class="project-estimates-section">
+    <div class="container">
+        <div class="section-title-wrap">
+            <h2 class="section-title">Estimate Landscaping Gravel Cost Before You Buy</h2>
+            <span class="section-title-accent"></span>
+            <p class="section-subtitle">Material cost is only one part of a landscaping project — plan your full budget before ordering</p>
+        </div>
+
+        <p class="intro-text">Your total project cost may also include delivery, edging, landscape fabric, base stone, tools, and labor. Enter the price per cubic yard or ton into the calculator above to get a quick material estimate, then compare that number with quotes from local suppliers.</p>
+
+        <div class="depth-cards" style="margin-top:1.75rem;">
+            <div class="depth-card">
+                <div class="depth-card-icon">💰</div>
+                <div class="depth-card-body">
+                    <h3>Material Cost</h3>
+                    <p>Enter a price per ton or per cubic yard in the calculator to get an instant estimate. Prices vary by stone type, location, and supplier.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🚛</div>
+                <div class="depth-card-body">
+                    <h3>Delivery &amp; Extras</h3>
+                    <p>Check the delivery charge, minimum order amount, and whether the truck can safely access your drop location. These costs add up quickly on small orders.</p>
+                </div>
+            </div>
+            <div class="depth-card">
+                <div class="depth-card-icon">🧱</div>
+                <div class="depth-card-body">
+                    <h3>Edging &amp; Fabric</h3>
+                    <p>Landscape fabric reduces weed growth in decorative beds. Edging keeps gravel in place. Budget for both before ordering material.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MID-PAGE CTA ===== -->
+<section class="mid-cta-section">
+    <div class="container">
+        <div class="mid-cta-card">
+            <h2>Ready to Estimate Your Landscaping Gravel?</h2>
+            <p>Enter your project dimensions, choose a gravel type, and get an instant estimate in cubic yards, tons, and cost. Add 5–10% extra for settling and uneven ground before ordering.</p>
+            <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Landscaping Gravel Calculator FAQs</h2>
+        <p class="section-subtitle" style="text-align:center;margin-top:0.5rem;margin-bottom:3rem;">Common questions about calculating gravel for landscaping projects</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How do I calculate the amount of gravel needed for landscaping?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Measure the length, width, and desired depth of the area. Multiply those figures to get cubic feet, then divide by 27 to get cubic yards. Add 5% to 10% extra for settling and uneven areas. The calculator above does all of this automatically.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How deep should landscaping gravel be?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Most decorative beds need 2 to 3 inches. Paths and patios often need 3 to 4 inches. Drainage areas may need 4 to 6 inches, depending on the stone and water flow. Measure depth after preparing the ground, not before removing grass or old mulch.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How many square feet does one cubic yard of gravel cover?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Coverage depends on depth. One cubic yard covers about 162 square feet at 2 inches deep, about 108 square feet at 3 inches deep, and about 81 square feet at 4 inches deep.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    How is landscape gravel calculated in tons?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>First calculate the volume in cubic yards. Then multiply by the estimated material weight per cubic yard. Your local supplier can confirm the correct weight for the specific gravel type you choose — it varies by stone size, density, and moisture.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Is pea gravel good for landscaping?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. Pea gravel works well for decorative beds, paths, patios, and play areas. It has a smooth, rounded surface that is comfortable underfoot. The main drawback is that the stones can shift and spread without edging to keep them in place.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Should I put landscape fabric under gravel?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Landscape fabric can help separate gravel from soil and reduce weed growth. It works best in decorative beds and low-traffic areas. A compacted base layer may be more useful under paths and patios where foot traffic causes shifting.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    Can I use this as a gravel and landscaping stone calculator app?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes. This tool works in a mobile browser, so you can use it on a phone or tablet without installing a separate app. Save the page to your home screen for quicker access at the project site.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    What size gravel is best for garden beds?
+                    <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="faq-answer">
+                    <p>Small decorative gravel, pea gravel, and river rock are common choices for garden beds. Choose a size that matches your plants, edging style, drainage needs, and preferred appearance. Smaller stone is easier to spread but needs edging to stay in place.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="final-cta-section">
+    <div class="container">
+        <h2>Get a Better Landscaping Gravel Estimate</h2>
+        <p>Measure after preparing the ground, choose a depth that fits the job, and add a small buffer before ordering. Use the calculator to estimate cubic yards, tons, and cost — then confirm the final quantity and delivery details with your local gravel supplier before purchasing.</p>
+        <div class="cta-buttons">
+            <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calculator.js' %}"></script>
+{% endblock %}
