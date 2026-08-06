@@ -38,7 +38,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             'fields': ('status', 'is_featured', 'publish_date')
         }),
         ('SEO', {
-            'fields': ('meta_title', 'meta_description'),
+            'fields': ('meta_title', 'meta_description', 'focus_keyword_title', 'focus_keyword_description'),
             'classes': ('collapse',),
         }),
         ('Timestamps', {
@@ -46,6 +46,10 @@ class BlogPostAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
+
+    class Media:
+        css = {'all': ('css/blog_seo_admin.css',)}
+        js = ('js/blog_seo_admin.js',)
 
     def thumbnail_preview(self, obj):
         if obj.featured_image:

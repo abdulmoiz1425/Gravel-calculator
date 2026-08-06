@@ -1,0 +1,22 @@
+.seo-counter {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.seo-green {
+    color: #2e7d32;
+}
+
+.seo-orange {
+    color: #e65100;
+}
+
+.seo-red {
+    color: #c62828;
+}
+
+.seo-neutral {
+    color: #888;
+    font-weight: 400;
+}

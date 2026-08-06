@@ -50,8 +50,16 @@ class BlogPost(models.Model):
     publish_date = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    meta_title = models.CharField(max_length=60, blank=True)
-    meta_description = models.CharField(max_length=160, blank=True)
+    meta_title = models.CharField('SEO Title', max_length=70, blank=True)
+    meta_description = models.CharField('Meta Description', max_length=300, blank=True)
+    focus_keyword_title = models.CharField(
+        'Focus Keyword in Title', max_length=100, blank=True,
+        help_text='Checked against the SEO title'
+    )
+    focus_keyword_description = models.CharField(
+        'Focus Keyword in Description', max_length=100, blank=True,
+        help_text='Checked against the meta description'
+    )
     reading_time = models.PositiveIntegerField(default=5, help_text='Estimated reading time in minutes')
 
     class Meta:
