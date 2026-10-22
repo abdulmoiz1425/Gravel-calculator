@@ -1,18 +1,68 @@
-from django.shortcuts import render
+from django.conf import settings
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.core.validators import validate_email
+from django.shortcuts import redirect, render
+
+from .models import ContactMessage
+
+CONTACT_SUBJECTS = {
+    'calculator-question': 'Question about the gravel calculator',
+    'estimate-error': 'Error in volume, weight, or cost estimate',
+    'suggestion': 'Suggestion for a new calculator or guide',
+    'content-issue': 'Incorrect or outdated website content',
+    'privacy-legal': 'Privacy, cookie, or copyright concern',
+    'business': 'Advertising, partnership, or business inquiry',
+    'other': 'Other',
+}
 
 
 def about(request):
     context = {
-        'meta_title': 'About Gravel Calculator Pro – Free Online Gravel Calculator',
-        'meta_description': 'Learn about Gravel Calculator Pro, our mission, and why we built the most accurate free online gravel calculator for contractors and homeowners.',
+        'meta_title': 'About GravelYardCalculator.com',
+        'meta_description': 'Learn what GravelYardCalculator.com helps estimate, how gravel calculations work, and why supplier specifications matter.',
     }
     return render(request, 'about.html', context)
 
 
 def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        subject = request.POST.get('subject', '').strip()
+        body = request.POST.get('message', '').strip()
+        error = None
+        if not name or len(name) > 120:
+            error = 'Please enter your full name.'
+        elif subject not in CONTACT_SUBJECTS:
+            error = 'Please select a subject.'
+        elif not body or len(body) > 5000:
+            error = 'Please enter a message (up to 5,000 characters).'
+        else:
+            try:
+                validate_email(email)
+            except ValidationError:
+                error = 'Please enter a valid email address.'
+        if error:
+            messages.error(request, error)
+            return redirect('contact')
+        msg = ContactMessage.objects.create(
+            full_name=name, email=email, subject=subject, message=body)
+        if settings.CONTACT_NOTIFY_EMAIL:
+            try:
+                send_mail(
+                    f'[Contact] {CONTACT_SUBJECTS[subject]}',
+                    f'From: {name} <{email}>\n\n{body}',
+                    None, [settings.CONTACT_NOTIFY_EMAIL], fail_silently=True)
+            except Exception:
+                pass  # the message is already saved; email is best-effort
+        messages.success(request, 'Thank you. Your message has been received.')
+        return redirect('contact')
+
     context = {
-        'meta_title': 'Contact Gravel Calculator Pro – Get in Touch',
-        'meta_description': 'Contact the Gravel Calculator Pro team. We typically respond within 24 hours.',
+        'meta_title': 'Contact GravelYardCalculator.com',
+        'meta_description': 'Contact GravelYardCalculator.com about calculator issues, website feedback, or questions about the information provided.',
     }
     return render(request, 'contact.html', context)
 

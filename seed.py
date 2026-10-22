@@ -1,6 +1,7 @@
 """
 Run with: python3 seed.py
-Seeds default gravel types and creates a superuser (admin / admin123).
+Seeds default gravel types. To also create an admin user, set
+ADMIN_PASSWORD in the environment (no default password is used).
 """
 import os
 import django
@@ -31,11 +32,11 @@ for g in GRAVEL_TYPES:
     )
     print(f'  {"Created" if created else "Updated"}: {obj.name}')
 
-print('\nCreating superuser (username: admin, password: admin123)...')
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@gravelcalculator.pro', 'admin123')
-    print('  Superuser created.')
+admin_password = os.environ.get('ADMIN_PASSWORD')
+if admin_password and not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', os.environ.get('ADMIN_EMAIL', 'admin@example.com'), admin_password)
+    print('\nSuperuser "admin" created from ADMIN_PASSWORD.')
 else:
-    print('  Superuser already exists.')
+    print('\nNo admin user created (set ADMIN_PASSWORD, or use: python3 manage.py createsuperuser).')
 
 print('\nDone! Start the server with: python3 manage.py runserver')

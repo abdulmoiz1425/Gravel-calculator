@@ -3,4 +3,4 @@ Disallow: /admin/
 Disallow: /ckeditor/
 Allow: /
 
-Sitemap: /sitemap.xml
+Sitemap: https://gravelyardcalculator.com/sitemap.xml

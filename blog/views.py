@@ -16,7 +16,7 @@ def blog_list(request):
         'featured': featured,
         'page_obj': page_obj,
         'total_count': posts.count(),
-        'meta_title': 'Construction & Gravel Blog – Expert Articles | Gravel Calculator Pro',
+        'meta_title': 'Gravel Blog — Guides on Cost, Weight and Coverage',
         'meta_description': 'Expert articles on gravel selection, driveway installation, drainage, cost management, and landscaping tips from Gravel Calculator Pro.',
     }
     return render(request, 'blog/list.html', context)

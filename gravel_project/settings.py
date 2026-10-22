@@ -3,11 +3,18 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-gravel-calculator-pro-change-in-production-xyz123'
+# Production: set DJANGO_SECRET_KEY, DJANGO_DEBUG=0 and DJANGO_ALLOWED_HOSTS in the
+# environment. The fallbacks below keep local development working but are NOT safe
+# for a public site. (Turning DEBUG off also needs static files served by the web
+# server or WhiteNoise.)
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-gravel-calculator-pro-change-in-production-xyz123',
+)
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(',') if h.strip()]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://gravelyardcalculator.com',
@@ -105,3 +112,24 @@ SILENCED_SYSTEM_CHECKS = ['ckeditor.W001']
 # request.scheme, request.is_secure(), and request.build_absolute_uri() report
 # "https" correctly (fixes canonical/og:url/sitemap showing http://).
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Cookie/HTTPS hardening, off by default so local development keeps working.
+# Set DJANGO_SECURE=1 in production (behind HTTPS).
+if os.environ.get('DJANGO_SECURE', '0') == '1':
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000
+
+# Contact form notifications. With no EMAIL_HOST set, messages are still saved in
+# the admin (Contact Messages) and the email is printed to the console.
+CONTACT_NOTIFY_EMAIL = os.environ.get('CONTACT_NOTIFY_EMAIL', '')
+if os.environ.get('EMAIL_HOST'):
+    EMAIL_HOST = os.environ['EMAIL_HOST']
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', '1') == '1'
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

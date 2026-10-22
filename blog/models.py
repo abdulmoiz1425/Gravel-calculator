@@ -77,9 +77,11 @@ class BlogPost(models.Model):
         related = BlogPost.objects.filter(
             status=self.STATUS_PUBLISHED
         ).exclude(pk=self.pk)
-        by_category = related.filter(category=self.category)[:3]
-        if by_category.count() >= 3:
-            return by_category
-        by_tags = related.filter(tags__in=self.tags.all()).distinct()
-        combined = (list(by_category) + [p for p in by_tags if p not in list(by_category)])[:3]
-        return combined
+        picked = []
+        if self.category_id:
+            picked = list(related.filter(category_id=self.category_id)[:3])
+        if len(picked) < 3:
+            seen = {p.pk for p in picked}
+            by_tags = related.filter(tags__in=self.tags.all()).exclude(pk__in=seen).distinct()
+            picked += list(by_tags[:3 - len(picked)])
+        return picked
