@@ -28,8 +28,8 @@
 <!-- ===== HERO ===== -->
 <section class="page-hero">
     <div class="container">
-        <h1>About Gravel Calculator</h1>
-        <p class="page-hero-tagline">A practical online tool built to help homeowners, contractors, landscapers, and property managers estimate gravel for common outdoor projects across the United States.</p>
+        <h1>About GravelYardCalculator.com</h1>
+        <p class="page-hero-tagline">GravelYardCalculator.com helps visitors estimate gravel quantities for common landscaping and construction planning tasks, so they can understand the numbers before comparing supplier quotes.</p>
     </div>
 </section>
 
@@ -40,8 +40,11 @@
             <div class="about-intro-text">
                 <div class="about-section-eyebrow">Welcome</div>
                 <h2>Simpler Gravel Planning Starts Here</h2>
-                <p>Planning a gravel project can be confusing when you need to convert length, width, depth, cubic yards, tons, and cost. Our goal is to make that process easier by giving users a simple way to estimate the amount of gravel needed before contacting a local supplier.</p>
-                <p>Enter the size of the area, choose a gravel depth, select a material type, and receive an estimated result in cubic yards, tons, and cost, all in seconds, no sign-up required.</p>
+                <p>GravelYardCalculator.com helps visitors estimate gravel quantities for common landscaping and construction planning tasks. The website is designed to make basic volume calculations easier to understand before comparing supplier quotes.</p>
+                <h3>What the Calculator Helps You Estimate</h3>
+                <p>Depending on the calculator and the information entered, visitors can estimate gravel volume, weight, bags, and material cost. The base volume calculation uses the measured area and finished depth. Cubic feet can be converted to cubic yards by dividing by 27. Estimated weight requires a bulk-density assumption, and estimated cost depends on the selected quantity and supplier price.</p>
+                <h3>Understanding the Limits of an Estimate</h3>
+                <p>A calculator provides a planning estimate, not a guaranteed delivery quantity or construction specification. Material density varies by product, source, grading, and moisture. Site conditions, excavation, compaction, slopes, and supplier order increments can also affect the final quantity. For the most useful estimate, check the dimensions, depth, material, density assumption, and order unit, then confirm the product specification and delivered quantity with the supplier before purchasing.</p>
                 <div class="about-intro-actions">
                     <a href="{% url 'home' %}#calculator" class="btn btn--primary">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
@@ -439,29 +442,11 @@
                 </div>
                 <div>
                     <h2>Our Commitment</h2>
-                    <p>We are committed to keeping our gravel calculator easy to use, helpful, and clear. We review our tools and content to improve the user experience and make project planning easier.</p>
-                    <p style="margin-top:0.85rem;">We also welcome feedback from users who find an error, need help, or have an idea for a useful gravel-related guide. Your input helps us improve the tool for everyone.</p>
+                    <p>Our goal is to present calculation methods, examples, and practical guidance in a clear format. When a result depends on an assumption, that assumption is identified rather than presented as a universal value.</p>
+                    <p>If you find a calculation problem or a page that needs clarification, use the <a href="{% url 'contact' %}">Contact page</a> to describe the issue and include the relevant page or example.</p>
                 </div>
             </div>
             <div class="commitment-pillars">
-                <div class="cp-item">
-                    <div class="cp-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                    <span>Easy to Use</span>
-                </div>
-                <div class="cp-item">
-                    <div class="cp-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </div>
-                    <span>Helpful &amp; Clear</span>
-                </div>
-                <div class="cp-item">
-                    <div class="cp-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                    </div>
-                    <span>Regularly Reviewed</span>
-                </div>
                 <div class="cp-item">
                     <div class="cp-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -492,7 +477,7 @@
                 </div>
                 <h3>Ready to Estimate Your Project?</h3>
                 <p>Jump straight into the calculator. Enter your dimensions, choose your gravel type, and get instant results in cubic yards, tons, and cost, no account needed.</p>
-                <a href="{% url 'home' %}#calculator" class="btn btn--outline">Use Calculator</a>
+                <a href="{% url 'home' %}#calculator" class="btn btn--outline">Estimate your gravel</a>
             </div>
         </div>
     </div>

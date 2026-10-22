@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Crushed Gravel Calculator – Estimate Yards, Tons &amp; Cost | Gravel Calculator Pro{% endblock %}
+{% block title %}{{ meta_title }}{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -242,14 +242,14 @@
                             <label for="gravelType">Select Type</label>
                             <select id="gravelType" class="full-select">
                                 {% for g in gravel_types %}
-                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} metric t/m³)</option>
                                 {% endfor %}
                                 <option value="custom">Custom Density</option>
                             </select>
                             <span class="field-error" id="err-gravelType"></span>
                         </div>
                         <div class="form-group hidden" id="customDensityGroup">
-                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <label for="customDensity">Custom Density (metric tonnes/m³)</label>
                             <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.75">
                             <span class="field-error" id="err-customDensity"></span>
                         </div>
@@ -352,7 +352,11 @@
                                 <div class="result-value" id="resCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Results include a 10% waste buffer for compaction and spreading. Always confirm the final amount with your local supplier before ordering.</p>
+                        <div class="allowance-box hidden" id="allowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="allowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -364,13 +368,13 @@
 <section class="intro-section">
     <div class="container">
         <h2 class="intro-headline">Crushed Gravel Calculator for Yards, Tons, and Cost</h2>
-        <p class="intro-text">Need to know how much crushed gravel to order? A Crushed Gravel Calculator helps you estimate cubic yards, tons, and cost using your project's length, width, and depth. Instead of guessing, you can calculate crushed gravel before calling a supplier — avoiding the cost of a second delivery or paying for material you do not need.</p>
+        <p class="intro-text">Estimate the amount of crushed gravel needed for a measured project. Enter the area dimensions and planned depth to calculate base volume. You can also estimate weight and material cost using a density and price assumption.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
-            <strong>Quick Answer:</strong> A project area 30 ft long, 10 ft wide, and 4 inches deep needs about <strong>3.67 cubic yards</strong> of crushed gravel. At 1.5 tons per cubic yard, that is roughly <strong>5.5 tons</strong> before extra allowance.
+            <strong>Quick Answer:</strong> A project area 30 ft long, 10 ft wide, and 4 inches deep needs about <strong>3.70 cubic yards</strong> of crushed gravel. At 1.5 tons per cubic yard, that is roughly <strong>5.56 tons</strong> before extra allowance.
         </div>
 
-        <p class="intro-text">This is useful for driveways, walkways, patio bases, drainage areas, and landscaping projects. The calculator supports crushed gravel, crusher run, crusher fines, 3/4 gravel, and crushed granite.</p>
+        <p class="intro-text">Crushed stone, crusher run, and other aggregate products are not identical. Their grading, fines content, drainage characteristics, and bulk density can differ. Confirm the exact product with your supplier before using a weight estimate or choosing material for a structural application.</p>
     </div>
 </section>
 
@@ -409,12 +413,12 @@
                     <li><strong>Choose the gravel depth in inches</strong> — see the depth guide below for common ranges.</li>
                     <li><strong>Select the crushed gravel type</strong> — crushed gravel, crusher run, crusher fines, 3/4 gravel, or crushed granite.</li>
                     <li><strong>Add price per ton</strong> (optional) if you want a cost estimate.</li>
-                    <li><strong>Add a waste buffer</strong> if the gravel will be compacted — the calculator includes 10% automatically.</li>
+                    <li><strong>Add a waste buffer</strong> if the gravel will be compacted — the calculator shows a suggested order with a 10% allowance below the main results.</li>
                     <li><strong>Review the estimate</strong> in cubic yards and tons, then confirm with your supplier before ordering.</li>
                 </ol>
 
                 <div class="order-example-box" style="margin-top:1.5rem;">
-                    <strong>Measurement Tip:</strong> A small measuring mistake can change the final amount, especially on driveways and wide paths. Measure in feet when possible. Convert depth from inches to feet by dividing by 12 (e.g., 4 inches = 0.33 ft).
+                    <strong>Measurement Tip:</strong> A small measuring mistake can change the final amount, especially on driveways and wide paths. Measure in feet when possible. Convert depth from inches to feet by dividing by 12 (e.g., 4 inches = 4 ÷ 12 = 0.3333… ft). Keep the full fraction in your calculation instead of rounding it.
                 </div>
             </div>
         </div>
@@ -501,7 +505,7 @@
                         <div class="formula-example-steps">
                             <div class="formula-example-step">
                                 <span class="fes-num">1</span>
-                                <span class="fes-text">4 ÷ 12 = <strong>0.33 ft</strong> depth</span>
+                                <span class="fes-text">4 ÷ 12 = <strong>0.3333… ft</strong> depth (one-third of a foot)</span>
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">2</span>
@@ -509,14 +513,14 @@
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">3</span>
-                                <span class="fes-text">300 × 0.33 = <strong>99 cubic feet</strong></span>
+                                <span class="fes-text">300 × (4 ÷ 12) = <strong>100 cubic feet</strong></span>
                             </div>
                             <div class="formula-example-step fes-result">
                                 <span class="fes-num">4</span>
-                                <span class="fes-text">99 ÷ 27 = <strong>3.67 cubic yards</strong></span>
+                                <span class="fes-text">100 ÷ 27 = <strong>3.70 cubic yards</strong></span>
                             </div>
                         </div>
-                        <p class="formula-example-note">Add 10% extra for compaction and spreading loss before ordering.</p>
+                        <p class="formula-example-note">The calculator's suggested-order box already adds 10% for compaction and spreading loss. Do not add it a second time.</p>
                     </div>
                 </div>
 
@@ -711,7 +715,7 @@
                 </h3>
                 <ul>
                     <li>If depth is in inches, divide by 12 before using the formula.</li>
-                    <li>Four inches is not 4 feet — it is 0.33 feet.</li>
+                    <li>Four inches is not 4 feet — it is 0.3333… feet (one-third of a foot).</li>
                     <li>This single mistake can make the estimate 12× too high.</li>
                 </ul>
             </div>
@@ -770,6 +774,13 @@
             <p>Use the free calculator above to estimate cubic yards, tons, and cost, then confirm final weight, price, and delivery details with your local supplier.</p>
             <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
         </div>
+    </div>
+</section>
+
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">Crushed Gravel, Crusher Run, and Clean Stone</h2>
+        <p class="intro-text">Crushed gravel is a broad term for angular stone products used in landscaping, paths, and construction. Products that contain stone fines may compact differently from cleaner, open-graded stone.</p><p class="intro-text">Crusher run often contains a mix of crushed stone and smaller particles, which can help it form a compacted base. Cleaner crushed stone may provide more open voids and drainage, depending on the grading. Product names and specifications vary by supplier.</p><p class="intro-text">Choose material according to the intended use, drainage needs, base design, and local requirements. Do not assume all crushed materials share the same density or installation depth. Typical weights are listed in <a href="/blog/gravel-weight-cubic-yard/">the gravel weight per cubic yard guide</a>, and drainage trenches have their own <a href="{% url 'french_drain_calculator' %}">pipe-aware drainage stone estimator</a>.</p>
     </div>
 </section>
 
@@ -866,7 +877,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>Yes. Adding a 5% to 15% buffer is smart for many projects. A 10% buffer is a common planning number for waste, spreading loss, and compaction. The calculator on this page already includes a 10% buffer in the results.</p>
+                    <p>Yes. Adding a 5% to 15% buffer is smart for many projects. A 10% buffer is a common planning number for waste, spreading loss, and compaction. The calculator shows the base quantity first, then a suggested order with a 10% allowance. Use that figure once and do not add the buffer again.</p>
                 </div>
             </div>
         </div>
@@ -880,7 +891,7 @@
         <p>Measure your length, width, and depth. Then calculate cubic yards, estimate tons, and add a buffer for compaction or waste. Confirm the final amount with your local supplier before placing the order.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
-            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Compare all gravel calculators</a>
         </div>
     </div>
 </section>

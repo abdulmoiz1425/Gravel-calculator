@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Pea Gravel Calculator – Tons, Yards, Bags &amp; Cost | Gravel Calculator Pro{% endblock %}
+{% block title %}{{ meta_title }}{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -199,7 +199,11 @@
                                 <div class="result-value" id="pgResCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Results include a 10% extra allowance for settling and spreading. Confirm details with your local supplier before ordering.</p>
+                        <div class="allowance-box hidden" id="pgAllowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="pgAllowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight, bags and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -211,13 +215,13 @@
 <section class="intro-section">
     <div class="container">
         <h2 class="intro-headline">Free Pea Gravel Calculator</h2>
-        <p class="intro-text">Most people order too much or too little pea gravel because they guess the depth. A small mistake in inches can change the total by several bags or even a full cubic yard. Use this Pea Gravel Calculator to estimate how much material you need for a patio, walkway, driveway, playground, dog run, or landscape bed.</p>
+        <p class="intro-text">Estimate pea gravel for a patio, garden path, decorative bed, or other measured area. Enter the dimensions and required depth to calculate volume. You can also estimate weight, bags, and material cost.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
             <strong>Quick Answer:</strong> A 12 ft × 10 ft patio at 3 inches deep needs about <strong>1.11 cubic yards, 1.44 tons, and around 60 half-cubic-foot bags</strong> of pea gravel before extra allowance.
         </div>
 
-        <p class="intro-text">You can use this tool as a pea gravel amount calculator, coverage calculator, cost calculator, weight calculator, tons tool, yards tool, or bags tool. Enter the length, width, and depth to calculate pea gravel in cubic feet, cubic yards, tons, bags, and estimated cost.</p>
+        <p class="intro-text">Pea gravel is rounded and can shift more easily than angular crushed stone. The suitable depth, edging, and base depend on how the area will be used. Confirm the material and installation requirements before ordering.</p>
     </div>
 </section>
 
@@ -564,6 +568,13 @@
     </div>
 </section>
 
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">Pea Gravel: Bags or Bulk Delivery?</h2>
+        <p class="intro-text">Bagged pea gravel can be practical for small projects, repairs, and locations where bulk delivery is difficult. Bulk delivery may be more economical for larger areas, but delivery fees, minimum orders, unloading access, and available quantities can change the final cost.</p><p class="intro-text">Compare the total cost for the quantity you need rather than comparing the unit price alone. For bag estimates, use the volume printed on the bag. For bulk weight estimates, ask the supplier for the material's current density. Prices are covered in the <a href="/blog/pea-gravel-cost/">pea gravel cost guide</a>, and <a href="/blog/what-is-pea-gravel/">what pea gravel is used for</a> explains where it works best.</p>
+    </div>
+</section>
+
 <!-- ===== FAQ ===== -->
 <section class="faq-section">
     <div class="container">
@@ -657,7 +668,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground. Our calculator already includes a 10% extra allowance in the results.</p>
+                    <p>Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground. Our calculator shows the base quantity first, then a suggested order with a 10% allowance. Use that figure once.</p>
                 </div>
             </div>
         </div>
@@ -680,7 +691,7 @@
                 <h3>Gravel Calculator</h3>
                 <span class="gth-tag">General Purpose</span>
                 <p>General-purpose gravel calculator for all gravel types. Compare cubic yards, tons, and cost for crushed stone, river rock, and more material types.</p>
-                <a href="{% url 'home' %}#calculator" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+                <a href="{% url 'home' %}#calculator" class="btn btn--outline" style="margin-top:1rem;">Open the gravel calculator</a>
             </div>
             <div class="gravel-type-home-card">
                 <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
@@ -689,7 +700,7 @@
                 <h3>Driveway Gravel Calculator</h3>
                 <span class="gth-tag">Driveways</span>
                 <p>Estimate gravel for driveways including base layers, sub-base, and heavy vehicle traffic requirements. Better suited for larger driveway projects.</p>
-                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;">Estimate driveway gravel</a>
             </div>
             <div class="gravel-type-home-card">
                 <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
@@ -698,7 +709,7 @@
                 <h3>Landscaping Gravel Calculator</h3>
                 <span class="gth-tag">Landscaping</span>
                 <p>Estimate pea gravel, crushed stone, or river rock for landscape beds, borders, tree rings, and decorative ground cover projects of any size.</p>
-                <a href="{% url 'home' %}#calculator" class="btn btn--outline" style="margin-top:1rem;">Use Calculator</a>
+                <a href="{% url 'landscaping_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;">Estimate landscaping gravel</a>
             </div>
         </div>
     </div>
@@ -711,7 +722,7 @@
         <p>Enter your area size and depth to get instant results in cubic feet, cubic yards, tons, bags, and cost — no account needed.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Use the Pea Gravel Calculator</a>
-            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Try the other gravel calculators</a>
         </div>
     </div>
 </section>
@@ -783,18 +794,20 @@
         var pounds   = tons * 2000;
         var bags     = cubicFt / bagSize;
 
-        // Add 10% extra
-        var cubicFtX = cubicFt * 1.10;
-        var cubicYdX = cubicYd * 1.10;
-        var tonsX    = tons    * 1.10;
-        var poundsX  = pounds  * 1.10;
-        var bagsX    = Math.ceil(bags * 1.10);
+        // Base quantities are shown in the result cards. The 10% allowance is
+        // applied once, to volume, weight, bags and cost, in the box below.
+        var ALLOW    = 1.10;
+        var bagsBase = Math.ceil(bags);
+        var cubicFtX = cubicFt * ALLOW;
+        var cubicYdX = cubicYd * ALLOW;
+        var tonsX    = tons    * ALLOW;
+        var bagsX    = Math.ceil(cubicFtX / bagSize);
 
-        setText('pgResCubicFt',  fmtNum(cubicFtX, 2) + ' ft³');
-        setText('pgResCubicYd',  fmtNum(cubicYdX, 3) + ' yd³');
-        setText('pgResTons',     fmtNum(tonsX, 2) + ' tons');
-        setText('pgResPounds',   fmtNum(poundsX, 0) + ' lbs');
-        setText('pgResBags',     bagsX + ' bags');
+        setText('pgResCubicFt',  fmtNum(cubicFt, 2) + ' ft³');
+        setText('pgResCubicYd',  fmtNum(cubicYd, 3) + ' yd³');
+        setText('pgResTons',     fmtNum(tons, 2) + ' tons');
+        setText('pgResPounds',   fmtNum(pounds, 0) + ' lbs');
+        setText('pgResBags',     bagsBase + ' bags');
 
         // Optional cost
         var priceEl     = document.getElementById('pgPrice');
@@ -802,17 +815,24 @@
         var price       = parseFloat(priceEl ? priceEl.value : '');
         var costCard    = document.getElementById('pgCostCard');
 
+        var allowText = fmtNum(cubicYdX, 2) + ' yd³ (' + fmtNum(cubicFtX, 1) + ' ft³) · ' +
+                        fmtNum(tonsX, 2) + ' tons · ' + bagsX + ' bags';
+
         if (!isNaN(price) && price >= 0 && priceEl && priceEl.value !== '') {
             var unit = priceUnitEl ? priceUnitEl.value : 'ton';
-            var cost = 0;
-            if (unit === 'ton')  cost = tonsX    * price;
-            if (unit === 'yd3')  cost = cubicYdX * price;
-            if (unit === 'bag')  cost = bagsX    * price;
+            var cost = 0, costX = 0;
+            if (unit === 'ton')  { cost = tons * price;      costX = tonsX * price; }
+            if (unit === 'yd3')  { cost = cubicYd * price;   costX = cubicYdX * price; }
+            if (unit === 'bag')  { cost = bagsBase * price;  costX = bagsX * price; }
             setText('pgResCost', '$' + fmtNum(cost, 2));
+            allowText += ' · $' + fmtNum(costX, 2);
             if (costCard) costCard.classList.remove('hidden');
         } else {
             if (costCard) costCard.classList.add('hidden');
         }
+
+        setText('pgAllowanceLines', allowText);
+        document.getElementById('pgAllowanceBox').classList.remove('hidden');
 
         document.getElementById('pgResultsPlaceholder').classList.add('hidden');
         document.getElementById('pgResultsContent').classList.remove('hidden');
@@ -828,6 +848,7 @@
             document.getElementById('pgResultsPlaceholder').classList.remove('hidden');
             var costCard = document.getElementById('pgCostCard');
             if (costCard) costCard.classList.add('hidden');
+            document.getElementById('pgAllowanceBox').classList.add('hidden');
         });
     }
 

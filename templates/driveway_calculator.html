@@ -61,7 +61,7 @@
       "name": "How much gravel do I need for my driveway calculator results?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth, gravel type, and extra material percentage."
+        "text": "The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth and gravel type."
       }
     },
     {
@@ -114,7 +114,7 @@
     },
     {
       "@type": "Question",
-      "name": "Can I use pea gravel for a driveway?",
+      "name": "Is pea gravel a good choice for a sloped driveway?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Pea gravel can work for decorative areas, but it may shift under tires. It is not always the best choice for sloped or heavy-use driveways."
@@ -310,14 +310,14 @@
                             <label for="gravelType">Select Gravel Type</label>
                             <select id="gravelType" class="full-select">
                                 {% for g in gravel_types %}
-                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} metric t/m³)</option>
                                 {% endfor %}
                                 <option value="custom">Custom Density</option>
                             </select>
                             <span class="field-error" id="err-gravelType"></span>
                         </div>
                         <div class="form-group hidden" id="customDensityGroup">
-                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <label for="customDensity">Custom Density (metric tonnes/m³)</label>
                             <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.75">
                             <span class="field-error" id="err-customDensity"></span>
                         </div>
@@ -420,7 +420,11 @@
                                 <div class="result-value" id="resCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Results include a 10% waste buffer, always recommended for real projects.</p>
+                        <div class="allowance-box hidden" id="allowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="allowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -432,13 +436,13 @@
 <section class="intro-section">
     <div class="container">
         <h2 class="intro-headline">Driveway Gravel Calculator for Tons, Yards, and Cost</h2>
-        <p class="intro-text">A gravel driveway looks simple until you need to order material. One wrong number can leave you short, or you may pay for gravel you do not need. A driveway gravel calculator helps you estimate the amount of gravel needed using length, width, depth, gravel type, and price, and shows the result in cubic yards, tons, and estimated cost before you order material.</p>
+        <p class="intro-text">Estimate the amount of gravel needed for a driveway using its length, width, and planned depth. The base calculation gives the volume required for the measured area. The calculator can also estimate weight and material cost using the selected density and price inputs.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;">
             <strong>Quick Answer:</strong> To calculate gravel for driveway projects, multiply the driveway length by the width and depth to get cubic feet. Then divide by 27 to convert cubic feet into cubic yards. To estimate tons, multiply cubic yards by the gravel weight per cubic yard. Add extra material for compaction, waste, and uneven areas.
         </div>
 
-        <p class="intro-text" style="margin-top:1.75rem;">Most driveways need a clear material estimate because gravel is often sold by the ton or cubic yard. You enter your driveway size, select the depth, then add the gravel price if you want a cost estimate. This is helpful for homeowners, DIY users, landscapers, and contractors, and it also helps when comparing supplier quotes. You can use the same calculator for patios, paths, garden areas, and other gravel projects.</p>
+        <p class="intro-text" style="margin-top:1.75rem;">A new driveway and a resurfacing project are not the same. A new driveway may require a designed base and surface layer, while a top-up adds material to an existing surface. Confirm the layer design, drainage, soil condition, and traffic requirements before choosing the final depth.</p>
     </div>
 </section>
 
@@ -519,7 +523,7 @@
                     <li><span class="osl-num">3</span><span>Gravel depth</span></li>
                     <li><span class="osl-num">4</span><span>Gravel type</span></li>
                     <li><span class="osl-num">5</span><span>Price per ton or cubic yard</span></li>
-                    <li><span class="osl-num">6</span><span>Extra percentage for waste or compaction</span></li>
+                    <li><span class="osl-num">6</span><span>Allowance for waste or compaction (the calculator adds 10% in its suggested order)</span></li>
                 </ol>
                 <div class="order-example-box">
                     <strong>Tip:</strong> For a straight driveway, this is simple. For curved or wide driveways, split the area into smaller sections, calculate each part, then add the totals together.
@@ -606,15 +610,15 @@
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">2</span>
-                                <span class="fes-text">4 inches = <strong>0.333 ft</strong></span>
+                                <span class="fes-text">4 inches = <strong>0.3333… ft</strong> (4 ÷ 12)</span>
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">3</span>
-                                <span class="fes-text">400 × 0.333 = <strong>133.2 cubic feet</strong></span>
+                                <span class="fes-text">400 × (4 ÷ 12) = <strong>133.33 cubic feet</strong></span>
                             </div>
                             <div class="formula-example-step fes-result">
                                 <span class="fes-num">4</span>
-                                <span class="fes-text">133.2 ÷ 27 = <strong>about 4.93 cubic yards</strong></span>
+                                <span class="fes-text">133.33 ÷ 27 = <strong>about 4.94 cubic yards</strong></span>
                             </div>
                         </div>
                         <p class="formula-example-note">Add extra material for compaction, waste, and uneven areas before ordering.</p>
@@ -845,6 +849,20 @@
     </div>
 </section>
 
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">Estimating Separate Driveway Layers</h2>
+        <p class="intro-text">A driveway can use one material for its structural base and another for the finished surface. When the design specifies separate layers, calculate each layer independently using its own depth and material assumptions, then add the totals. This calculator estimates one layer at a time.</p><p class="intro-text">For example, a 40-foot by 10-foot driveway with a 6-inch base layer has a base volume of approximately 7.41 cubic yards. A separate 2-inch surface layer over the same area is approximately 2.47 cubic yards. The combined volume is approximately 9.88 cubic yards before any allowance.</p><p class="intro-text">This is a calculation example, not a recommendation for every driveway. Required layers depend on soil, drainage, traffic, climate, material, and local project requirements. Do not treat a thin resurfacing layer as a replacement for a properly designed base.</p>
+    </div>
+</section>
+
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">What to Check in a Driveway Gravel Quote</h2>
+        <p class="intro-text">Compare quotes using the same material type, quantity, and project scope.</p><ul class="intro-text" style="padding-left:1.25rem;margin-top:0.75rem;"><li>Price per ton or cubic yard.</li><li>Material density used for weight conversions.</li><li>Delivery fees and minimum order quantities.</li><li>Whether excavation, grading, drainage, and compaction are included.</li><li>Whether the quote covers the base layer, surface layer, or both.</li><li>Taxes, unloading charges, and additional trips.</li><li>Delivery access and where the truck can unload.</li></ul><p class="intro-text">A lower price per ton does not necessarily mean a lower completed-project cost. Compare delivered or installed totals for the same scope. For price ranges, see the <a href="/blog/gravel-driveway-cost/">gravel driveway cost guide</a>, and for base-layer stone use the <a href="{% url 'crushed_gravel_calculator' %}">crushed gravel calculator</a>.</p>
+    </div>
+</section>
+
 <!-- ===== FAQ ===== -->
 <section class="faq-section">
     <div class="container">
@@ -875,7 +893,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth, gravel type, and extra material percentage, just like the calculator above.</p>
+                    <p>The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth and gravel type, just like the calculator above.</p>
                 </div>
             </div>
             <div class="faq-item">
@@ -934,7 +952,7 @@
             </div>
             <div class="faq-item">
                 <button class="faq-question" aria-expanded="false">
-                    Can I use pea gravel for a driveway?
+                    Is pea gravel a good choice for a sloped driveway?
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
@@ -952,7 +970,7 @@
         <p>A driveway gravel estimate is easier when you know the driveway size, gravel depth, and material type. Measure the area, choose the right depth, calculate cubic yards, then convert the result into tons if your supplier sells by weight.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
-            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore the Main Calculator</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Open the main gravel calculator</a>
         </div>
     </div>
 </section>

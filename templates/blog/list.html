@@ -42,7 +42,7 @@
             <a href="{{ featured.get_absolute_url }}" class="featured-post-link">
                 <div class="featured-post-image">
                     {% if featured.featured_image %}
-                    <img src="{{ featured.featured_image.url }}" alt="{{ featured.title }}" loading="lazy">
+                    <img src="{{ featured.featured_image.url }}" alt="{{ featured.title }}" title="{{ featured.title }}" loading="lazy">
                     {% else %}
                     <div class="image-placeholder">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -88,7 +88,7 @@
             <article class="blog-card">
                 <a href="{{ post.get_absolute_url }}" class="blog-card-image-link">
                     {% if post.featured_image %}
-                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" class="blog-card-image">
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" title="{{ post.title }}" loading="lazy" class="blog-card-image">
                     {% else %}
                     <div class="image-placeholder image-placeholder--card">
                         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#93aec1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>

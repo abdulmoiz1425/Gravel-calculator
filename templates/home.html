@@ -328,14 +328,14 @@
                             <label for="gravelType">Select Gravel Type</label>
                             <select id="gravelType" class="full-select">
                                 {% for g in gravel_types %}
-                                <option value="{{ g.density }}">{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                <option value="{{ g.density }}">{{ g.name }} ({{ g.density }} metric t/m³)</option>
                                 {% endfor %}
                                 <option value="custom">Custom Density</option>
                             </select>
                             <span class="field-error" id="err-gravelType"></span>
                         </div>
                         <div class="form-group hidden" id="customDensityGroup">
-                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <label for="customDensity">Custom Density (metric tonnes/m³)</label>
                             <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.75">
                             <span class="field-error" id="err-customDensity"></span>
                         </div>
@@ -438,7 +438,11 @@
                                 <div class="result-value" id="resCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Results include a 10% waste buffer, always recommended for real projects.</p>
+                        <div class="allowance-box hidden" id="allowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="allowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -450,7 +454,8 @@
 <section class="intro-section">
     <div class="container">
         <h2 class="intro-headline">Free Gravel Calculator</h2>
-        <p class="intro-text">Planning a driveway, patio, walkway, or drain and unsure how much gravel to order? This gravel calculator helps you turn length, width, depth, gravel type, and local price into a clear material estimate before you call a supplier. Made for USA homeowners, DIY users, landscapers, and small contractors who want a fast way to plan gravel projects with less guesswork.</p>
+        <p class="intro-text">Estimate how much gravel your project needs with a free online gravel calculator. Enter your area's dimensions and the planned depth to calculate volume in cubic feet and cubic yards. You can also estimate material weight, and cost when you enter a price.</p>
+        <p class="intro-text">Use the result as a starting point for planning a driveway, garden path, patio, shed base, or landscaping project. Gravel density varies by product, so confirm the material's weight per cubic yard and the supplier's order units before purchasing.</p>
         <div class="intro-use-cases">
             <span class="use-case-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1198,7 +1203,7 @@
     <div class="container">
         <div class="mid-cta-card">
             <h2>Ready to Calculate Your Gravel Needs?</h2>
-            <p>Use the free calculator above to estimate tons, cubic yards, coverage, and cost, then save your estimate for supplier quotes.</p>
+            <p>Use the free calculator above to estimate tons, cubic yards, coverage, and cost, then note your results to compare with supplier quotes.</p>
             <a href="#calculator" class="btn btn--primary btn--lg">Start Calculating Now</a>
         </div>
     </div>
@@ -1271,6 +1276,20 @@
                 <p>Estimate base gravel for driveways, patios, and construction projects.</p>
             </a>
         </div>
+    </div>
+</section>
+
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">What Your Gravel Estimate Means</h2>
+        <p class="intro-text">Volume, weight, and cost describe different parts of a gravel order. Cubic feet and cubic yards describe how much space the material occupies. Tons estimate the material's weight using a density assumption. Material cost depends on the quantity and the supplier's price per ton or cubic yard.</p><p class="intro-text">The same volume of different gravel products can have different weights. Moisture, grading, and the source material can also affect density. Use supplier specifications whenever possible. A calculator cannot determine every site condition: uneven ground, excavation, compaction, drainage, and delivery limits can change the final quantity. Confirm your measurements and quote before ordering. For typical densities, see <a href="/blog/gravel-weight-cubic-yard/">how much a cubic yard of gravel weighs</a>, and for coverage per ton, read <a href="/blog/how-much-does-a-ton-of-gravel-cover/">how far one ton of gravel goes</a>.</p>
+    </div>
+</section>
+
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">Before You Order Gravel</h2>
+        <p class="intro-text">Before placing an order, confirm the length, width, finished depth, material type, and density used for the estimate. Ask the supplier whether the quote is based on cubic yards, US short tons, metric tonnes, bags, or another sales unit.</p><p class="intro-text">Check whether delivery, taxes, minimum order quantities, and unloading are included in the price. The suggested order shown by the calculator already includes a 10% allowance, so do not add the same percentage again. If you are planning a specific job, the <a href="{% url 'driveway_calculator' %}">driveway gravel calculator</a> and <a href="{% url 'french_drain_calculator' %}">French drain gravel calculator</a> use project-specific inputs.</p>
     </div>
 </section>
 

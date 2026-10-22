@@ -20,6 +20,7 @@
 
     // ─── State ────────────────────────────────────────────────────────────────
     let currentShape = 'rectangle';
+    const ALLOWANCE_PCT = 10;
 
     // ─── DOM refs ─────────────────────────────────────────────────────────────
     const shapeTabs        = document.querySelectorAll('.shape-tab');
@@ -94,10 +95,10 @@
         var volumeYd3   = volumeM3 * 1.30795;
         var volumeFt3   = volumeM3 * 35.3147;
 
-        // Weight (density is in tons/m³, ×1000 = kg/m³)
+        // Weight (density is in metric tonnes/m³, ×1000 = kg/m³)
         var weightKg    = volumeM3 * density * 1000;
-        var weightTons  = weightKg / 1000;
         var weightLb    = weightKg * 2.20462;
+        var weightTons  = weightLb / 2000;   // US short tons (matches $/ton prices and page copy)
 
         // Cost
         var cost = null;
@@ -111,6 +112,7 @@
         }
 
         showResults(areaM2, volumeM3, volumeYd3, volumeFt3, weightKg, weightTons, weightLb, cost);
+        showAllowance(volumeYd3, volumeFt3, weightTons, cost);
     }
 
     // ─── Area calculation ─────────────────────────────────────────────────────
@@ -185,8 +187,8 @@
         setText('resVolM3',   fmt(volM3, 3) + ' m³');
         setText('resVolYd3',  fmt(volYd3, 3) + ' yd³');
         setText('resVolFt3',  fmt(volFt3, 2) + ' ft³');
-        setText('resWeightTons', fmt(tons, 2) + ' tons');
-        setText('resWeightKg',   fmt(kg, 0) + ' kg');
+        setText('resWeightTons', fmt(tons, 2) + ' US tons');
+        setText('resWeightKg',   fmt(kg, 0) + ' kg (' + fmt(kg / 1000, 2) + ' metric tonnes)');
         setText('resWeightLb',   fmt(lb, 0) + ' lbs');
 
         if (cost !== null) {
@@ -200,6 +202,20 @@
         resultsContent.classList.remove('hidden');
     }
 
+    // ─── Suggested order quantity (base + allowance) ──────────────────────────
+    // The main results above are the BASE quantity. This box adds the allowance
+    // once, to volume, weight and cost together, so no output mixes bases.
+    function showAllowance(volYd3, volFt3, tons, cost) {
+        var box = document.getElementById('allowanceBox');
+        var lines = document.getElementById('allowanceLines');
+        if (!box || !lines) return;
+        var f = 1 + ALLOWANCE_PCT / 100;
+        var text = fmt(volYd3 * f, 2) + ' yd³ (' + fmt(volFt3 * f, 1) + ' ft³) · ' + fmt(tons * f, 2) + ' tons';
+        if (cost !== null) text += ' · $' + fmt(cost * f, 2);
+        lines.textContent = text;
+        box.classList.remove('hidden');
+    }
+
     // ─── Reset ────────────────────────────────────────────────────────────────
     if (resetBtn) {
         resetBtn.addEventListener('click', function () {
@@ -209,6 +225,8 @@
             resultsContent.classList.add('hidden');
             resultsPlaceholder.classList.remove('hidden');
             costCard.classList.add('hidden');
+            var ab = document.getElementById('allowanceBox');
+            if (ab) ab.classList.add('hidden');
         });
     }
 

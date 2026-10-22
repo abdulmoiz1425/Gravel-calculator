@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}French Drain Gravel Calculator – Estimate Yards and Tons | Gravel Calculator Pro{% endblock %}
+{% block title %}{{ meta_title }}{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -43,7 +43,7 @@
     {"@type":"Question","name":"How do you calculate the amount of gravel needed for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Measure the inside of the trench, not the full yard area. Enter the length, width, and depth into a French drain gravel calculator, then round up to your supplier's order unit."}},
     {"@type":"Question","name":"How do you calculate gravel for French drains with more than one trench?","acceptedAnswer":{"@type":"Answer","text":"Calculate each trench separately, then add the cubic-yard totals together. Include each branch's width and depth because they may not all be the same."}},
     {"@type":"Question","name":"Does a French drain gravel calculator subtract the drain pipe?","acceptedAnswer":{"@type":"Answer","text":"It should. Pipe displacement may be small for short drains, but it matters more on longer trenches or when you want a tighter gravel estimate."}},
-    {"@type":"Question","name":"How much extra gravel should I order?","acceptedAnswer":{"@type":"Answer","text":"A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. Use a larger buffer only when the site is irregular or the supplier has a minimum order size."}},
+    {"@type":"Question","name":"How much extra gravel should I order for a French drain?","acceptedAnswer":{"@type":"Answer","text":"A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. Use a larger buffer only when the site is irregular or the supplier has a minimum order size."}},
     {"@type":"Question","name":"Can I use the calculator for a pipeless French drain?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter the full trench dimensions and leave the pipe diameter field empty. The calculator will estimate the gravel needed to fill a gravel-only drainage trench."}},
     {"@type":"Question","name":"Why does my supplier's ton estimate differ from the calculator?","acceptedAnswer":{"@type":"Answer","text":"Gravel density can change based on stone type, size, moisture, and local material. Use your supplier's stated tons-per-yard factor for the final order."}}
   ]
@@ -227,7 +227,7 @@
                                 <div class="result-label">Gravel Volume</div>
                                 <div class="result-value" id="fdResGravelFt3">—</div>
                                 <div class="result-sub" id="fdResYd3">—</div>
-                                <div class="result-sub" id="fdResYd3Note" style="font-size:0.72rem;color:#94a3b8;margin-top:0.1rem;">incl. 10% waste buffer</div>
+                                <div class="result-sub" id="fdResYd3Note" style="font-size:0.72rem;color:#94a3b8;margin-top:0.1rem;">base volume, pipe volume subtracted</div>
                             </div>
                             <div class="result-card result-card--weight">
                                 <div class="result-label">Estimated Weight</div>
@@ -238,7 +238,11 @@
                                 <div class="result-value" id="fdResCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Results include a 10% waste buffer for trench variation and spreading. Confirm the exact material weight and tons-per-yard factor with your local supplier before ordering.</p>
+                        <div class="allowance-box hidden" id="fdAllowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="fdAllowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -256,7 +260,7 @@
             <strong>Quick Answer:</strong> A French drain gravel calculator estimates how much drainage stone you need from your trench length, width, and gravel depth. For a closer estimate, subtract the space taken by the perforated pipe and add a small waste allowance. Your final result should show <strong>cubic feet, cubic yards, and tons</strong>.
         </div>
 
-        <p class="intro-text">Enter the trench length, width, and depth. Then choose the drainage stone type and include the pipe diameter if needed. The calculator gives you a useful starting estimate — your local supplier can confirm the exact material weight.</p>
+        <p class="intro-text">Enter the trench length, width, and depth. Then choose the drainage stone type and include the pipe diameter if needed. The calculator gives you a useful starting estimate — your local supplier can confirm the exact material weight. If you are choosing stone, the <a href="{% url 'crushed_gravel_calculator' %}">crushed gravel calculator</a> covers drainage rock weights, and the guide to <a href="/blog/calculate-gravel-needed/">calculating gravel needed for any project</a> explains other trench shapes.</p>
     </div>
 </section>
 
@@ -305,7 +309,7 @@
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 2v4"/></svg>
                 </div>
                 <h3>Waste Allowance</h3>
-                <span class="gth-tag">10% Buffer Included</span>
+                <span class="gth-tag">10% Allowance in Suggested Order</span>
                 <p>Trench walls are rarely perfect and some gravel is lost during spreading. A 10% buffer prevents running short before the installation is complete.</p>
             </div>
         </div>
@@ -617,11 +621,11 @@
             </div>
             <div class="faq-item">
                 <button class="faq-question" aria-expanded="false">
-                    How much extra gravel should I order?
+                    How much extra gravel should I order for a French drain?
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. The calculator includes a 10% buffer automatically. Use a larger buffer only when the site is irregular or the supplier has a minimum order size.</p>
+                    <p>A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. The calculator shows the base quantity first, then a suggested order with a 10% allowance. Use that figure once. Use a larger buffer only when the site is irregular or the supplier has a minimum order size.</p>
                 </div>
             </div>
             <div class="faq-item">
@@ -662,7 +666,7 @@
                 <h3>Crushed Gravel Calculator</h3>
                 <span class="gth-tag">Driveways &amp; Bases</span>
                 <p>Need gravel for a compacted base or driveway project? The Crushed Gravel Calculator estimates yards, tons, and cost for crusher run, 3/4 stone, and granite.</p>
-                <a href="{% url 'crushed_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+                <a href="{% url 'crushed_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Estimate crushed stone</a>
             </div>
             <div class="gravel-type-home-card">
                 <div class="gth-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
@@ -671,7 +675,7 @@
                 <h3>Pea Gravel Calculator</h3>
                 <span class="gth-tag">Landscaping &amp; Paths</span>
                 <p>For decorative landscape stone, patios, walkways, and playgrounds. The Pea Gravel Calculator shows cubic yards, tons, bags, and cost.</p>
-                <a href="{% url 'pea_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+                <a href="{% url 'pea_gravel_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Estimate pea gravel and bags</a>
             </div>
             <div class="gravel-type-home-card">
                 <div class="gth-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
@@ -680,7 +684,7 @@
                 <h3>Driveway Gravel Calculator</h3>
                 <span class="gth-tag">Driveways</span>
                 <p>Estimate gravel for any driveway size and depth. Supports multiple gravel types, shape options, and an optional cost estimate.</p>
-                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Use Calculator</a>
+                <a href="{% url 'driveway_calculator' %}" class="btn btn--outline" style="margin-top:1rem;display:inline-block;">Estimate driveway gravel</a>
             </div>
         </div>
     </div>
@@ -693,7 +697,7 @@
         <p>Measure the inside of your trench, use the calculator to estimate cubic yards and tons, and allow a small buffer so the project does not stop short. Confirm utility locations and local drainage requirements before excavation.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
-            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Browse the other gravel calculators</a>
         </div>
     </div>
 </section>
@@ -757,25 +761,28 @@
         var gravelFt3 = Math.max(0, trenchFt3 - pipeFt3);
         var gravelYd3 = gravelFt3 / 27;
 
-        // Add 10% waste buffer
-        var gravelYd3Final = gravelYd3 * 1.10;
-        var gravelFt3Final = gravelYd3Final * 27;
+        // Base quantities go in the result cards; the 10% allowance is applied
+        // once, to volume, weight and cost, in the suggested-order box.
+        var ALLOW = 1.10;
+        var gravelYd3X = gravelYd3 * ALLOW;
+        var gravelFt3X = gravelFt3 * ALLOW;
 
         // Tons
-        var tons = gravelYd3Final * density;
+        var tons  = gravelYd3 * density;
+        var tonsX = tons * ALLOW;
 
         // Cost
-        var cost = null;
+        var cost = null, costX = null;
         if (!isNaN(priceVal) && priceVal > 0) {
-            if (priceUnit === 'ton') cost = tons * priceVal;
-            else if (priceUnit === 'yd3') cost = gravelYd3Final * priceVal;
-            else if (priceUnit === 'ft3') cost = gravelFt3Final * priceVal;
+            if (priceUnit === 'ton')      { cost = tons * priceVal;      costX = tonsX * priceVal; }
+            else if (priceUnit === 'yd3') { cost = gravelYd3 * priceVal; costX = gravelYd3X * priceVal; }
+            else if (priceUnit === 'ft3') { cost = gravelFt3 * priceVal; costX = gravelFt3X * priceVal; }
         }
 
         // Populate results
         v('fdResTrenchFt3').textContent = fmt(trenchFt3) + ' ft³';
-        v('fdResGravelFt3').textContent = fmt(gravelFt3Final) + ' ft³';
-        v('fdResYd3').textContent       = fmt(gravelYd3Final) + ' yd³';
+        v('fdResGravelFt3').textContent = fmt(gravelFt3) + ' ft³';
+        v('fdResYd3').textContent       = fmt(gravelYd3) + ' yd³';
 
         v('fdResTons').textContent = fmt(tons) + ' tons';
 
@@ -785,6 +792,11 @@
         } else {
             v('fdCostCard').classList.add('hidden');
         }
+
+        var allowText = fmt(gravelYd3X) + ' yd³ (' + fmt(gravelFt3X) + ' ft³) · ' + fmt(tonsX) + ' tons';
+        if (costX !== null) allowText += ' · $' + costX.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+        v('fdAllowanceLines').textContent = allowText;
+        v('fdAllowanceBox').classList.remove('hidden');
 
         v('fdResultsPlaceholder').classList.add('hidden');
         v('fdResultsContent').classList.remove('hidden');
@@ -796,6 +808,7 @@
         v('fdResultsContent').classList.add('hidden');
         v('fdResultsPlaceholder').classList.remove('hidden');
         v('fdCostCard').classList.add('hidden');
+        v('fdAllowanceBox').classList.add('hidden');
     });
 }());
 </script>

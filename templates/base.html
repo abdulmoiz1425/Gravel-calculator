@@ -17,7 +17,7 @@
     <meta property="og:description" content="{{ meta_description|default:'Free online gravel calculator for construction and landscaping.' }}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:site_name" content="Gravel Calculator Pro">
-    {% block og_image %}<meta property="og:image" content="{% static 'images/og-default.jpg' %}">{% endblock %}
+    {% block og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.jpg' %}">{% endblock %}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -69,7 +69,7 @@
     <header class="site-header">
         <div class="container header-inner">
             <a href="{% url 'home' %}" class="brand-logo">
-                <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro" class="brand-logo-img">
+                <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro logo" title="Gravel Calculator Pro – back to the gravel calculator" class="brand-logo-img">
             </a>
             <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle navigation">
                 <span></span><span></span><span></span>
@@ -130,7 +130,7 @@
         <div class="container footer-inner">
             <div class="footer-brand">
                 <a href="{% url 'home' %}" class="brand-logo brand-logo--footer">
-                    <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro" class="brand-logo-img brand-logo-img--footer">
+                    <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro logo" title="Gravel Calculator Pro – back to the gravel calculator" class="brand-logo-img brand-logo-img--footer">
                 </a>
                 <p class="footer-tagline">Free online gravel calculator for construction and landscaping projects.</p>
                 <div class="footer-social">

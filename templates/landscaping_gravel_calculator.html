@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Landscaping Gravel Calculator – Estimate Yards, Tons &amp; Cost | Gravel Calculator Pro{% endblock %}
+{% block title %}{{ meta_title }}{% endblock %}
 
 {% block schema %}
 <script type="application/ld+json">
@@ -235,14 +235,14 @@
                             <label for="gravelType">Select Type</label>
                             <select id="gravelType" class="full-select">
                                 {% for g in gravel_types %}
-                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} tons/m³)</option>
+                                <option value="{{ g.density }}"{% if g.name == default_gravel_name %} selected{% endif %}>{{ g.name }} ({{ g.density }} metric t/m³)</option>
                                 {% endfor %}
                                 <option value="custom">Custom Density</option>
                             </select>
                             <span class="field-error" id="err-gravelType"></span>
                         </div>
                         <div class="form-group hidden" id="customDensityGroup">
-                            <label for="customDensity">Custom Density (tons/m³)</label>
+                            <label for="customDensity">Custom Density (metric tonnes/m³)</label>
                             <input type="number" id="customDensity" name="customDensity" min="0.01" step="0.01" placeholder="e.g. 1.50">
                             <span class="field-error" id="err-customDensity"></span>
                         </div>
@@ -345,7 +345,11 @@
                                 <div class="result-value" id="resCost">—</div>
                             </div>
                         </div>
-                        <p class="results-note">Add 5–10% extra material for uneven edges, low spots, and settling. Confirm the final quantity and delivery details with your local supplier before ordering.</p>
+                        <div class="allowance-box hidden" id="allowanceBox">
+                            <div class="allowance-title">Suggested order with 10% allowance</div>
+                            <div class="allowance-line" id="allowanceLines">—</div>
+                        </div>
+                        <p class="results-note">The main results are the base quantity for your measurements. The box above adds a 10% allowance once, to volume, weight and cost together. Do not add extra on top of it. Confirm quantities with your local supplier before ordering.</p>
                     </div>
                 </div>
             </div>
@@ -357,13 +361,13 @@
 <section class="intro-section">
     <div class="container">
         <h2 class="intro-headline">Landscaping Gravel Calculator for Garden Beds, Paths &amp; Patios</h2>
-        <p class="intro-text">Planning a garden bed, gravel path, border, or decorative stone area? This landscaping gravel calculator helps you estimate how much material you need before placing an order. Enter your project length, width, depth, gravel type, and price to get the volume in cubic yards, the approximate weight in tons, and the expected material cost.</p>
+        <p class="intro-text">Estimate the amount of gravel needed for a garden bed, decorative border, landscape path, or other outdoor area. Enter the dimensions and planned depth to calculate the base volume. You can also estimate weight and material cost.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
             <strong>Quick Answer:</strong> To calculate landscaping gravel, multiply the project length by width and depth in feet. This gives cubic feet. Divide by 27 to get cubic yards. Then add around <strong>5% to 10% extra</strong> for uneven ground, settling, and small measuring errors.
         </div>
 
-        <p class="intro-text">Most gravel suppliers sell bulk material by cubic yard or ton. Your final tonnage can change based on the gravel size, stone type, and moisture level — always confirm the final quantity with your local supplier before purchasing.</p>
+        <p class="intro-text">For a useful estimate, measure the prepared area and choose a depth suited to the project. Decorative gravel, pedestrian paths, and structural bases may require different materials and installation methods.</p>
     </div>
 </section>
 
@@ -427,14 +431,14 @@
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">2</span>
-                                <span class="fes-text">18 × 6 × 0.167 = <strong>~18 cubic feet</strong></span>
+                                <span class="fes-text">18 × 6 × (2 ÷ 12) = <strong>18 cubic feet</strong></span>
                             </div>
                             <div class="formula-example-step fes-result">
                                 <span class="fes-num">3</span>
                                 <span class="fes-text">18 ÷ 27 = <strong>~0.67 cubic yards</strong></span>
                             </div>
                         </div>
-                        <p class="formula-example-note">Order around <strong>0.75 cubic yards</strong> to allow for uneven ground and edge coverage — the standard 10% buffer keeps you from running short.</p>
+                        <p class="formula-example-note">With a 10% allowance for uneven ground and edge coverage, the suggested order is <strong>about 0.73 cubic yards</strong> (0.67 × 1.10). Ask your supplier about order increments.</p>
                     </div>
                 </div>
 
@@ -834,6 +838,13 @@
     </div>
 </section>
 
+<section class="intro-section">
+    <div class="container">
+        <h2 class="section-title">Calculating Gravel for Several Landscape Areas</h2>
+        <p class="intro-text">If a project includes multiple beds, borders, or paths, calculate each area separately. Use the correct shape and depth for each section, then add the base volumes together.</p><p class="intro-text">A shallow decorative border may need a different depth from a frequently used path. Avoid applying one depth to the entire property unless that matches the project design. Keep the base volume separate from any additional allowance. This makes the estimate easier to review and compare with supplier quotes. For drainage beds use the <a href="{% url 'french_drain_calculator' %}">French drain trench calculator</a>, and for decorative paths try the <a href="{% url 'pea_gravel_calculator' %}">pea gravel calculator</a>.</p>
+    </div>
+</section>
+
 <!-- ===== FAQ ===== -->
 <section class="faq-section">
     <div class="container">
@@ -846,7 +857,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>Measure the length, width, and desired depth of the area. Multiply those figures to get cubic feet, then divide by 27 to get cubic yards. Add 5% to 10% extra for settling and uneven areas. The calculator above does all of this automatically.</p>
+                    <p>Measure the length, width, and desired depth of the area. Multiply those figures to get cubic feet, then divide by 27 to get cubic yards. The calculator shows the base volume, then a suggested order with a 10% allowance for settling and uneven areas. Use that figure once.</p>
                 </div>
             </div>
             <div class="faq-item">
@@ -923,7 +934,7 @@
         <p>Measure after preparing the ground, choose a depth that fits the job, and add a small buffer before ordering. Use the calculator to estimate cubic yards, tons, and cost — then confirm the final quantity and delivery details with your local gravel supplier before purchasing.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
-            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Explore All Calculators</a>
+            <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">See every gravel calculator</a>
         </div>
     </div>
 </section>
