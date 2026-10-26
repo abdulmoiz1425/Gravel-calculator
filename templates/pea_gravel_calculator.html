@@ -33,7 +33,7 @@
     {"@type":"HowToStep","position":4,"name":"Calculate cubic feet","text":"Multiply length × width × (depth ÷ 12) to get cubic feet."},
     {"@type":"HowToStep","position":5,"name":"Convert to cubic yards","text":"Divide cubic feet by 27 to get cubic yards."},
     {"@type":"HowToStep","position":6,"name":"Estimate tons and bags","text":"Multiply cubic yards by 1.3 for tons. Divide cubic feet by bag size (usually 0.5 cu ft) for the number of bags needed."},
-    {"@type":"HowToStep","position":7,"name":"Add extra material","text":"Add 5–10% extra to account for settling, spreading, and uneven areas."}
+    {"@type":"HowToStep","position":7,"name":"Use the suggested order","text":"Use the suggested order, which adds a 10% allowance for settling, spreading, and uneven areas."}
   ]
 }
 </script>
@@ -43,15 +43,15 @@
   "@type": "FAQPage",
   "mainEntity": [
     {"@type":"Question","name":"How much pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Measure length, width, and depth. Multiply them to get cubic feet, then divide by 27 for cubic yards. Use the calculator to convert yards into tons, bags, and cost."}},
-    {"@type":"Question","name":"How do I calculate pea gravel needed?","acceptedAnswer":{"@type":"Answer","text":"Use this formula: length × width × depth. Keep length and width in feet. Convert depth from inches to feet before multiplying."}},
-    {"@type":"Question","name":"How many tons of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply cubic yards by the tons-per-yard estimate. Many pea gravel estimates use about 1.2 to 1.4 tons per cubic yard, but supplier density can vary."}},
-    {"@type":"Question","name":"How many yards of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply length by width by depth (in feet) to get cubic feet. Then divide cubic feet by 27 to get cubic yards."}},
-    {"@type":"Question","name":"How many bags of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Divide total cubic feet by the bag volume. If one bag holds 0.5 cubic feet and your project needs 20 cubic feet, you need about 40 bags."}},
-    {"@type":"Question","name":"How much does pea gravel cover?","acceptedAnswer":{"@type":"Answer","text":"One cubic yard covers about 162 square feet at 2 inches deep. It covers about 108 square feet at 3 inches deep."}},
-    {"@type":"Question","name":"How deep should pea gravel be?","acceptedAnswer":{"@type":"Answer","text":"Use 1–2 inches for landscape beds, 2–3 inches for patios and paths, and 4–6 inches for driveways and playgrounds."}},
-    {"@type":"Question","name":"Can I use pea gravel for a driveway?","acceptedAnswer":{"@type":"Answer","text":"Yes, but it needs a stable base and good edging. Pea gravel can shift under tires, so it may need more maintenance than crushed stone."}},
-    {"@type":"Question","name":"Is pea gravel cheaper by the bag or bulk?","acceptedAnswer":{"@type":"Answer","text":"Bulk pea gravel is often cheaper for larger jobs. Bags are better for small areas, repairs, and projects where delivery is not practical."}},
-    {"@type":"Question","name":"Should I order extra pea gravel?","acceptedAnswer":{"@type":"Answer","text":"Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground."}}
+    {"@type":"Question","name":"How do I calculate pea gravel needed?","acceptedAnswer":{"@type":"Answer","text":"Use this formula: length × width × depth. Keep length and width in feet. Convert depth from inches to feet before multiplying. Example: 12 ft × 10 ft × 0.25 ft = 30 cubic feet."}},
+    {"@type":"Question","name":"How many tons of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply cubic yards by the tons-per-yard estimate. Many pea gravel estimates use about 1.2 to 1.4 tons per cubic yard, but supplier density can vary. Our calculator uses 1.3 tons per cubic yard as a standard estimate."}},
+    {"@type":"Question","name":"How many yards of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Multiply length by width by depth (in feet) to get cubic feet. Then divide cubic feet by 27 to get cubic yards. For a 12 × 10 ft patio at 3 inches deep: 30 ÷ 27 = 1.11 cubic yards."}},
+    {"@type":"Question","name":"How many bags of pea gravel do I need?","acceptedAnswer":{"@type":"Answer","text":"Divide total cubic feet by the bag volume. If one bag holds 0.5 cubic feet and your project needs 20 cubic feet, you need about 40 bags. Use the volume printed on the bag — not the weight — for best accuracy."}},
+    {"@type":"Question","name":"How much does pea gravel cover?","acceptedAnswer":{"@type":"Answer","text":"One cubic yard covers about 162 square feet at 2 inches deep. It covers about 108 square feet at 3 inches deep. At 1 inch deep, one cubic yard covers about 324 square feet."}},
+    {"@type":"Question","name":"How deep should pea gravel be?","acceptedAnswer":{"@type":"Answer","text":"Use 1–2 inches for landscape beds, 2–3 inches for patios and paths, and 4–6 inches for heavier-use areas like driveways and playgrounds. Always match depth to how the area will be used."}},
+    {"@type":"Question","name":"Can I use pea gravel for a driveway?","acceptedAnswer":{"@type":"Answer","text":"Yes, but it needs a stable base and good edging. Pea gravel can shift under tires and may need more maintenance than crushed stone. Use a compacted base layer under the top layer for best results."}},
+    {"@type":"Question","name":"Is pea gravel cheaper by the bag or bulk?","acceptedAnswer":{"@type":"Answer","text":"Bulk pea gravel is often cheaper for larger jobs. Bags are better for small areas, repairs, and projects where delivery is not practical. For large projects, compare bulk and bag pricing before ordering."}},
+    {"@type":"Question","name":"Should I order extra pea gravel?","acceptedAnswer":{"@type":"Answer","text":"The calculator shows the base quantity first, then a suggested order with a 10% allowance for spreading, settling, and uneven areas. Use that figure once. Curved shapes or rough ground may justify a different allowance, which should replace the 10% rather than add to it."}}
   ]
 }
 </script>
@@ -394,7 +394,7 @@
                     </div>
                     <div class="formula-example-step">
                         <span class="fes-num">2</span>
-                        <span class="fes-text">3 inches = <strong>0.25 ft</strong></span>
+                        <span class="fes-text">3 ÷ 12 = <strong>0.25 ft</strong></span>
                     </div>
                     <div class="formula-example-step">
                         <span class="fes-num">3</span>
@@ -402,18 +402,18 @@
                     </div>
                     <div class="formula-example-step">
                         <span class="fes-num">4</span>
-                        <span class="fes-text">30 ÷ 27 = <strong>1.11 cubic yards</strong></span>
+                        <span class="fes-text">30 ÷ 27 = <strong>1.1111 cubic yards</strong></span>
                     </div>
                     <div class="formula-example-step">
                         <span class="fes-num">5</span>
-                        <span class="fes-text">1.11 × 1.3 = <strong>1.44 tons</strong></span>
+                        <span class="fes-text">1.1111 × 1.3 = <strong>1.4444 US tons</strong> (illustrative density of 1.3 tons/cu yd)</span>
                     </div>
                     <div class="formula-example-step fes-result">
                         <span class="fes-num">6</span>
                         <span class="fes-text">30 ÷ 0.5 = <strong>60 bags</strong> (at 0.5 cu ft per bag)</span>
                     </div>
                 </div>
-                <p class="formula-example-note">Add 5–10% extra for settling, spreading, and uneven areas before ordering.</p>
+                <p class="formula-example-note">The calculator shows these base figures, then a separate suggested order with a 10% allowance: 33 ft³ (1.2222 yd³), 1.5889 tons and 66 bags. Use the suggested figures once.</p>
             </div>
         </div>
 
@@ -538,7 +538,7 @@
                 </h3>
                 <ul>
                     <li>Pea gravel settles after spreading, walking, and weather changes.</li>
-                    <li>Many projects benefit from a 5% to 10% extra allowance.</li>
+                    <li>The suggested order already includes a 10% allowance; use it once.</li>
                     <li>Add more if the ground is uneven or the shape is hard to measure.</li>
                 </ul>
             </div>
@@ -668,7 +668,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>Yes, add about 5% to 10% extra for spreading, settling, and uneven areas. Add more for curved shapes or rough ground. Our calculator shows the base quantity first, then a suggested order with a 10% allowance. Use that figure once.</p>
+                    <p>The calculator shows the base quantity first, then a suggested order with a 10% allowance for spreading, settling, and uneven areas. Use that figure once. Curved shapes or rough ground may justify a different allowance, which should replace the 10% rather than add to it.</p>
                 </div>
             </div>
         </div>

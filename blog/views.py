@@ -17,7 +17,7 @@ def blog_list(request):
         'page_obj': page_obj,
         'total_count': posts.count(),
         'meta_title': 'Gravel Blog — Guides on Cost, Weight and Coverage',
-        'meta_description': 'Expert articles on gravel selection, driveway installation, drainage, cost management, and landscaping tips from Gravel Calculator Pro.',
+        'meta_description': 'Expert articles on gravel selection, driveway installation, drainage, cost management, and landscaping tips from GravelYardCalculator.com.',
     }
     return render(request, 'blog/list.html', context)
 

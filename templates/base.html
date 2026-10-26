@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="zhn7waygfCQGdAqvz_lmSFXPKqXB3bjFuFrXz0EZOmQ" />
-    <title>{% block title %}{{ meta_title|default:"Gravel Calculator Pro – Free Online Calculator" }}{% endblock %}</title>
+    <title>{% block title %}{{ meta_title|default:"GravelYardCalculator.com – Free Online Calculator" }}{% endblock %}</title>
     <meta name="description" content="{{ meta_description|default:'Free online gravel calculator for construction and landscaping projects.' }}">
 
     <!-- Canonical -->
@@ -13,15 +13,15 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ meta_title|default:'Gravel Calculator Pro' }}">
+    <meta property="og:title" content="{{ meta_title|default:'GravelYardCalculator.com' }}">
     <meta property="og:description" content="{{ meta_description|default:'Free online gravel calculator for construction and landscaping.' }}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:site_name" content="Gravel Calculator Pro">
+    <meta property="og:site_name" content="GravelYardCalculator.com">
     {% block og_image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.jpg' %}">{% endblock %}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ meta_title|default:'Gravel Calculator Pro' }}">
+    <meta name="twitter:title" content="{{ meta_title|default:'GravelYardCalculator.com' }}">
     <meta name="twitter:description" content="{{ meta_description|default:'Free online gravel calculator.' }}">
 
     <!-- Favicon -->
@@ -43,7 +43,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Gravel Calculator Pro",
+      "name": "GravelYardCalculator.com",
       "url": "{{ request.scheme }}://{{ request.get_host }}/",
       "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}",
       "sameAs": [
@@ -57,7 +57,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Gravel Calculator Pro",
+      "name": "GravelYardCalculator.com",
       "url": "{{ request.scheme }}://{{ request.get_host }}/"
     }
     </script>
@@ -69,7 +69,7 @@
     <header class="site-header">
         <div class="container header-inner">
             <a href="{% url 'home' %}" class="brand-logo">
-                <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro logo" title="Gravel Calculator Pro – back to the gravel calculator" class="brand-logo-img">
+                <img src="{% static 'images/logo.png' %}" alt="GravelYardCalculator.com logo" title="GravelYardCalculator.com – back to the gravel calculator" class="brand-logo-img">
             </a>
             <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle navigation">
                 <span></span><span></span><span></span>
@@ -130,7 +130,7 @@
         <div class="container footer-inner">
             <div class="footer-brand">
                 <a href="{% url 'home' %}" class="brand-logo brand-logo--footer">
-                    <img src="{% static 'images/logo.png' %}" alt="Gravel Calculator Pro logo" title="Gravel Calculator Pro – back to the gravel calculator" class="brand-logo-img brand-logo-img--footer">
+                    <img src="{% static 'images/logo.png' %}" alt="GravelYardCalculator.com logo" title="GravelYardCalculator.com – back to the gravel calculator" class="brand-logo-img brand-logo-img--footer">
                 </a>
                 <p class="footer-tagline">Free online gravel calculator for construction and landscaping projects.</p>
                 <div class="footer-social">
@@ -157,7 +157,7 @@
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <p>&copy; 2026 Gravel Calculator Pro. All rights reserved. &nbsp;|&nbsp; Developed by <a href="https://binarymindtechnologies.com/" target="_blank" rel="noopener noreferrer" class="footer-dev-link">BinaryMind Technologies</a></p>
+                <p>&copy; 2026 GravelYardCalculator.com. All rights reserved. &nbsp;|&nbsp; Developed by <a href="https://binarymindtechnologies.com/" target="_blank" rel="noopener noreferrer" class="footer-dev-link">BinaryMind Technologies</a></p>
             </div>
         </div>
     </footer>

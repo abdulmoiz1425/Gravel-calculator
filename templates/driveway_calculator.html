@@ -31,7 +31,7 @@
     {"@type": "HowToStep", "position": 5, "name": "Multiply", "text": "Multiply length × width × depth."},
     {"@type": "HowToStep", "position": 6, "name": "Divide for cubic yards", "text": "Divide by 27 for cubic yards."},
     {"@type": "HowToStep", "position": 7, "name": "Convert to tons", "text": "Convert cubic yards to tons if needed."},
-    {"@type": "HowToStep", "position": 8, "name": "Add extra material", "text": "Add extra material for compaction and waste."}
+    {"@type": "HowToStep", "position": 8, "name": "Use the suggested order", "text": "Use the suggested order, which adds a 10% allowance for compaction and waste."}
   ]
 }
 </script>
@@ -53,7 +53,7 @@
       "name": "How much gravel do I need for a driveway?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then add extra for compaction and waste."
+        "text": "It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then use the suggested order, which includes a 10% allowance for compaction and waste."
       }
     },
     {
@@ -61,7 +61,7 @@
       "name": "How much gravel do I need for my driveway calculator results?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth and gravel type."
+        "text": "The result should show cubic yards, tons, and estimated cost. It should also let you adjust depth and gravel type, just like the calculator above."
       }
     },
     {
@@ -439,7 +439,7 @@
         <p class="intro-text">Estimate the amount of gravel needed for a driveway using its length, width, and planned depth. The base calculation gives the volume required for the measured area. The calculator can also estimate weight and material cost using the selected density and price inputs.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;">
-            <strong>Quick Answer:</strong> To calculate gravel for driveway projects, multiply the driveway length by the width and depth to get cubic feet. Then divide by 27 to convert cubic feet into cubic yards. To estimate tons, multiply cubic yards by the gravel weight per cubic yard. Add extra material for compaction, waste, and uneven areas.
+            <strong>Quick Answer:</strong> To calculate gravel for driveway projects, multiply the driveway length by the width and depth to get cubic feet. Then divide by 27 to convert cubic feet into cubic yards. To estimate tons, multiply cubic yards by the gravel weight per cubic yard. The calculator shows the base volume and a separate suggested order with a 10% allowance for compaction, waste, and uneven areas; use that figure once.
         </div>
 
         <p class="intro-text" style="margin-top:1.75rem;">A new driveway and a resurfacing project are not the same. A new driveway may require a designed base and surface layer, while a top-up adds material to an existing surface. Confirm the layer design, drainage, soil condition, and traffic requirements before choosing the final depth.</p>
@@ -610,7 +610,7 @@
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">2</span>
-                                <span class="fes-text">4 inches = <strong>0.3333… ft</strong> (4 ÷ 12)</span>
+                                <span class="fes-text">4 ÷ 12 = <strong>0.3333… ft</strong> (use the full value, not 0.33)</span>
                             </div>
                             <div class="formula-example-step">
                                 <span class="fes-num">3</span>
@@ -618,10 +618,10 @@
                             </div>
                             <div class="formula-example-step fes-result">
                                 <span class="fes-num">4</span>
-                                <span class="fes-text">133.33 ÷ 27 = <strong>about 4.94 cubic yards</strong></span>
+                                <span class="fes-text">133.33 ÷ 27 = <strong>4.9383 cubic yards</strong> (base volume)</span>
                             </div>
                         </div>
-                        <p class="formula-example-note">Add extra material for compaction, waste, and uneven areas before ordering.</p>
+                        <p class="formula-example-note">The calculator shows the base volume (133.33 ft³ = 4.9383 yd³) and, separately, the suggested order with a 10% allowance (146.67 ft³ = 5.4321 yd³). Use the suggested figure once.</p>
                     </div>
                 </div>
 
@@ -747,7 +747,7 @@
                             <div class="coverage-sqft" style="font-weight:600;">Cubic yards × price per cubic yard = material cost</div>
                         </div>
                     </div>
-                    <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">This does not include labor, grading, base prep, drainage work, or equipment rental. Add extra gravel for compaction, spreading loss, uneven ground, low spots, and future touch-ups.</p>
+                    <p style="color:#64748b; font-size:0.85rem; margin-top:1rem;">This does not include labor, grading, base prep, drainage work, or equipment rental. The suggested order already includes a 10% allowance for compaction, spreading loss, and uneven ground.</p>
                 </div>
             </div>
         </div>
@@ -851,8 +851,9 @@
 
 <section class="intro-section">
     <div class="container">
-        <h2 class="section-title">Estimating Separate Driveway Layers</h2>
-        <p class="intro-text">A driveway can use one material for its structural base and another for the finished surface. When the design specifies separate layers, calculate each layer independently using its own depth and material assumptions, then add the totals. This calculator estimates one layer at a time.</p><p class="intro-text">For example, a 40-foot by 10-foot driveway with a 6-inch base layer has a base volume of approximately 7.41 cubic yards. A separate 2-inch surface layer over the same area is approximately 2.47 cubic yards. The combined volume is approximately 9.88 cubic yards before any allowance.</p><p class="intro-text">This is a calculation example, not a recommendation for every driveway. Required layers depend on soil, drainage, traffic, climate, material, and local project requirements. Do not treat a thin resurfacing layer as a replacement for a properly designed base.</p>
+        <h2 class="section-title">Important Driveway Planning Note</h2>
+        <p class="intro-text">The amount of gravel required depends on the driveway's dimensions, the selected material, the intended use, and the planned construction method. A volume calculator estimates material quantity; it does not determine a suitable driveway design or universal base-layer thickness.</p>
+        <p class="intro-text">If your project requires multiple layers, calculate each layer using its own dimensions and depth, then add the quantities together. This calculator estimates one layer at a time, so run it once for each layer.</p><p class="intro-text">For example, a 40-foot by 10-foot driveway with a 6-inch base layer has a base volume of approximately 7.41 cubic yards. A separate 2-inch surface layer over the same area is approximately 2.47 cubic yards. The combined volume is approximately 9.88 cubic yards before any allowance.</p><p class="intro-text">This is a calculation example, not a recommendation for every driveway. Required layers depend on soil, drainage, traffic, climate, material, and local project requirements. Do not treat a thin resurfacing layer as a replacement for a properly designed base.</p>
     </div>
 </section>
 
@@ -884,7 +885,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then add extra for compaction and waste.</p>
+                    <p>It depends on the driveway size and depth. A deeper layer needs more gravel. Use length, width, and depth to estimate cubic yards, then use the suggested order, which includes a 10% allowance for compaction and waste.</p>
                 </div>
             </div>
             <div class="faq-item">

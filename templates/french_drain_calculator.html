@@ -29,7 +29,7 @@
     {"@type":"HowToStep","position":4,"name":"Calculate cubic feet","text":"Multiply length × width × depth to find cubic feet."},
     {"@type":"HowToStep","position":5,"name":"Subtract pipe space","text":"If your French drain includes a perforated pipe, subtract the pipe's cylindrical volume for a closer estimate."},
     {"@type":"HowToStep","position":6,"name":"Convert to cubic yards","text":"Divide the result by 27 to get cubic yards."},
-    {"@type":"HowToStep","position":7,"name":"Add waste allowance","text":"Add a 5% to 10% waste allowance for trench variation and spreading."},
+    {"@type":"HowToStep","position":7,"name":"Use the suggested order","text":"Use the suggested order, which adds a 10% waste allowance for trench variation and spreading."},
     {"@type":"HowToStep","position":8,"name":"Convert to tons","text":"Multiply cubic yards by your supplier's material density factor to estimate tons."}
   ]
 }
@@ -39,13 +39,13 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"How do you calculate gravel for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then add a small waste allowance."}},
-    {"@type":"Question","name":"How do you calculate the amount of gravel needed for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Measure the inside of the trench, not the full yard area. Enter the length, width, and depth into a French drain gravel calculator, then round up to your supplier's order unit."}},
-    {"@type":"Question","name":"How do you calculate gravel for French drains with more than one trench?","acceptedAnswer":{"@type":"Answer","text":"Calculate each trench separately, then add the cubic-yard totals together. Include each branch's width and depth because they may not all be the same."}},
-    {"@type":"Question","name":"Does a French drain gravel calculator subtract the drain pipe?","acceptedAnswer":{"@type":"Answer","text":"It should. Pipe displacement may be small for short drains, but it matters more on longer trenches or when you want a tighter gravel estimate."}},
-    {"@type":"Question","name":"How much extra gravel should I order for a French drain?","acceptedAnswer":{"@type":"Answer","text":"A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. Use a larger buffer only when the site is irregular or the supplier has a minimum order size."}},
-    {"@type":"Question","name":"Can I use the calculator for a pipeless French drain?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter the full trench dimensions and leave the pipe diameter field empty. The calculator will estimate the gravel needed to fill a gravel-only drainage trench."}},
-    {"@type":"Question","name":"Why does my supplier's ton estimate differ from the calculator?","acceptedAnswer":{"@type":"Answer","text":"Gravel density can change based on stone type, size, moisture, and local material. Use your supplier's stated tons-per-yard factor for the final order."}}
+    {"@type":"Question","name":"How do you calculate gravel for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then use the suggested order, which adds a 10% waste allowance. The calculator above handles all these steps automatically."}},
+    {"@type":"Question","name":"How do you calculate the amount of gravel needed for a French drain?","acceptedAnswer":{"@type":"Answer","text":"Measure the inside of the trench, not the full yard area. Enter the length, width, and depth into the French drain gravel calculator above, then round up to your supplier's order unit."}},
+    {"@type":"Question","name":"How do you calculate gravel for French drains with more than one trench?","acceptedAnswer":{"@type":"Answer","text":"Calculate each trench separately, then add the cubic-yard totals together. Include each branch's individual width and depth because they may not all be the same size."}},
+    {"@type":"Question","name":"Does a French drain gravel calculator subtract the drain pipe?","acceptedAnswer":{"@type":"Answer","text":"It should — and this calculator does. Pipe displacement may be small for short drains, but it matters more on longer trenches or when you want a tighter gravel estimate. Enter the pipe diameter in the Perforated Pipe field to subtract it automatically."}},
+    {"@type":"Question","name":"How much extra gravel should I order for a French drain?","acceptedAnswer":{"@type":"Answer","text":"The calculator shows the base quantity first, then a suggested order with a 10% allowance for normal trench variation, spreading, and uneven ground. Use that suggested figure once. If the site is irregular or the supplier has a minimum order size, choose a different allowance and apply it to the base quantity instead of adding to the suggested order."}},
+    {"@type":"Question","name":"Can I use the calculator for a pipeless French drain?","acceptedAnswer":{"@type":"Answer","text":"Yes. Enter the full trench dimensions and leave the Pipe Diameter field empty. The calculator will estimate the gravel needed to fill a gravel-only drainage trench without subtracting any pipe volume."}},
+    {"@type":"Question","name":"Why does my supplier's ton estimate differ from the calculator?","acceptedAnswer":{"@type":"Answer","text":"Gravel density can change based on stone type, size, moisture, and local material. The calculator uses common planning densities. Always use your supplier's stated tons-per-yard factor for the final order."}}
   ]
 }
 </script>
@@ -257,7 +257,7 @@
         <p class="intro-text">Ordering gravel for a drainage trench can be harder than it looks. A few extra inches of depth or a longer trench can change your order by a full cubic yard. Use this French Drain Gravel Calculator to turn your measurements into a clear estimate before contacting a gravel supplier.</p>
 
         <div class="order-example-box" style="margin-top:1.75rem;margin-bottom:1.75rem;">
-            <strong>Quick Answer:</strong> A French drain gravel calculator estimates how much drainage stone you need from your trench length, width, and gravel depth. For a closer estimate, subtract the space taken by the perforated pipe and add a small waste allowance. Your final result should show <strong>cubic feet, cubic yards, and tons</strong>.
+            <strong>Quick Answer:</strong> A French drain gravel calculator estimates how much drainage stone you need from your trench length, width, and gravel depth. For a closer estimate, subtract the space taken by the perforated pipe and use the suggested order with a 10% waste allowance. Your final result should show <strong>cubic feet, cubic yards, and tons</strong>.
         </div>
 
         <p class="intro-text">Enter the trench length, width, and depth. Then choose the drainage stone type and include the pipe diameter if needed. The calculator gives you a useful starting estimate — your local supplier can confirm the exact material weight. If you are choosing stone, the <a href="{% url 'crushed_gravel_calculator' %}">crushed gravel calculator</a> covers drainage rock weights, and the guide to <a href="/blog/calculate-gravel-needed/">calculating gravel needed for any project</a> explains other trench shapes.</p>
@@ -340,7 +340,7 @@
                     <li><strong>Multiply length × width × depth</strong> to find cubic feet.</li>
                     <li><strong>Subtract the pipe space</strong> if your installation includes a perforated pipe. Enter the pipe diameter to have this done automatically.</li>
                     <li><strong>Divide by 27</strong> to convert cubic feet into cubic yards.</li>
-                    <li><strong>Add a 5% to 10% waste allowance</strong> for normal trench variation, spreading, and uneven ground.</li>
+                    <li><strong>Use the suggested order</strong>, which adds a 10% waste allowance for normal trench variation, spreading, and uneven ground.</li>
                     <li><strong>Convert cubic yards into tons</strong> using your supplier's material density factor.</li>
                 </ol>
 
@@ -532,10 +532,10 @@
             <div class="tips-card">
                 <h3>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Add a Waste Buffer
+                    Use the Suggested Order
                 </h3>
                 <ul>
-                    <li>Add a 5% to 10% buffer for normal trench variation and spreading loss.</li>
+                    <li>Use the suggested order (base + 10%) once for trench variation and spreading loss.</li>
                     <li>Round up to the supplier's available delivery unit.</li>
                     <li>Check whether the delivery truck can safely access your site.</li>
                 </ul>
@@ -589,7 +589,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then add a small waste allowance. The calculator above handles all these steps automatically.</p>
+                    <p>Multiply trench length × width × gravel depth to get cubic feet. Subtract pipe volume when needed, divide by 27 for cubic yards, then use the suggested order, which adds a 10% waste allowance. The calculator above handles all these steps automatically.</p>
                 </div>
             </div>
             <div class="faq-item">
@@ -625,7 +625,7 @@
                     <svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="faq-answer">
-                    <p>A 5% to 10% buffer is a sensible allowance for normal trench variation, spreading, and uneven ground. The calculator shows the base quantity first, then a suggested order with a 10% allowance. Use that figure once. Use a larger buffer only when the site is irregular or the supplier has a minimum order size.</p>
+                    <p>The calculator shows the base quantity first, then a suggested order with a 10% allowance for normal trench variation, spreading, and uneven ground. Use that suggested figure once. If the site is irregular or the supplier has a minimum order size, choose a different allowance and apply it to the base quantity instead of adding to the suggested order.</p>
                 </div>
             </div>
             <div class="faq-item">
@@ -694,7 +694,7 @@
 <section class="final-cta-section">
     <div class="container">
         <h2>Plan Your French Drain Gravel Order With Confidence</h2>
-        <p>Measure the inside of your trench, use the calculator to estimate cubic yards and tons, and allow a small buffer so the project does not stop short. Confirm utility locations and local drainage requirements before excavation.</p>
+        <p>Measure the inside of your trench, use the calculator to estimate cubic yards and tons, and use the suggested order so the project does not stop short. Confirm utility locations and local drainage requirements before excavation.</p>
         <div class="cta-buttons">
             <a href="#calculator" class="btn btn--primary btn--lg">Calculate Gravel Now</a>
             <a href="{% url 'home' %}" class="btn btn--outline-white btn--lg">Browse the other gravel calculators</a>

@@ -69,32 +69,32 @@ def contact(request):
 
 def privacy(request):
     context = {
-        'meta_title': 'Privacy Policy – Gravel Calculator Pro',
-        'meta_description': 'Read the Gravel Calculator Pro privacy policy. Learn how we protect your data and what information we collect.',
+        'meta_title': 'Privacy Policy — GravelYardCalculator.com',
+        'meta_description': 'Read how GravelYardCalculator.com handles contact information, calculator inputs, cookies, and other website data.',
     }
     return render(request, 'privacy.html', context)
 
 
 def disclaimer(request):
     context = {
-        'meta_title': 'Disclaimer – Gravel Calculator Pro',
-        'meta_description': 'Read the Gravel Calculator Pro disclaimer. Gravel calculations are estimates only. Always verify quantities with your supplier before purchasing.',
+        'meta_title': 'Disclaimer — GravelYardCalculator.com',
+        'meta_description': 'Read the GravelYardCalculator.com disclaimer. Gravel calculations are estimates only. Always verify quantities with your supplier before purchasing.',
     }
     return render(request, 'disclaimer.html', context)
 
 
 def cookie_policy(request):
     context = {
-        'meta_title': 'Cookie Policy – Gravel Calculator Pro',
-        'meta_description': 'Learn how Gravel Calculator Pro uses cookies and similar technologies to improve your experience.',
+        'meta_title': 'Cookie Policy — GravelYardCalculator.com',
+        'meta_description': 'See which cookies GravelYardCalculator.com sets, which it does not use, and how to control cookies in your browser.',
     }
     return render(request, 'cookie_policy.html', context)
 
 
 def terms(request):
     context = {
-        'meta_title': 'Terms and Conditions – Gravel Calculator Pro',
-        'meta_description': 'Read the Terms and Conditions for using Gravel Calculator Pro. By using our calculator you agree to these terms.',
+        'meta_title': 'Terms and Conditions — GravelYardCalculator.com',
+        'meta_description': 'Read the Terms and Conditions for using GravelYardCalculator.com. By using the calculators you agree to these terms.',
     }
     return render(request, 'terms.html', context)
 
