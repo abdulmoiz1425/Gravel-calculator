@@ -153,6 +153,7 @@
                 <a href="{% url 'cookie_policy' %}">Cookies</a>
                 <a href="{% url 'disclaimer' %}">Disclaimer</a>
                 <a href="{% url 'terms' %}">Terms</a>
+                <button type="button" class="footer-cookie-btn" id="cookieSettings">Cookie settings</button>
             </nav>
         </div>
         <div class="footer-bottom">
@@ -161,6 +162,19 @@
             </div>
         </div>
     </footer>
+
+    <div class="consent-banner" id="consentBanner" role="region" aria-label="Cookie consent" hidden>
+        <div class="consent-inner">
+            <div class="consent-text">
+                <strong>Manage Consent</strong>
+                <p>We use Google Analytics to understand how visitors use our calculators. It sets cookies only if you accept. Deny keeps it off, and the calculators work either way. See our <a href="{% url 'cookie_policy' %}">Cookie Policy</a>.</p>
+            </div>
+            <div class="consent-actions">
+                <button type="button" class="consent-btn" id="consentDeny">Deny</button>
+                <button type="button" class="consent-btn" id="consentAccept">Accept</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Mobile menu toggle
@@ -186,6 +200,7 @@
             });
         }
     </script>
+    <script src="{% static 'js/consent.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
