@@ -1,11 +1,15 @@
+import logging
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
 
 from .models import ContactMessage
+
+logger = logging.getLogger(__name__)
 
 CONTACT_SUBJECTS = {
     'calculator-question': 'Question about the gravel calculator',
@@ -51,12 +55,17 @@ def contact(request):
             full_name=name, email=email, subject=subject, message=body)
         if settings.CONTACT_NOTIFY_EMAIL:
             try:
-                send_mail(
-                    f'[Contact] {CONTACT_SUBJECTS[subject]}',
-                    f'From: {name} <{email}>\n\n{body}',
-                    None, [settings.CONTACT_NOTIFY_EMAIL], fail_silently=True)
+                EmailMessage(
+                    subject=f'[Contact] {CONTACT_SUBJECTS[subject]}',
+                    body=f'From: {name} <{email}>\n\n{body}',
+                    to=[settings.CONTACT_NOTIFY_EMAIL],
+                    reply_to=[email],
+                ).send()
             except Exception:
-                pass  # the message is already saved; email is best-effort
+                # The message is already saved, so the visitor still sees success.
+                # Log the reason so a mail problem shows up in the server log.
+                logger.exception(
+                    'Contact notification email failed (message id %s)', msg.pk)
         messages.success(request, 'Thank you. Your message has been received.')
         return redirect('contact')
 
